@@ -5,6 +5,11 @@ const fs = require('fs');
 const WooCommerceRestApi = require('@woocommerce/woocommerce-rest-api').default;
 const path = require('path');
 
+console.log('Starting server...');
+console.log('Node version:', process.version);
+console.log('PORT env:', process.env.PORT);
+console.log('WC_URL configured:', !!process.env.WC_URL);
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -776,8 +781,8 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Start server
-app.listen(PORT, () => {
+// Start server - bind to 0.0.0.0 for Railway
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`
 ╔════════════════════════════════════════════════════════════╗
 ║  hattemanden.dk Dashboard Server                           ║
