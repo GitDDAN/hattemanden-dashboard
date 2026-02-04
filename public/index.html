@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f1eee9">
+    <title>hattemanden.dk Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Auth Modal -->
+    <div id="authModal" class="auth-modal" style="display: none;">
+        <div class="auth-modal-content">
+            <div class="auth-logo">H</div>
+            <h2>hattemanden.dk</h2>
+            <p>Indtast adgangskode for at fortsætte</p>
+            <form id="authForm">
+                <input type="password" id="authPassword" placeholder="Adgangskode" required>
+                <button type="submit" class="btn">Log ind</button>
+                <p id="authError" class="auth-error" style="display: none;"></p>
+            </form>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">H</span>
+                <div class="logo-text">
+                    <h1>hattemanden.dk</h1>
+                    <span class="tagline">Live Dashboard</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-theme" onclick="toggleTheme()" id="themeToggle" title="Toggle light/dark mode">
+                    <span class="theme-icon theme-icon-dark">🌙</span>
+                    <span class="theme-icon theme-icon-light">☀️</span>
+                </button>
+                <button class="btn btn-language" onclick="toggleLanguage()" id="globalLangToggle" title="Switch language">
+                    <span class="lang-icon">🌐</span>
+                    <span class="lang-text">EN</span>
+                </button>
+                <div class="connection-status" id="connectionStatus">
+                    <span class="status-dot"></span>
+                    <span class="status-text" data-da="Forbinder..." data-en="Connecting...">Forbinder...</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="tabs-wrapper">
+        <div class="tabs">
+            <button class="tab" data-tab="overview"><span data-da="Overblik" data-en="Overview">Overblik</span></button>
+            <button class="tab active" data-tab="proposal"><span data-da="Tilbud" data-en="Proposal">Tilbud</span></button>
+            <button class="tab" data-tab="questions"><span data-da="Spørgsmål" data-en="Questions">Spørgsmål</span></button>
+            <button class="tab" data-tab="review"><span data-da="Produktgennemgang" data-en="Product Review">Produktgennemgang</span></button>
+            <button class="tab" data-tab="orders"><span data-da="Ordrer" data-en="Orders">Ordrer</span></button>
+            <button class="tab" data-tab="customers"><span data-da="Kunder" data-en="Customers">Kunder</span></button>
+            <button class="tab" data-tab="audit">Audit</button>
+            <button class="tab" data-tab="project"><span data-da="Projekt" data-en="Project">Projekt</span></button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- TAB 1: Tilbud (Proposal) - DEFAULT -->
+        <section id="proposal" class="tab-content active">
+            <!-- Proposal Actions Bar -->
+            <div class="proposal-actions">
+                <div class="action-left">
+                    <div class="collapse-controls">
+                        <button class="btn-collapse" onclick="expandAllSections()">
+                            <span class="icon">▼</span> <span data-da="Udvid alle" data-en="Expand all">Udvid alle</span>
+                        </button>
+                        <button class="btn-collapse" onclick="collapseAllSections()">
+                            <span class="icon">▶</span> <span data-da="Skjul alle" data-en="Collapse all">Skjul alle</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="action-right">
+                    <button class="btn btn-secondary" onclick="printProposal()">
+                        <span class="btn-icon">🖨️</span> <span data-da="Print / Gem som PDF" data-en="Print / Save as PDF">Print / Gem som PDF</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hero Header - Compact & Elegant -->
+            <div class="proposal-hero compact">
+                <div class="hero-content">
+                    <span class="hero-badge-inline" data-da="FORSLAG" data-en="PROPOSAL">FORSLAG</span>
+                    <h1 class="hero-title-main">Hattemanden</h1>
+                    <p class="hero-subtitle" data-da="Ny professionel webshop · Februar 2026" data-en="New Professional Webshop · February 2026">Ny professionel webshop · Februar 2026</p>
+                </div>
+                <div class="hero-values">
+                    <span class="hero-value" data-da="Komplet løsning" data-en="Complete Solution">🎯 Komplet løsning</span>
+                    <span class="hero-value-divider">·</span>
+                    <span class="hero-value" data-da="6-7 uger" data-en="6-7 weeks">⚡ 6-7 uger</span>
+                    <span class="hero-value-divider">·</span>
+                    <span class="hero-value" data-da="Autopilot e-handel" data-en="Autopilot e-commerce">🚀 Autopilot</span>
+                </div>
+            </div>
+
+            <!-- SECTION 1: Introduction Letter -->
+            <div class="card proposal-section intro-letter">
+                <h2 data-da="Kære Kim" data-en="Dear Kim">Kære Kim</h2>
+                <div class="proposal-letter">
+                    <p data-da="Tak for gårsdagens møde. Det her dokument er vores forslag til den nye hattemanden.dk — alt samlet ét sted, så du kan se præcis hvad vi bygger, hvorfor vi bygger det, og hvad det koster." data-en="Thank you for yesterday's meeting. This document is our proposal for the new hattemanden.dk — everything in one place, so you can see exactly what we're building, why we're building it, and what it costs.">Tak for gårsdagens møde. Det her dokument er vores forslag til den nye hattemanden.dk — alt samlet ét sted, så du kan se præcis hvad vi bygger, hvorfor vi bygger det, og hvad det koster.</p>
+
+                    <p data-da="Hattemanden er ikke bare en webshop. Det er Svend Eriks livsværk — en butik bygget på ægte ekspertise, personlig service og en passion for hatte som ingen konkurrent i Danmark kan matche. Det er den historie vi bygger videre på." data-en="Hattemanden is not just a webshop. It's Svend Erik's life's work — a store built on genuine expertise, personal service, and a passion for hats that no competitor in Denmark can match. That's the story we're building on.">Hattemanden er ikke bare en webshop. Det er Svend Eriks livsværk — en butik bygget på ægte ekspertise, personlig service og en passion for hatte som ingen konkurrent i Danmark kan matche. Det er den historie vi bygger videre på.</p>
+
+                    <p data-da="Vi bygger en helt ny side fra bunden — ikke en opdatering eller lapning af den gamle. Alt bliver nyt: design, struktur, indhold og automation. Det eneste vi tager med er produkterne, ordrehistorikken og det gode fra den nuværende løsning (som Reepay-betaling)." data-en="We're building a completely new site from scratch — not an update or patch of the old one. Everything will be new: design, structure, content, and automation. The only things we're bringing over are the products, order history, and what works from the current solution (like Reepay payments).">Vi bygger en helt ny side fra bunden — ikke en opdatering eller lapning af den gamle. Alt bliver nyt: design, struktur, indhold og automation. Det eneste vi tager med er produkterne, ordrehistorikken og det gode fra den nuværende løsning (som Reepay-betaling).</p>
+
+                    <p data-da="Den nye side bliver enkel, smuk og nem at drive. Du skal ikke sidde og opdatere hjemmesiden hver dag. Den skal køre, og du skal kunne fokusere på det du gør i forvejen." data-en="The new site will be simple, beautiful, and easy to run. You won't need to update the website every day. It should run itself, letting you focus on what you're already doing.">Den nye side bliver enkel, smuk og nem at drive. Du skal ikke sidde og opdatere hjemmesiden hver dag. Den skal køre, og du skal kunne fokusere på det du gør i forvejen.</p>
+
+                    <p><strong data-da="Alt hvad du skal gøre lige nu" data-en="All you need to do right now">Alt hvad du skal gøre lige nu</strong> <span data-da="er at gennemgå produktlisten (under &quot;Produktgennemgang&quot; fanen) og besvare nogle få spørgsmål (under &quot;Spørgsmål&quot; fanen). Så tager vi os af resten." data-en="is to review the product list (under the &quot;Product Review&quot; tab) and answer a few questions (under the &quot;Questions&quot; tab). Then we'll take care of the rest.">er at gennemgå produktlisten (under "Produktgennemgang" fanen) og besvare nogle få spørgsmål (under "Spørgsmål" fanen). Så tager vi os af resten.</span></p>
+
+                    <p class="proposal-signature">
+                        — Daniel Dulwich
+                    </p>
+                </div>
+            </div>
+
+            <!-- SECTION 2: Current State Data -->
+            <div class="card proposal-section collapsible-card">
+                <div class="card-header collapsible-header" onclick="toggleCollapsible(this)">
+                    <h2 data-da="Hvor står Hattemanden i dag?" data-en="Where does Hattemanden stand today?">Hvor står Hattemanden i dag?</h2>
+                    <span class="collapse-icon">▶</span>
+                </div>
+                <div class="collapsible-content" style="display: none;">
+                <div class="section-header-with-toggle" style="margin-top: 0; padding-top: 0;">
+                    <div class="data-source-toggle">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="websiteOnlyToggle" onchange="toggleWebsiteOnlyView()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span class="toggle-label" data-da="Kun webshop tal" data-en="Webshop only">Kun webshop tal</span>
+                    </div>
+                </div>
+                <p class="section-intro" data-da="Vi har gennemgået hele din nuværende hjemmeside — alle produkter, ordrer, kunder og tekniske detaljer. Her er hvad tallene viser:" data-en="We've reviewed your entire current website — all products, orders, customers, and technical details. Here's what the numbers show:">Vi har gennemgået hele din nuværende hjemmeside — alle produkter, ordrer, kunder og tekniske detaljer. Her er hvad tallene viser:</p>
+
+                <!-- Stats for ALL channels (default view) -->
+                <div class="proposal-stats-grid stats-4col" id="allChannelStats">
+                    <div class="proposal-stat">
+                        <div class="stat-number">361.109</div>
+                        <div class="stat-unit">DKK</div>
+                        <div class="stat-desc" data-da="Samlet omsætning" data-en="Total revenue">Samlet omsætning</div>
+                    </div>
+                    <div class="proposal-stat">
+                        <div class="stat-number">562</div>
+                        <div class="stat-unit">DKK</div>
+                        <div class="stat-desc" data-da="Gns. ordreværdi" data-en="Avg. order value">Gns. ordreværdi</div>
+                    </div>
+                    <div class="proposal-stat">
+                        <div class="stat-number">643</div>
+                        <div class="stat-unit" data-da="ordrer" data-en="orders">ordrer</div>
+                        <div class="stat-desc" data-da="Gennemførte ordrer" data-en="Completed orders">Gennemførte ordrer</div>
+                    </div>
+                    <div class="proposal-stat">
+                        <div class="stat-number">9</div>
+                        <div class="stat-unit" data-da="år" data-en="years">år</div>
+                        <div class="stat-desc" data-da="Aktiv siden 2017" data-en="Active since 2017">Aktiv siden 2017</div>
+                    </div>
+                </div>
+
+                <!-- Stats for WEBSITE ONLY (hidden by default) -->
+                <div class="proposal-stats-grid stats-4col website-only-stats" id="websiteOnlyStats" style="display: none;">
+                    <div class="proposal-stat">
+                        <div class="stat-number">361.109</div>
+                        <div class="stat-unit">DKK</div>
+                        <div class="stat-desc" data-da="Webshop omsætning" data-en="Webshop revenue">Webshop omsætning</div>
+                    </div>
+                    <div class="proposal-stat">
+                        <div class="stat-number">562</div>
+                        <div class="stat-unit">DKK</div>
+                        <div class="stat-desc" data-da="Gns. ordreværdi" data-en="Avg. order value">Gns. ordreværdi</div>
+                    </div>
+                    <div class="proposal-stat">
+                        <div class="stat-number">643</div>
+                        <div class="stat-unit" data-da="ordrer" data-en="orders">ordrer</div>
+                        <div class="stat-desc" data-da="Online ordrer" data-en="Online orders">Online ordrer</div>
+                    </div>
+                    <div class="proposal-stat">
+                        <div class="stat-number">9</div>
+                        <div class="stat-unit" data-da="år" data-en="years">år</div>
+                        <div class="stat-desc" data-da="Aktiv siden 2017" data-en="Active since 2017">Aktiv siden 2017</div>
+                    </div>
+                </div>
+
+                <!-- Revenue by Year Chart -->
+                <div class="revenue-section">
+                    <h3 data-da="Omsætning pr. år" data-en="Revenue per year">Omsætning pr. år</h3>
+                    <div class="revenue-chart-proposal" id="proposalRevenueChart">
+                        <!-- Will be populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Highlight Callout -->
+                <div class="proposal-callout callout-success">
+                    <p data-da="Hjemmesiden nåede næsten &lt;strong&gt;95.000 DKK i 2019&lt;/strong&gt; — med nul optimering, ingen blog, ingen nyhedsbrev, ingen SEO. Det er det vi bygger hen imod igen, men denne gang med de rigtige værktøjer." data-en="The website reached almost &lt;strong&gt;95,000 DKK in 2019&lt;/strong&gt; — with zero optimization, no blog, no newsletter, no SEO. That's what we're building towards again, but this time with the right tools.">Hjemmesiden nåede næsten <strong>95.000 DKK i 2019</strong> — med nul optimering, ingen blog, ingen nyhedsbrev, ingen SEO. Det er det vi bygger hen imod igen, men denne gang med de rigtige værktøjer.</p>
+                </div>
+
+                <!-- Channel Distribution -->
+                <div class="channel-section" id="channelSection">
+                    <h3 data-da="Omsætning pr. kanal (estimeret)" data-en="Revenue by channel (estimated)">Omsætning pr. kanal (estimeret)</h3>
+                    <div class="channel-bars-expanded">
+                        <div class="channel-row offline-channel">
+                            <div class="channel-info">
+                                <span class="channel-name" data-da="Fysisk butik" data-en="Physical store">Fysisk butik</span>
+                                <span class="channel-note" data-da="3-4K/dag × 2 dage × 52 uger" data-en="3-4K/day × 2 days × 52 weeks">3-4K/dag × 2 dage × 52 uger</span>
+                            </div>
+                            <div class="channel-bar-wrapper">
+                                <div class="channel-bar-bg">
+                                    <div class="channel-bar-fill" style="width: 80%"></div>
+                                </div>
+                            </div>
+                            <div class="channel-amount">~312.000–416.000 DKK</div>
+                        </div>
+                        <div class="channel-row offline-channel">
+                            <div class="channel-info">
+                                <span class="channel-name">Tønder Festival</span>
+                                <span class="channel-note" data-da="Årlig begivenhed" data-en="Annual event">Årlig begivenhed</span>
+                            </div>
+                            <div class="channel-bar-wrapper">
+                                <div class="channel-bar-bg">
+                                    <div class="channel-bar-fill" style="width: 12%"></div>
+                                </div>
+                            </div>
+                            <div class="channel-amount">~50.000 DKK</div>
+                        </div>
+                        <div class="channel-row highlight-row online-channel">
+                            <div class="channel-info">
+                                <span class="channel-name" data-da="Hjemmeside (2025)" data-en="Website (2025)">Hjemmeside (2025)</span>
+                                <span class="channel-note highlight-note" data-da="Uudnyttet potentiale" data-en="Untapped potential">Uudnyttet potentiale</span>
+                            </div>
+                            <div class="channel-bar-wrapper">
+                                <div class="channel-bar-bg">
+                                    <div class="channel-bar-fill potential" style="width: 7%"></div>
+                                </div>
+                            </div>
+                            <div class="channel-amount">29.584 DKK</div>
+                        </div>
+                    </div>
+                    <p class="channel-insight" data-da="Hjemmesiden er den kanal der kan vokse mest — den er åben 24/7, koster næsten ingenting at drive, og har allerede bevist den kan sælge for 95K om året." data-en="The website is the channel with the most growth potential — it's open 24/7, costs almost nothing to run, and has already proven it can sell for 95K per year.">Hjemmesiden er den kanal der kan vokse mest — den er åben 24/7, koster næsten ingenting at drive, og har allerede bevist den kan sælge for 95K om året.</p>
+                </div>
+
+                <!-- Product Snapshot -->
+                <div class="product-snapshot">
+                    <h3 data-da="Produkterne" data-en="The Products">Produkterne</h3>
+                    <div class="snapshot-stats">
+                        <div class="snapshot-stat">
+                            <div class="snapshot-number">158</div>
+                            <div class="snapshot-label" data-da="Produkter i alt" data-en="Total products">Produkter i alt</div>
+                        </div>
+                        <div class="snapshot-stat">
+                            <div class="snapshot-number">111</div>
+                            <div class="snapshot-label" data-da="Med salgshistorik" data-en="With sales history">Med salgshistorik</div>
+                        </div>
+                    </div>
+                    <p class="snapshot-note" data-da="Vi anbefaler at fjerne 20 produkter (tøj, kjoler, hawaiskjorter) og fokusere på dame- og herrehatte. Gennemgå produkterne i fanen 'Produktgennemgang'." data-en="We recommend removing 20 products (clothing, dresses, Hawaiian shirts) and focusing on women's and men's hats. Review the products in the 'Product Review' tab.">Vi anbefaler at fjerne 20 produkter (tøj, kjoler, hawaiskjorter) og fokusere på dame- og herrehatte. Gennemgå produkterne i fanen 'Produktgennemgang'.</p>
+                </div>
+
+                <!-- Top 10 Products Table with links -->
+                <div class="top-products-section">
+                    <h3 data-da="Top 10 produkter (alle ar)" data-en="Top 10 products (all years)">Top 10 produkter (alle ar)</h3>
+                    <p class="section-note" data-da="Klik pa produktnavnet for at se det pa hattemanden.dk" data-en="Click on product name to view it on hattemanden.dk">Klik pa produktnavnet for at se det pa hattemanden.dk</p>
+                    <table class="data-table top-products-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th data-da="Produkt" data-en="Product">Produkt</th>
+                                <th data-da="Omsætning (DKK)" data-en="Revenue (DKK)">Omsætning (DKK)</th>
+                                <th data-da="% af total" data-en="% of total">% af total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="top-product gold">
+                                <td>1</td>
+                                <td><a href="https://hattemanden.dk/?p=177" target="_blank" rel="noopener" class="product-link">Chapeau Clarque</a></td>
+                                <td>62.440</td>
+                                <td>17,3%</td>
+                            </tr>
+                            <tr class="top-product silver">
+                                <td>2</td>
+                                <td><a href="https://hattemanden.dk/?p=857" target="_blank" rel="noopener" class="product-link">Chauffør Kasket</a></td>
+                                <td>33.104</td>
+                                <td>9,2%</td>
+                            </tr>
+                            <tr class="top-product bronze">
+                                <td>3</td>
+                                <td><a href="https://hattemanden.dk/?p=173" target="_blank" rel="noopener" class="product-link">Bowler</a></td>
+                                <td>28.662</td>
+                                <td>7,9%</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td><a href="https://hattemanden.dk/?p=1779" target="_blank" rel="noopener" class="product-link">Tyrolerhat 569</a></td>
+                                <td>21.305</td>
+                                <td>5,9%</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td><a href="https://hattemanden.dk/?p=158" target="_blank" rel="noopener" class="product-link">Læderkasket</a></td>
+                                <td>17.965</td>
+                                <td>5,0%</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td><a href="https://hattemanden.dk/?p=161" target="_blank" rel="noopener" class="product-link">Høj Hat</a></td>
+                                <td>10.792</td>
+                                <td>3,0%</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td><a href="https://hattemanden.dk/?p=288" target="_blank" rel="noopener" class="product-link">Kjoleskjorte Boswell</a></td>
+                                <td>8.952</td>
+                                <td>2,5%</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td><a href="https://hattemanden.dk/?p=1775" target="_blank" rel="noopener" class="product-link">Kaptajn Kasket 562</a></td>
+                                <td>7.401</td>
+                                <td>2,0%</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td><a href="https://hattemanden.dk/?p=286" target="_blank" rel="noopener" class="product-link">Kjolevest Boswell</a></td>
+                                <td>6.925</td>
+                                <td>1,9%</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td><a href="https://hattemanden.dk/?p=1630" target="_blank" rel="noopener" class="product-link">Lux Panama 2042</a></td>
+                                <td>6.855</td>
+                                <td>1,9%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pepino-callout">
+                        <span class="pepino-icon">⭐</span>
+                        <p><strong data-da="Bemærk:" data-en="Note:">Bemærk:</strong> <span data-da="Der er en hat der hedder 'Pepino' — opkaldt efter Svend Erik. Den har solgt 27 stk for 7.560 DKK. Den bør have en særlig plads på den nye side." data-en="There's a hat called 'Pepino' — named after Svend Erik. It has sold 27 units for 7,560 DKK. It should have a special place on the new site.">Der er en hat der hedder 'Pepino' — opkaldt efter Svend Erik. Den har solgt 27 stk for 7.560 DKK. Den bør have en særlig plads på den nye side.</span></p>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: Competitor Analysis -->
+            <div class="card proposal-section collapsible-card">
+                <div class="card-header collapsible-header" onclick="toggleCollapsible(this)">
+                    <h2 data-da="Hvad gør konkurrenterne — og hvad gør de ikke?" data-en="What do competitors do — and what don't they do?">Hvad gør konkurrenterne — og hvad gør de ikke?</h2>
+                    <span class="collapse-icon">▶</span>
+                </div>
+                <div class="collapsible-content" style="display: none;">
+                <p class="section-intro" data-da="Vi har analyseret de største danske online hattebutikker. Konklusionen er klar: de sælger alle hatte, men ingen af dem tilbyder det Hattemanden kan." data-en="We've analyzed the largest Danish online hat stores. The conclusion is clear: they all sell hats, but none of them offer what Hattemanden can.">Vi har analyseret de største danske online hattebutikker. Konklusionen er klar: de sælger alle hatte, men ingen af dem tilbyder det Hattemanden kan.</p>
+
+                <div class="competitor-grid-expanded">
+                    <div class="competitor-card-v2">
+                        <div class="competitor-header">
+                            <h4><a href="https://hatshop.dk" target="_blank" rel="noopener" class="competitor-link">Hatshop.dk</a></h4>
+                            <span class="competitor-badge badge-volume" data-da="Volumen-specialist" data-en="Volume specialist">Volumen-specialist</span>
+                        </div>
+                        <p class="competitor-desc" data-da="25.000+ produkter, 70+ mærker. Hurtig levering, lave priser." data-en="25,000+ products, 70+ brands. Fast delivery, low prices.">25.000+ produkter, 70+ mærker. Hurtig levering, lave priser.</p>
+                        <div class="competitor-redflag">
+                            <span class="redflag-icon">⚠️</span>
+                            <p data-da="Ingen rådgivning, ingen guides, ingen personlighed. Kunder klager over at hatte ankommer i en tynd kuvert." data-en="No advice, no guides, no personality. Customers complain that hats arrive in a thin envelope.">Ingen rådgivning, ingen guides, ingen personlighed. Kunder klager over at hatte ankommer i en tynd kuvert.</p>
+                        </div>
+                    </div>
+
+                    <div class="competitor-card-v2">
+                        <div class="competitor-header">
+                            <h4><a href="https://hatstore.dk" target="_blank" rel="noopener" class="competitor-link">Hatstore.dk</a></h4>
+                            <span class="competitor-badge badge-streetwear">Streetwear & kasketter</span>
+                        </div>
+                        <p class="competitor-desc" data-da="20.000+ produkter. Stærk på New Era, NBA-caps, custom-broderi." data-en="20,000+ products. Strong on New Era, NBA caps, custom embroidery.">20.000+ produkter. Stærk på New Era, NBA-caps, custom-broderi.</p>
+                        <div class="competitor-redflag">
+                            <span class="redflag-icon">⚠️</span>
+                            <p data-da="Generisk på klassiske hatte. Ingen ekspertise i filt, strå eller formelle hatte." data-en="Generic on classic hats. No expertise in felt, straw, or formal hats.">Generisk på klassiske hatte. Ingen ekspertise i filt, strå eller formelle hatte.</p>
+                        </div>
+                    </div>
+
+                    <div class="competitor-card-v2">
+                        <div class="competitor-header">
+                            <h4><a href="https://www.spejdersport.dk/stetson" target="_blank" rel="noopener" class="competitor-link">Spejder Sport (Stetson)</a></h4>
+                            <span class="competitor-badge badge-outdoor" data-da="Outdoor-forhandler" data-en="Outdoor retailer">Outdoor-forhandler</span>
+                        </div>
+                        <p class="competitor-desc" data-da="God teknisk information om Stetson. Fokus på funktion, ikke stil." data-en="Good technical information about Stetson. Focus on function, not style.">God teknisk information om Stetson. Fokus på funktion, ikke stil.</p>
+                        <div class="competitor-redflag">
+                            <span class="redflag-icon">⚠️</span>
+                            <p data-da="Hatte er bare en underkategori i en outdoor-butik. Ingen stilrådgivning." data-en="Hats are just a subcategory in an outdoor store. No style advice.">Hatte er bare en underkategori i en outdoor-butik. Ingen stilrådgivning.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="proposal-callout callout-warning">
+                    <h4 data-da="Ingen dansk online hattebutik tilbyder:" data-en="No Danish online hat store offers:">Ingen dansk online hattebutik tilbyder:</h4>
+                    <ul class="gap-list">
+                        <li data-da="Ægte ekspertrådgivning (ikke bare produktbeskrivelser)" data-en="Genuine expert advice (not just product descriptions)">Ægte ekspertrådgivning (ikke bare produktbeskrivelser)</li>
+                        <li data-da="Guides til vedligeholdelse og pleje af hatte" data-en="Guides for maintenance and care of hats">Guides til vedligeholdelse og pleje af hatte</li>
+                        <li data-da="En personlig historie eller fællesskab" data-en="A personal story or community">En personlig historie eller fællesskab</li>
+                        <li data-da="Ordentlig pakning af sarte hatte" data-en="Proper packaging of delicate hats">Ordentlig pakning af sarte hatte</li>
+                    </ul>
+                    <p class="gap-conclusion"><strong data-da="Det er præcis hvad den nye hattemanden.dk gør." data-en="That's exactly what the new hattemanden.dk does.">Det er præcis hvad den nye hattemanden.dk gør.</strong></p>
+                </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: 10 Must-Haves -->
+            <div class="card proposal-section must-haves-section collapsible-card">
+                <div class="card-header collapsible-header" onclick="toggleCollapsible(this)">
+                    <h2 data-da="10 ting den nye hjemmeside skal have" data-en="10 things the new website must have">10 ting den nye hjemmeside skal have</h2>
+                    <span class="collapse-icon">▶</span>
+                </div>
+                <div class="collapsible-content" style="display: none;">
+                <p class="section-intro" data-da="Baseret på vores analyse af markedet, dine produkter, og dine behov — her er de 10 vigtigste ting vi bygger ind i den nye side. Rangeret efter forventet effekt på omsætning." data-en="Based on our analysis of the market, your products, and your needs — here are the 10 most important things we're building into the new site. Ranked by expected impact on revenue.">Baseret på vores analyse af markedet, dine produkter, og dine behov — her er de 10 vigtigste ting vi bygger ind i den nye side. Rangeret efter forventet effekt på omsætning.</p>
+
+                <div class="must-haves-v2">
+                    <!-- High Impact (Green) -->
+                    <div class="must-have-card impact-high">
+                        <div class="must-have-num">1</div>
+                        <div class="must-have-body">
+                            <div class="must-have-header">
+                                <h4 data-da="Svend Eriks Arv — Historien der sælger" data-en="Svend Erik's Legacy — The story that sells">Svend Eriks Arv — Historien der sælger</h4>
+                                <span class="impact-badge impact-green" data-da="Høj effekt" data-en="High impact">Høj effekt</span>
+                            </div>
+                            <p data-da="En permanent &quot;Vores Historie&quot; sektion bygget omkring Svend Eriks livsværk. Vi indlejrer TV Syds &quot;Kaffe med Kurt&quot; klippet, fortæller historien om butikken, og viser at Hattemanden er ægte — ikke bare endnu en webshop. Ingen konkurrent har noget der ligner." data-en="A permanent &quot;Our Story&quot; section built around Svend Erik's life's work. We'll embed TV Syd's &quot;Kaffe med Kurt&quot; clip, tell the store's story, and show that Hattemanden is genuine — not just another webshop. No competitor has anything like it.">En permanent "Vores Historie" sektion bygget omkring Svend Eriks livsværk. Vi indlejrer TV Syds "Kaffe med Kurt" klippet, fortæller historien om butikken, og viser at Hattemanden er ægte — ikke bare endnu en webshop. Ingen konkurrent har noget der ligner.</p>
+                            <div class="drift-note" data-da="Drift: Ingen. Bygges én gang." data-en="Maintenance: None. Built once.">Drift: Ingen. Bygges én gang.</div>
+                        </div>
+                    </div>
+
+                    <div class="must-have-card impact-high">
+                        <div class="must-have-num">2</div>
+                        <div class="must-have-body">
+                            <div class="must-have-header">
+                                <h4 data-da="Autopilot E-handel" data-en="Autopilot E-commerce">Autopilot E-handel</h4>
+                                <span class="impact-badge impact-green" data-da="Høj effekt" data-en="High impact">Høj effekt</span>
+                            </div>
+                            <p data-da="Automatiserede arbejdsgange oven på din eksisterende Reepay-betaling: ordrebesked til butiksmedarbejderen (email + SMS), forsendelseslabels og lagerstyring. Når en ordre kommer ind, får medarbejderen en notifikation med pakkeinstruktioner. Du får et dagligt resumé — ikke 50 emails." data-en="Automated workflows on top of your existing Reepay payment: order notification to the store employee (email + SMS), shipping labels and inventory management. When an order comes in, the employee gets a notification with packing instructions. You get a daily summary — not 50 emails.">Automatiserede arbejdsgange oven på din eksisterende Reepay-betaling: ordrebesked til butiksmedarbejderen (email + SMS), forsendelseslabels og lagerstyring. Når en ordre kommer ind, får medarbejderen en notifikation med pakkeinstruktioner. Du får et dagligt resumé — ikke 50 emails.</p>
+                            <div class="drift-note" data-da="Drift: Tæt på nul. Medarbejderen følger en tjekliste." data-en="Maintenance: Close to zero. Employee follows a checklist.">Drift: Tæt på nul. Medarbejderen følger en tjekliste.</div>
+                        </div>
+                    </div>
+
+                    <div class="must-have-card impact-high">
+                        <div class="must-have-num">3</div>
+                        <div class="must-have-body">
+                            <div class="must-have-header">
+                                <h4 data-da="SEO Indholdsbibliotek — Trafik der kommer af sig selv" data-en="SEO Content Library — Traffic that comes by itself">SEO Indholdsbibliotek — Trafik der kommer af sig selv</h4>
+                                <span class="impact-badge impact-green" data-da="Høj effekt" data-en="High impact">Høj effekt</span>
+                            </div>
+                            <p data-da="15-20 danske guides og artikler der fanger søgetrafik: størrelsesguides, ansigtsform-anbefalinger, vedligeholdelse, materialeforklaringer, lejlighedsguides. Bygget med vores AI-drevne SEO blog-automation, optimeret til Google. Folk der søger &quot;hvilken hat passer til mit ansigt&quot; eller &quot;Stetson forhandler Danmark&quot; lander hos dig." data-en="15-20 Danish guides and articles that capture search traffic: size guides, face shape recommendations, maintenance, material explanations, occasion guides. Built with our AI-powered SEO blog automation, optimized for Google. People searching for &quot;which hat suits my face&quot; or &quot;Stetson dealer Denmark&quot; land on your site.">15-20 danske guides og artikler der fanger søgetrafik: størrelsesguides, ansigtsform-anbefalinger, vedligeholdelse, materialeforklaringer, lejlighedsguides. Bygget med vores AI-drevne SEO blog-automation, optimeret til Google. Folk der søger "hvilken hat passer til mit ansigt" eller "Stetson forhandler Danmark" lander hos dig.</p>
+                            <div class="drift-note" data-da="Drift: Ingen løbende. Vi skriver dem som del af projektet." data-en="Maintenance: None ongoing. We write them as part of the project.">Drift: Ingen løbende. Vi skriver dem som del af projektet.</div>
+                        </div>
+                    </div>
+
+                    <div class="must-have-card impact-high">
+                        <div class="must-have-num">4</div>
+                        <div class="must-have-body">
+                            <div class="must-have-header">
+                                <h4 data-da="Interaktiv Størrelsesguide" data-en="Interactive Size Guide">Interaktiv Størrelsesguide</h4>
+                                <span class="impact-badge impact-green" data-da="Høj effekt" data-en="High impact">Høj effekt</span>
+                            </div>
+                            <p data-da="Et værktøj der erstatter den personlige rådgivning Svend Erik gav i butikken. Trin-for-trin målevejledning, størrelsesomsætning mellem alle systemer (US/UK/cm/S-M-L), mærke-specifikke noter, og anbefaling af hat fillers til dem der er mellem to størrelser. Reducerer returneringer markant." data-en="A tool that replaces the personal advice Svend Erik gave in the store. Step-by-step measurement guide, size conversion between all systems (US/UK/cm/S-M-L), brand-specific notes, and recommendation of hat fillers for those between two sizes. Significantly reduces returns.">Et værktøj der erstatter den personlige rådgivning Svend Erik gav i butikken. Trin-for-trin målevejledning, størrelsesomsætning mellem alle systemer (US/UK/cm/S-M-L), mærke-specifikke noter, og anbefaling af hat fillers til dem der er mellem to størrelser. Reducerer returneringer markant.</p>
+                            <div class="drift-note" data-da="Drift: Ingen. Opdateres kun hvis nye mærker tilføjes." data-en="Maintenance: None. Only updated if new brands are added.">Drift: Ingen. Opdateres kun hvis nye mærker tilføjes.</div>
+                        </div>
+                    </div>
+
+                    <!-- Medium Impact (Amber) -->
+                    <div class="must-have-card impact-medium">
+                        <div class="must-have-num">5</div>
+                        <div class="must-have-body">
+                            <div class="must-have-header">
+                                <h4 data-da="Lejlighedsbaseret Navigation — 'Hvad skal du bruge hatten til?'" data-en="Occasion-based Navigation — 'What do you need the hat for?'">Lejlighedsbaseret Navigation — 'Hvad skal du bruge hatten til?'</h4>
+                                <span class="impact-badge impact-amber" data-da="Medium effekt" data-en="Medium impact">Medium effekt</span>
+                            </div>
+                            <p data-da="Navigationen organiseret efter behov: Bryllup & Fest, Outdoor & Jagt, Hverdagsklassiker, Klassisk Elegance. De fleste kunder ved ikke at de vil have en &quot;kaninfilt fedora&quot; — de ved de skal bruge en hat til et bryllup. Vi guider dem dertil." data-en="Navigation organized by need: Wedding & Party, Outdoor & Hunting, Everyday Classics, Classic Elegance. Most customers don't know they want a &quot;rabbit felt fedora&quot; — they know they need a hat for a wedding. We guide them there.">Navigationen organiseret efter behov: Bryllup & Fest, Outdoor & Jagt, Hverdagsklassiker, Klassisk Elegance. De fleste kunder ved ikke at de vil have en "kaninfilt fedora" — de ved de skal bruge en hat til et bryllup. Vi guider dem dertil.</p>
+                            <div class="drift-note" data-da="Drift: Minimal. Sæsonrotation (sommer/vinter)." data-en="Maintenance: Minimal. Season rotation (summer/winter).">Drift: Minimal. Sæsonrotation (sommer/vinter).</div>
+                        </div>
+                    </div>
+
+                    <div class="must-have-card impact-medium">
+                        <div class="must-have-num">6</div>
+                        <div class="must-have-body">
+                            <div class="must-have-header">
+                                <h4 data-da="Smarte Filtre" data-en="Smart Filters">Smarte Filtre</h4>
+                                <span class="impact-badge impact-amber" data-da="Medium effekt" data-en="Medium impact">Medium effekt</span>
+                            </div>
+                            <p data-da="6 filtre der gør det nemt at finde den rigtige hat: Lejlighed, Materiale, Mærke, Pris, Sæson og Ansigtsform. Ansigtsform-filteret fungerer som en digital ekspert — runde ansigter får vinklede skygger, firkantede ansigter får bløde former. Altid tilgængeligt, ingen ventetid." data-en="6 filters that make it easy to find the right hat: Occasion, Material, Brand, Price, Season, and Face Shape. The face shape filter works as a digital expert — round faces get angled brims, square faces get soft shapes. Always available, no waiting.">6 filtre der gør det nemt at finde den rigtige hat: Lejlighed, Materiale, Mærke, Pris, Sæson og Ansigtsform. Ansigtsform-filteret fungerer som en digital ekspert — runde ansigter får vinklede skygger, firkantede ansigter får bløde former. Altid tilgængeligt, ingen ventetid.</p>
+                            <div class="drift-note" data-da="Drift: Nye produkter tagges ved upload." data-en="Maintenance: New products are tagged on upload.">Drift: Nye produkter tagges ved upload.</div>
+                        </div>
+                    </div>
+
+                    <div class="must-have-card impact-medium">
+                        <div class="must-have-num">7</div>
+                        <div class="must-have-body">
+                            <div class="must-have-header">
+                                <h4 data-da="Premium Emballage" data-en="Premium Packaging">Premium Emballage</h4>
+                                <span class="impact-badge impact-amber" data-da="Medium effekt" data-en="Medium impact">Medium effekt</span>
+                            </div>
+                            <p data-da="En standardiseret pakkeproces: rigid hatteæske, syrefrit silkepapir i pulden, 2&quot; polstring, H-tape. Æsken er brandet &quot;Hattemanden, Kolding&quot; og designet til genbrug som opbevaring. Hvert plejekort er materialespecifikt. Konkurrenterne sender hatte i kuverter — vi sender dem i en oplevelse." data-en="A standardized packing process: rigid hat box, acid-free tissue paper in the crown, 2&quot; padding, H-tape. The box is branded &quot;Hattemanden, Kolding&quot; and designed for reuse as storage. Each care card is material-specific. Competitors send hats in envelopes — we send them in an experience.">En standardiseret pakkeproces: rigid hatteæske, syrefrit silkepapir i pulden, 2" polstring, H-tape. Æsken er brandet "Hattemanden, Kolding" og designet til genbrug som opbevaring. Hvert plejekort er materialespecifikt. Konkurrenterne sender hatte i kuverter — vi sender dem i en oplevelse.</p>
+                            <div class="drift-note" data-da="Drift: Per ordre (medarbejderen følger en tjekliste)." data-en="Maintenance: Per order (employee follows a checklist).">Drift: Per ordre (medarbejderen følger en tjekliste).</div>
+                        </div>
+                    </div>
+
+                    <div class="must-have-card impact-medium">
+                        <div class="must-have-num">8</div>
+                        <div class="must-have-body">
+                            <div class="must-have-header">
+                                <h4 data-da="Automatisk Efterkøbs-Serie" data-en="Automatic Post-Purchase Series">Automatisk Efterkøbs-Serie</h4>
+                                <span class="impact-badge impact-amber" data-da="Medium effekt" data-en="Medium impact">Medium effekt</span>
+                            </div>
+                            <p data-da="Email-sekvens der kører automatisk: ordrebekræftelse, forsendelse, plejeguide (specifik til hattematerialet), 30-dages tjek-in, og sæsonforslag efter 60 dage. Øger kundens værdi uden at nogen løfter en finger efter opsætning." data-en="Email sequence that runs automatically: order confirmation, shipping, care guide (specific to hat material), 30-day check-in, and seasonal suggestions after 60 days. Increases customer value without anyone lifting a finger after setup.">Email-sekvens der kører automatisk: ordrebekræftelse, forsendelse, plejeguide (specifik til hattematerialet), 30-dages tjek-in, og sæsonforslag efter 60 dage. Øger kundens værdi uden at nogen løfter en finger efter opsætning.</p>
+                            <div class="drift-note" data-da="Drift: Nul. Bygges én gang, kører automatisk." data-en="Maintenance: Zero. Built once, runs automatically.">Drift: Nul. Bygges én gang, kører automatisk.</div>
+                        </div>
+                    </div>
+
+                    <!-- Nice-to-Have (Blue) -->
+                    <div class="must-have-card impact-low">
+                        <div class="must-have-num">9</div>
+                        <div class="must-have-body">
+                            <div class="must-have-header">
+                                <h4 data-da="Hatte i Det Fri — Kundegalleri" data-en="Hats in the Wild — Customer Gallery">Hatte i Det Fri — Kundegalleri</h4>
+                                <span class="impact-badge impact-blue">Nice-to-have</span>
+                            </div>
+                            <p data-da="Et afsnit på siden hvor rigtige kunder deler billeder af sig selv i deres hatte. Indsamlet via hashtag, efterkøbs-email, eller direkte upload. Kundebilleder bygger tillid som studiefotografier aldrig kan — &quot;hvordan ser den ud på en normal person?&quot;" data-en="A section on the site where real customers share pictures of themselves in their hats. Collected via hashtag, post-purchase email, or direct upload. Customer photos build trust that studio photography never can — &quot;what does it look like on a normal person?&quot;">Et afsnit på siden hvor rigtige kunder deler billeder af sig selv i deres hatte. Indsamlet via hashtag, efterkøbs-email, eller direkte upload. Kundebilleder bygger tillid som studiefotografier aldrig kan — "hvordan ser den ud på en normal person?"</p>
+                            <div class="drift-note" data-da="Drift: Minimal. Ugentlig moderation." data-en="Maintenance: Minimal. Weekly moderation.">Drift: Minimal. Ugentlig moderation.</div>
+                        </div>
+                    </div>
+
+                    <div class="must-have-card impact-low">
+                        <div class="must-have-num">10</div>
+                        <div class="must-have-body">
+                            <div class="must-have-header">
+                                <h4 data-da="Ærlig Kundeservice — Ikke en Chatbot" data-en="Honest Customer Service — Not a Chatbot">Ærlig Kundeservice — Ikke en Chatbot</h4>
+                                <span class="impact-badge impact-blue">Nice-to-have</span>
+                            </div>
+                            <p data-da="En tydelig &quot;Brug for hjælp?&quot; kontaktformular. Ærligt formuleret: &quot;Kim og teamet svarer inden for 1-2 hverdage.&quot; Ikke live chat, ikke WhatsApp, ikke en robot. Et ærligt svar der kommer i tide er bedre end en chatbot der aldrig hjælper." data-en="A clear &quot;Need help?&quot; contact form. Honestly worded: &quot;Kim and the team respond within 1-2 business days.&quot; No live chat, no WhatsApp, no bot. An honest answer that comes in time is better than a chatbot that never helps.">En tydelig "Brug for hjælp?" kontaktformular. Ærligt formuleret: "Kim og teamet svarer inden for 1-2 hverdage." Ikke live chat, ikke WhatsApp, ikke en robot. Et ærligt svar der kommer i tide er bedre end en chatbot der aldrig hjælper.</p>
+                            <div class="drift-note" data-da="Drift: Lav. Kim svarer i eget tempo." data-en="Maintenance: Low. Kim responds at his own pace.">Drift: Lav. Kim svarer i eget tempo.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Offline Recommendations Note -->
+                <div class="offline-recommendations-note">
+                    <div class="offline-note-header">
+                        <span class="offline-icon">📦</span>
+                        <h4 data-da="Anbefalinger til den fysiske butik" data-en="Recommendations for the physical store">Anbefalinger til den fysiske butik</h4>
+                    </div>
+                    <p class="offline-note-text" data-da="Premium Emballage (punkt 7 ovenfor) er primært en fysisk butiksaktivitet. Pakkeprocessen, hatteæsker og plejekort håndteres i butikken — ikke på hjemmesiden. Vi inkluderer emballagedesign og pakkevejledning som del af projektet, men selve udførelsen er ikke del af webprojektet." data-en="Premium Packaging (item 7 above) is primarily a physical store activity. The packing process, hat boxes, and care cards are handled in the store — not on the website. We include packaging design and packing guide as part of the project, but the actual execution is not part of the web project.">Premium Emballage (punkt 7 ovenfor) er primært en fysisk butiksaktivitet. Pakkeprocessen, hatteæsker og plejekort håndteres i butikken — ikke på hjemmesiden. Vi inkluderer emballagedesign og pakkevejledning som del af projektet, men selve udførelsen er ikke del af webprojektet.</p>
+                    <p class="offline-scope-note" data-da="Disse anbefalinger er ikke del af webprojektet, men kan forbedre den samlede kundeoplevelse." data-en="These recommendations are not part of the web project, but can improve the overall customer experience.">Disse anbefalinger er ikke del af webprojektet, men kan forbedre den samlede kundeoplevelse.</p>
+                </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: Design Direction -->
+            <div class="card proposal-section design-direction collapsible-card">
+                <div class="card-header collapsible-header" onclick="toggleCollapsible(this)">
+                    <h2 data-da="Sådan kommer den nye side til at se ud" data-en="This is how the new site will look">Sådan kommer den nye side til at se ud</h2>
+                    <span class="collapse-icon">▶</span>
+                </div>
+                <div class="collapsible-content" style="display: none;">
+
+                <div class="design-style-card">
+                    <h3 class="style-title">Klassisk · Vintage · Natur · Peaky Blinders</h3>
+                    <p class="style-desc" data-da="Den nye hattemanden.dk bliver mørk, tidløs og elegant — inspireret af den vintage æstetik fra Peaky Blinders-æraen og naturens materialer. Tænk: mørke baggrunde, varm belysning, klassisk typografi, og naturlige teksturer der afspejler hatteproduktionens håndværk — filt, uld, strå, læder. En side der føles som en premium hattebutik, ikke en discount-webshop." data-en="The new hattemanden.dk will be dark, timeless, and elegant — inspired by the vintage aesthetic of the Peaky Blinders era and nature's materials. Think: dark backgrounds, warm lighting, classic typography, and natural textures that reflect hat craftsmanship — felt, wool, straw, leather. A site that feels like a premium hat boutique, not a discount webshop.">Den nye hattemanden.dk bliver mørk, tidløs og elegant — inspireret af den vintage æstetik fra Peaky Blinders-æraen og naturens materialer. Tænk: mørke baggrunde, varm belysning, klassisk typografi, og naturlige teksturer der afspejler hatteproduktionens håndværk — filt, uld, strå, læder. En side der føles som en premium hattebutik, ikke en discount-webshop.</p>
+
+                    <div class="design-elements">
+                        <h4 data-da="Centrale designelementer:" data-en="Key design elements:">Centrale designelementer:</h4>
+                        <ul class="design-list">
+                            <li data-da="Mørk farvepalet med varme accenter" data-en="Dark color palette with warm accents">Mørk farvepalet med varme accenter</li>
+                            <li data-da="Naturinspirerede teksturer og jordfarver" data-en="Nature-inspired textures and earth tones">Naturinspirerede teksturer og jordfarver</li>
+                            <li data-da="Klassisk serif-typografi til overskrifter" data-en="Classic serif typography for headings">Klassisk serif-typografi til overskrifter</li>
+                            <li data-da="Stort, stemningsfuldt produktfotografi (AI-forstærket)" data-en="Large, atmospheric product photography (AI-enhanced)">Stort, stemningsfuldt produktfotografi (AI-forstærket)</li>
+                            <li data-da="Enkel, overskuelig navigation" data-en="Simple, clear navigation">Enkel, overskuelig navigation</li>
+                            <li data-da="Mobilvenlig — de fleste kunder handler fra telefonen" data-en="Mobile-friendly — most customers shop from their phone">Mobilvenlig — de fleste kunder handler fra telefonen</li>
+                            <li data-da="Brandet med Hattemandens identitet og historie" data-en="Branded with Hattemanden's identity and history">Brandet med Hattemandens identitet og historie</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="design-note-card">
+                    <span class="note-icon">📷</span>
+                    <p><strong>Note:</strong> <span data-da="Produktbilleder forstærkes med vores AI-automation for at skabe ensartet, professionelt look uden at skulle fotografere hvert produkt individuelt. Det sparer tid og penge." data-en="Product images are enhanced with our AI automation to create a consistent, professional look without having to photograph each product individually. This saves time and money.">Produktbilleder forstærkes med vores AI-automation for at skabe ensartet, professionelt look uden at skulle fotografere hvert produkt individuelt. Det sparer tid og penge.</span></p>
+                </div>
+
+                <!-- Inspiration Sites -->
+                <div class="inspiration-section">
+                    <h4 data-da="Inspiration fra elitebutikker:" data-en="Inspiration from elite stores:">Inspiration fra elitebutikker:</h4>
+                    <p class="inspiration-intro" data-da="Vi henter inspiration fra de bedste e-handelsbutikker i verden. Her er hvad vi tager med fra hver:" data-en="We draw inspiration from the best e-commerce stores in the world. Here's what we take from each:">Vi henter inspiration fra de bedste e-handelsbutikker i verden. Her er hvad vi tager med fra hver:</p>
+                    <div class="inspiration-grid-v2">
+                        <div class="inspiration-card-v2">
+                            <a href="https://lockhatters.com" target="_blank" rel="noopener" class="inspiration-screenshot-link">
+                                <img src="/screenshots/inspiration-lockhatters-homepage.png" alt="Lock & Co. Hatters website" class="inspiration-screenshot" loading="lazy">
+                            </a>
+                            <div class="inspiration-card-content">
+                                <h5><a href="https://lockhatters.com" target="_blank" rel="noopener">Lock & Co. Hatters</a></h5>
+                                <p class="inspiration-origin" data-da="London, UK — Verdens ældste hatteforretning (1676)" data-en="London, UK — World's oldest hat shop (1676)">London, UK — Verdens ældste hatteforretning (1676)</p>
+                                <p class="inspiration-takeaway" data-da="Hvad vi tager: Historiefortælling, håndværksfokus, tidløs elegance i design" data-en="What we take: Storytelling, craftsmanship focus, timeless elegance in design">Hvad vi tager: Historiefortælling, håndværksfokus, tidløs elegance i design</p>
+                            </div>
+                        </div>
+                        <div class="inspiration-card-v2">
+                            <a href="https://www.borsalino.com" target="_blank" rel="noopener" class="inspiration-screenshot-link">
+                                <img src="/screenshots/inspiration-borsalino-homepage.png" alt="Borsalino website" class="inspiration-screenshot" loading="lazy">
+                            </a>
+                            <div class="inspiration-card-content">
+                                <h5><a href="https://www.borsalino.com" target="_blank" rel="noopener">Borsalino</a></h5>
+                                <p class="inspiration-origin" data-da="Alessandria, Italien — Legendarisk hathåndværk siden 1857" data-en="Alessandria, Italy — Legendary hat craftsmanship since 1857">Alessandria, Italien — Legendarisk hathåndværk siden 1857</p>
+                                <p class="inspiration-takeaway" data-da="Hvad vi tager: Luksusæstetik, materialefortælling, italiensk elegance" data-en="What we take: Luxury aesthetics, material storytelling, Italian elegance">Hvad vi tager: Luksusæstetik, materialefortælling, italiensk elegance</p>
+                            </div>
+                        </div>
+                        <div class="inspiration-card-v2">
+                            <a href="https://www.goorin.com" target="_blank" rel="noopener" class="inspiration-screenshot-link">
+                                <img src="/screenshots/inspiration-goorin-homepage.png" alt="Goorin Bros website" class="inspiration-screenshot" loading="lazy">
+                            </a>
+                            <div class="inspiration-card-content">
+                                <h5><a href="https://www.goorin.com" target="_blank" rel="noopener">Goorin Bros</a></h5>
+                                <p class="inspiration-origin" data-da="San Francisco, USA — 130 års hattetradition" data-en="San Francisco, USA — 130 years of hat tradition">San Francisco, USA — 130 års hattetradition</p>
+                                <p class="inspiration-takeaway" data-da="Hvad vi tager: Personlighed, livsstilsbranding, interaktive størrelsesguides" data-en="What we take: Personality, lifestyle branding, interactive size guides">Hvad vi tager: Personlighed, livsstilsbranding, interaktive størrelsesguides</p>
+                            </div>
+                        </div>
+                        <div class="inspiration-card-v2">
+                            <a href="https://www.stetson.com" target="_blank" rel="noopener" class="inspiration-screenshot-link">
+                                <img src="/screenshots/inspiration-stetson-homepage.png" alt="Stetson website" class="inspiration-screenshot" loading="lazy">
+                            </a>
+                            <div class="inspiration-card-content">
+                                <h5><a href="https://www.stetson.com" target="_blank" rel="noopener">Stetson</a></h5>
+                                <p class="inspiration-origin" data-da="Texas, USA — Ikonisk amerikansk hattemærke siden 1865" data-en="Texas, USA — Iconic American hat brand since 1865">Texas, USA — Ikonisk amerikansk hattemærke siden 1865</p>
+                                <p class="inspiration-takeaway" data-da="Hvad vi tager: Materialeforklaringer, lejlighedsfiltre, produktvideo" data-en="What we take: Material explanations, occasion filters, product video">Hvad vi tager: Materialeforklaringer, lejlighedsfiltre, produktvideo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- SECTION 6: Brand Direction -->
+            <div class="card proposal-section brand-section collapsible-card">
+                <div class="card-header collapsible-header" onclick="toggleCollapsible(this)">
+                    <h2 data-da="Hattemandens Identitet" data-en="Hattemanden's Identity">Hattemandens Identitet</h2>
+                    <span class="collapse-icon">▶</span>
+                </div>
+                <div class="collapsible-content" style="display: none;">
+
+                <div class="brand-manifesto">
+                    <div class="manifesto-section">
+                        <h4 data-da="Hvem er Hattemanden?" data-en="Who is Hattemanden?">Hvem er Hattemanden?</h4>
+                        <ul>
+                            <li data-da="Grundlagt af Svend Erik &quot;Pepino&quot; — en verdensrejsende der slog sig ned i Kolding og åbnede en hattebutik" data-en="Founded by Svend Erik &quot;Pepino&quot; — a world traveler who settled in Kolding and opened a hat store">Grundlagt af Svend Erik "Pepino" — en verdensrejsende der slog sig ned i Kolding og åbnede en hattebutik</li>
+                            <li data-da="Omtalt på TV Syds &quot;Kaffe med Kurt&quot; — ikke en marketingstunt, men ægte lokal anerkendelse" data-en="Featured on TV Syd's &quot;Kaffe med Kurt&quot; — not a marketing stunt, but genuine local recognition">Omtalt på TV Syds "Kaffe med Kurt" — ikke en marketingstunt, men ægte lokal anerkendelse</li>
+                            <li data-da="Nu videreført af Kim og teamet i Søndergade" data-en="Now continued by Kim and the team in Søndergade">Nu videreført af Kim og teamet i Søndergade</li>
+                            <li data-da="Ikke en koncern. Ikke en startup. En familiebutik med en hjemmeside" data-en="Not a corporation. Not a startup. A family store with a website">Ikke en koncern. Ikke en startup. En familiebutik med en hjemmeside</li>
+                        </ul>
+                    </div>
+
+                    <div class="manifesto-section">
+                        <h4 data-da="Hvem er den til?" data-en="Who is it for?">Hvem er den til?</h4>
+                        <ul>
+                            <li data-da="Personen der er træt af at scrolle igennem 25.000 identiske produkter" data-en="The person who is tired of scrolling through 25,000 identical products">Personen der er træt af at scrolle igennem 25.000 identiske produkter</li>
+                            <li data-da="Den der vil købe én god hat — ikke fem der ryger ud efter et år" data-en="Anyone who wants to buy one good hat — not five that get thrown out after a year">Den der vil købe én god hat — ikke fem der ryger ud efter et år</li>
+                            <li data-da="Kvinden der leder efter noget ægte til et bryllup, en fødselsdag, eller bare fordi" data-en="The woman looking for something genuine for a wedding, a birthday, or just because">Kvinden der leder efter noget ægte til et bryllup, en fødselsdag, eller bare fordi</li>
+                            <li data-da="Alle der har tænkt &quot;gid der var nogen der vidste hvad de snakkede om&quot;" data-en="Anyone who has thought &quot;I wish there was someone who knew what they were talking about&quot;">Alle der har tænkt "gid der var nogen der vidste hvad de snakkede om"</li>
+                        </ul>
+                    </div>
+
+                    <div class="manifesto-section">
+                        <h4 data-da="Hvad tror vi på?" data-en="What do we believe in?">Hvad tror vi på?</h4>
+                        <ul>
+                            <li data-da="Svend Erik mente at en hat fuldender et menneske. Det tror vi stadig på" data-en="Svend Erik believed a hat completes a person. We still believe that">Svend Erik mente at en hat fuldender et menneske. Det tror vi stadig på</li>
+                            <li data-da="Ekspertise dør ikke — den bygges ind i måden man gør tingene på" data-en="Expertise doesn't die — it gets built into the way you do things">Ekspertise dør ikke — den bygges ind i måden man gør tingene på</li>
+                            <li data-da="En hat der købes, pakkes og opbevares med omhu holder et helt liv" data-en="A hat that is bought, packed, and stored with care lasts a lifetime">En hat der købes, pakkes og opbevares med omhu holder et helt liv</li>
+                            <li data-da="Dansk vejr kræver rigtige hatte, ikke fast fashion" data-en="Danish weather demands real hats, not fast fashion">Dansk vejr kræver rigtige hatte, ikke fast fashion</li>
+                        </ul>
+                    </div>
+
+                    <div class="manifesto-section">
+                        <h4 data-da="Hvad nægter vi at være?" data-en="What do we refuse to be?">Hvad nægter vi at være?</h4>
+                        <ul>
+                            <li data-da="Ikke et digitalt lager med nedtællingstimer og Klarna-knap" data-en="Not a digital warehouse with countdown timers and Klarna button">Ikke et digitalt lager med nedtællingstimer og Klarna-knap</li>
+                            <li data-da="Ikke et mindesmærke — det her er en levende butik med en rigtig adresse" data-en="Not a memorial — this is a living store with a real address">Ikke et mindesmærke — det her er en levende butik med en rigtig adresse</li>
+                            <li data-da="Ikke en der lader som om grundlæggeren stadig står bag disken" data-en="Not one that pretends the founder is still behind the counter">Ikke en der lader som om grundlæggeren stadig står bag disken</li>
+                            <li data-da="Konkurrerer ikke på pris. Konkurrerer på &quot;du købte den rigtige hat første gang&quot;" data-en="We don't compete on price. We compete on &quot;you bought the right hat the first time&quot;">Konkurrerer ikke på pris. Konkurrerer på "du købte den rigtige hat første gang"</li>
+                        </ul>
+                    </div>
+
+                    <div class="manifesto-section promise">
+                        <h4 data-da="Løftet" data-en="The Promise">Løftet</h4>
+                        <ul>
+                            <li data-da="Den ekspertise Svend Erik byggede ind i butikken lever i hver produktbeskrivelse, hver størrelsesguide, hver omhyggeligt pakket æske" data-en="The expertise Svend Erik built into the store lives in every product description, every size guide, every carefully packed box">Den ekspertise Svend Erik byggede ind i butikken lever i hver produktbeskrivelse, hver størrelsesguide, hver omhyggeligt pakket æske</li>
+                            <li data-da="Du får en rigtig butik i Søndergade 13, et rigtigt team der svarer på rigtige spørgsmål, og en hat der ankommer som om den betyder noget" data-en="You get a real store at Søndergade 13, a real team that answers real questions, and a hat that arrives as if it matters">Du får en rigtig butik i Søndergade 13, et rigtigt team der svarer på rigtige spørgsmål, og en hat der ankommer som om den betyder noget</li>
+                            <li data-da="Vi vil hellere sælge dig én hat du elsker end tre du returnerer" data-en="We'd rather sell you one hat you love than three you return">Vi vil hellere sælge dig én hat du elsker end tre du returnerer</li>
+                        </ul>
+                    </div>
+
+                    <!-- Target Persona (from buyer data analysis) -->
+                    <div class="manifesto-section persona-section">
+                        <h4 data-da="Målgruppen (baseret på købsdata)" data-en="Target Audience (based on buyer data)">Målgruppen (baseret på købsdata)</h4>
+                        <div class="persona-card">
+                            <div class="persona-header">
+                                <span class="persona-icon">👤</span>
+                                <div class="persona-title">
+                                    <h5 data-da="Den typiske Hattemanden-kunde" data-en="The typical Hattemanden customer">Den typiske Hattemanden-kunde</h5>
+                                    <p class="persona-subtitle" data-da="Baseret på 643 ordrer og 295 unikke kunder" data-en="Based on 643 orders and 295 unique customers">Baseret på 643 ordrer og 295 unikke kunder</p>
+                                </div>
+                            </div>
+                            <ul class="persona-traits">
+                                <li data-da="<strong>Lokation:</strong> Primært Danmark, med fokus på Jylland og Fyn" data-en="<strong>Location:</strong> Primarily Denmark, with focus on Jutland and Funen"><strong>Lokation:</strong> Primært Danmark, med fokus på Jylland og Fyn</li>
+                                <li data-da="<strong>Køb:</strong> Gennemsnit 562 DKK per ordre — kvalitet over kvantitet" data-en="<strong>Purchase:</strong> Average 562 DKK per order — quality over quantity"><strong>Køb:</strong> Gennemsnit 562 DKK per ordre — kvalitet over kvantitet</li>
+                                <li data-da="<strong>Favoritter:</strong> Chapeau Clarque (tophat til fest), Chauffør Kasket, Bowler — klassiske hatte til særlige lejligheder" data-en="<strong>Favorites:</strong> Chapeau Clarque (top hat for events), Chauffør Kasket, Bowler — classic hats for special occasions"><strong>Favoritter:</strong> Chapeau Clarque (tophat til fest), Chauffør Kasket, Bowler — klassiske hatte til særlige lejligheder</li>
+                                <li data-da="<strong>Sæson:</strong> Mest aktivitet i efterår/vinter (september-december) og til bryllupsperioden (maj-juni)" data-en="<strong>Season:</strong> Most activity in fall/winter (September-December) and wedding season (May-June)"><strong>Sæson:</strong> Mest aktivitet i efterår/vinter (september-december) og til bryllupsperioden (maj-juni)</li>
+                                <li data-da="<strong>Loyalitet:</strong> 6,8% er tilbagevendende kunder — plads til forbedring med email-serie" data-en="<strong>Loyalty:</strong> 6.8% are returning customers — room for improvement with email series"><strong>Loyalitet:</strong> 6,8% er tilbagevendende kunder — plads til forbedring med email-serie</li>
+                            </ul>
+                            <p class="persona-insight" data-da="<strong>Konklusion:</strong> Kunderne søger kvalitet, klassisk stil og hatte til særlige lejligheder. De er villige til at betale for det rigtige produkt. Den nye side skal tale til den person der ved hvad de vil have — eller som gerne vil guides til det rigtige valg." data-en="<strong>Conclusion:</strong> Customers seek quality, classic style, and hats for special occasions. They're willing to pay for the right product. The new site should speak to the person who knows what they want — or who wants to be guided to the right choice."><strong>Konklusion:</strong> Kunderne søger kvalitet, klassisk stil og hatte til særlige lejligheder. De er villige til at betale for det rigtige produkt. Den nye side skal tale til den person der ved hvad de vil have — eller som gerne vil guides til det rigtige valg.</p>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- Heritage Craftsmanship Message -->
+            <div class="card proposal-section">
+                <div class="heritage-message">
+                    <h3 class="heritage-message-title" data-da="Tradition Moder Innovation" data-en="Tradition Meets Innovation">Tradition Moder Innovation</h3>
+                    <p class="heritage-message-text" data-da="Hattemanden er bygget pa artiers ekspertise i kvalitetshatte. Den nye hjemmeside bevarer denne arv mens den giver dig moderne vaerktojer til at na flere kunder. Vi bygger ikke bare en webshop - vi digitaliserer et handvaerk." data-en="Hattemanden is built on decades of expertise in quality hats. The new website preserves this heritage while giving you modern tools to reach more customers. We're not just building a webshop - we're digitizing a craft.">Hattemanden er bygget pa artiers ekspertise i kvalitetshatte. Den nye hjemmeside bevarer denne arv mens den giver dig moderne vaerktojer til at na flere kunder. Vi bygger ikke bare en webshop - vi digitaliserer et handvaerk.</p>
+                </div>
+            </div>
+
+            <!-- SECTION: Heritage Timeline - Pepino's Journey -->
+            <div class="card proposal-section heritage-timeline-section collapsible-card">
+                <div class="card-header collapsible-header" onclick="toggleCollapsible(this)">
+                    <h2 data-da="Hattemandens Historie" data-en="Hattemanden's Heritage">Hattemandens Historie</h2>
+                    <span class="collapse-icon">▶</span>
+                </div>
+                <div class="collapsible-content" style="display: none;">
+                    <p class="section-intro" data-da="37 års rejse fra kræmmermarked til Danmarks specialbutik for kvalitetshatte. Svend Erik 'Pepinos' arv lever videre." data-en="37 years journey from market stall to Denmark's specialty store for quality hats. Svend Erik 'Pepino's' legacy lives on.">37 års rejse fra kræmmermarked til Danmarks specialbutik for kvalitetshatte. Svend Erik 'Pepinos' arv lever videre.</p>
+
+                    <div class="heritage-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-year">1988</div>
+                            <div class="timeline-content">
+                                <h4 data-da="Virksomheden Grundlægges" data-en="Business Founded">Virksomheden Grundlægges</h4>
+                                <p data-da="Svend Erik Kjær registrerer sin virksomhed (CVR 14535500). Begynder at deltage i Korskro Hestemarked." data-en="Svend Erik Kjær registers his business (CVR 14535500). Starts attending Korskro Hestemarked.">Svend Erik Kjær registrerer sin virksomhed (CVR 14535500). Begynder at deltage i Korskro Hestemarked.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2000</div>
+                            <div class="timeline-content">
+                                <h4 data-da="Hatteimporten Starter" data-en="Hat Imports Begin">Hatteimporten Starter</h4>
+                                <p data-da="Pepino begynder import af hatte fra Sydamerika og USA. Fokus på Line Dance og Country & Western. Læderhatte fra Australien tilføjes." data-en="Pepino starts importing hats from South America and USA. Focus on Line Dance and Country & Western. Leather hats from Australia added.">Pepino begynder import af hatte fra Sydamerika og USA. Fokus på Line Dance og Country & Western. Læderhatte fra Australien tilføjes.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2003</div>
+                            <div class="timeline-content">
+                                <h4 data-da="Ekspansion til Europa" data-en="European Expansion">Ekspansion til Europa</h4>
+                                <p data-da="Efterspørgslen vokser. Import fra Italien og England starter. Foldbare herrehatte og sixpence kasketter tilføjes." data-en="Demand grows. Imports from Italy and England begin. Crushable men's hats and flat caps added.">Efterspørgslen vokser. Import fra Italien og England starter. Foldbare herrehatte og sixpence kasketter tilføjes.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2010</div>
+                            <div class="timeline-content">
+                                <h4 data-da="Damehatte Renaissance" data-en="Women's Hats Renaissance">Damehatte Renaissance</h4>
+                                <p data-da="Smarte damehatte får deres renæssance. 1920er og 1930er stil. Festhatte fra Italien. 'En person med stil bærer hat.'" data-en="Smart women's hats get their renaissance. 1920s and 1930s style. Party hats from Italy. 'A person with style wears a hat.'">Smarte damehatte får deres renæssance. 1920er og 1930er stil. Festhatte fra Italien. "En person med stil bærer hat."</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item highlight">
+                            <div class="timeline-year">~2016</div>
+                            <div class="timeline-content">
+                                <h4 data-da="TV Syd 'Kaffe med Kurt'" data-en="TV Syd 'Kaffe med Kurt'">TV Syd "Kaffe med Kurt"</h4>
+                                <p data-da="Pepino bliver portrætteret på TV Syds populære program. Ægte lokal anerkendelse som ingen konkurrent kan matche." data-en="Pepino is featured on TV Syd's popular program. Genuine local recognition that no competitor can match.">Pepino bliver portrætteret på TV Syds populære program. Ægte lokal anerkendelse som ingen konkurrent kan matche.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2021</div>
+                            <div class="timeline-content">
+                                <h4 data-da="Permanent Butik i Søndergade" data-en="Permanent Store in Søndergade">Permanent Butik i Søndergade</h4>
+                                <p data-da="Succes giver Hattemanden blod på tanden. Åbner permanent butik i Søndergade, Kolding." data-en="Success gives Hattemanden momentum. Opens permanent store in Søndergade, Kolding.">Succes giver Hattemanden blod på tanden. Åbner permanent butik i Søndergade, Kolding.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2023</div>
+                            <div class="timeline-content">
+                                <h4 data-da="Kunderne Redder Butikken" data-en="Customers Save the Store">Kunderne Redder Butikken</h4>
+                                <p data-da="Ophørsudsalg annonceres, men kunder og nabobutikker overtaler Pepino til at fortsætte med reducerede åbningstider." data-en="Closing sale announced, but customers and neighboring stores convince Pepino to continue with reduced hours.">Ophørsudsalg annonceres, men kunder og nabobutikker overtaler Pepino til at fortsætte med reducerede åbningstider.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item memorial">
+                            <div class="timeline-year">Nov 2024</div>
+                            <div class="timeline-content">
+                                <h4 data-da="Svend Erik Går Bort" data-en="Svend Erik Passes Away">Svend Erik Går Bort</h4>
+                                <p data-da="'Det var jo hans livsværk' — familien beslutter at holde butikken i live som en hyldest til hans arv." data-en="'It was his life's work' — the family decides to keep the store alive as a tribute to his legacy.">"Det var jo hans livsværk" — familien beslutter at holde butikken i live som en hyldest til hans arv.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item current-era">
+                            <div class="timeline-year">2025</div>
+                            <div class="timeline-content">
+                                <h4 data-da="Familien Fortsætter Arven" data-en="Family Continues the Legacy">Familien Fortsætter Arven</h4>
+                                <p data-da="Datteren Mette og svigersønnen Kim driver butikken videre. Ny hjemmeside under udvikling for at nå flere kunder." data-en="Daughter Mette and son-in-law Kim continue running the store. New website under development to reach more customers.">Datteren Mette og svigersønnen Kim driver butikken videre. Ny hjemmeside under udvikling for at nå flere kunder.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION: E-E-A-T / Press Coverage -->
+            <div class="card proposal-section eeat-section collapsible-card">
+                <div class="card-header collapsible-header" onclick="toggleCollapsible(this)">
+                    <h2 data-da="Pressedækning & Eksterne Kilder" data-en="Press Coverage & External Sources">Pressedækning & Eksterne Kilder</h2>
+                    <span class="collapse-icon">▶</span>
+                </div>
+                <div class="collapsible-content" style="display: none;">
+                    <p class="section-intro" data-da="16+ eksterne kilder der dokumenterer Hattemandens troværdighed. Disse bruges til at bygge tillid på den nye hjemmeside og styrke SEO." data-en="16+ external sources documenting Hattemanden's credibility. These will be used to build trust on the new website and strengthen SEO.">16+ eksterne kilder der dokumenterer Hattemandens troværdighed. Disse bruges til at bygge tillid på den nye hjemmeside og styrke SEO.</p>
+
+                    <!-- TV & Video -->
+                    <div class="eeat-category">
+                        <h4 data-da="📺 TV & Video" data-en="📺 TV & Video">📺 TV & Video</h4>
+                        <div class="eeat-sources">
+                            <a href="https://www.tvsyd.dk/kaffe-med-kurt/kaffe-med-kurt-hattemanden" target="_blank" rel="noopener" class="eeat-source-card">
+                                <span class="source-name">TV Syd "Kaffe med Kurt"</span>
+                                <span class="source-desc" data-da="Portræt af Hattemanden — kan indlejres på About-siden" data-en="Portrait of Hattemanden — can be embedded on About page">Portræt af Hattemanden — kan indlejres på About-siden</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Newspaper Articles -->
+                    <div class="eeat-category">
+                        <h4 data-da="📰 Avisartikler (JydskeVestkysten)" data-en="📰 Newspaper Articles (JydskeVestkysten)">📰 Avisartikler (JydskeVestkysten)</h4>
+                        <div class="eeat-sources">
+                            <a href="https://jv.dk/artikel/svend-erik-er-kræmmer-så-hatten-passer" target="_blank" rel="noopener" class="eeat-source-card">
+                                <span class="source-name" data-da="Profilhistorie (2017)" data-en="Profile Story (2017)">Profilhistorie (2017)</span>
+                                <span class="source-desc" data-da="'Svend-Erik er kræmmer så hatten passer' — Korskro marked" data-en="'Svend-Erik is a vendor so the hat fits' — Korskro market">"Svend-Erik er kræmmer så hatten passer" — Korskro marked</span>
+                            </a>
+                            <a href="https://jv.dk/kolding/succes-har-givet-hattemanden-blod-paa-tanden-har-aabnet-permanent-butik-i-soendergade-2022-12-16" target="_blank" rel="noopener" class="eeat-source-card">
+                                <span class="source-name" data-da="Butiksåbning (2021)" data-en="Store Opening (2021)">Butiksåbning (2021)</span>
+                                <span class="source-desc" data-da="'Succes har givet Hattemanden blod på tanden' — permanent butik i Søndergade" data-en="'Success gives Hattemanden momentum' — permanent store in Søndergade">"Succes har givet Hattemanden blod på tanden" — permanent butik i Søndergade</span>
+                            </a>
+                            <a href="https://jv.dk/kolding/ejeren-doede-i-november-men-boern-og-svigersoen-holder-butikken-i-live-det-var-jo-hans-livsvaerk" target="_blank" rel="noopener" class="eeat-source-card">
+                                <span class="source-name" data-da="Mindehistorie (2025)" data-en="Memorial Story (2025)">Mindehistorie (2025)</span>
+                                <span class="source-desc" data-da="'Ejeren døde i november, men børn og svigersøn holder butikken i live'" data-en="'The owner died in November, but children and son-in-law keep the store alive'">"Ejeren døde i november, men børn og svigersøn holder butikken i live"</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Local News -->
+                    <div class="eeat-category">
+                        <h4 data-da="📍 Lokale Nyheder" data-en="📍 Local News">📍 Lokale Nyheder</h4>
+                        <div class="eeat-sources">
+                            <a href="https://ugeavisen.dk/kolding/specialbutik-fortryder-ophoers-udsalg-efter-opfordringer-fra-kunder-og-nabo-butikker-vil-indehaveren-alligevel-holde-liv-i-forretningen" target="_blank" rel="noopener" class="eeat-source-card">
+                                <span class="source-name" data-da="Ugeavisen Kolding (2023)" data-en="Ugeavisen Kolding (2023)">Ugeavisen Kolding (2023)</span>
+                                <span class="source-desc" data-da="Kundeloyalitet redder butikken fra lukning" data-en="Customer loyalty saves the store from closing">Kundeloyalitet redder butikken fra lukning</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Events -->
+                    <div class="eeat-category">
+                        <h4 data-da="🎪 Begivenheder & Messer" data-en="🎪 Events & Fairs">🎪 Begivenheder & Messer</h4>
+                        <div class="eeat-sources">
+                            <a href="https://whiskymessen.dk/udstillere-2/udstillere-del-3/hattemanden-dk/" target="_blank" rel="noopener" class="eeat-source-card">
+                                <span class="source-name">Whiskymessen 2025</span>
+                                <span class="source-desc" data-da="Årlig udstiller — inkluderer 'Æret være Svend Eriks minde'" data-en="Annual exhibitor — includes memorial 'Honored be Svend Erik's memory'">Årlig udstiller — inkluderer "Æret være Svend Eriks minde"</span>
+                            </a>
+                            <div class="eeat-source-card no-link">
+                                <span class="source-name">Tønder Festival</span>
+                                <span class="source-desc" data-da="Årlig deltagelse — ~50.000 DKK i festivalomsætning" data-en="Annual participation — ~50,000 DKK in festival revenue">Årlig deltagelse — ~50.000 DKK i festivalomsætning</span>
+                            </div>
+                            <div class="eeat-source-card no-link">
+                                <span class="source-name">Korskro Hestemarked</span>
+                                <span class="source-desc" data-da="Tradition siden tidlige 1990'ere" data-en="Tradition since early 1990s">Tradition siden tidlige 1990'ere</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reviews -->
+                    <div class="eeat-category">
+                        <h4 data-da="⭐ Anmeldelser" data-en="⭐ Reviews">⭐ Anmeldelser</h4>
+                        <div class="eeat-sources">
+                            <a href="https://dk.trustpilot.com/review/www.hattemanden.dk" target="_blank" rel="noopener" class="eeat-source-card trustpilot">
+                                <span class="source-name">Trustpilot</span>
+                                <span class="source-desc">4/5 ⭐ — 25 <span data-da="anmeldelser" data-en="reviews">anmeldelser</span></span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="eeat-callout">
+                        <span class="callout-icon">💡</span>
+                        <p data-da="Alle disse kilder vil blive brugt på den nye hjemmeside: 'Som set i' sektion, presseomtaler, Schema markup for SEO, og Trustpilot-widget integration." data-en="All these sources will be used on the new website: 'As seen in' section, press mentions, Schema markup for SEO, and Trustpilot widget integration.">Alle disse kilder vil blive brugt på den nye hjemmeside: "Som set i" sektion, presseomtaler, Schema markup for SEO, og Trustpilot-widget integration.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 7: Timeline -->
+            <div class="card proposal-section timeline-section collapsible-card">
+                <div class="card-header collapsible-header" onclick="toggleCollapsible(this)">
+                    <h2 data-da="Tidsplan" data-en="Timeline">Tidsplan</h2>
+                    <span class="collapse-icon">▶</span>
+                </div>
+                <div class="collapsible-content" style="display: none;">
+
+                <div class="timeline-stepper">
+                    <div class="timeline-step completed">
+                        <div class="step-icon">✓</div>
+                        <div class="step-phase" data-da="Analyse" data-en="Analysis">Analyse</div>
+                        <div class="step-period" data-da="Uge 1 (færdig)" data-en="Week 1 (done)">Uge 1 (færdig)</div>
+                        <div class="step-content" data-da="Teknisk audit, produktgennemgang, markedsanalyse, dashboard" data-en="Technical audit, product review, market analysis, dashboard">Teknisk audit, produktgennemgang, markedsanalyse, dashboard</div>
+                    </div>
+                    <div class="timeline-connector completed"></div>
+                    <div class="timeline-step current">
+                        <div class="step-icon">🎨</div>
+                        <div class="step-phase">Design</div>
+                        <div class="step-period" data-da="Uge 2-3" data-en="Week 2-3">Uge 2-3</div>
+                        <div class="step-content" data-da="Designmockups, farver, typografi, navigation, godkendelse" data-en="Design mockups, colors, typography, navigation, approval">Designmockups, farver, typografi, navigation, godkendelse</div>
+                    </div>
+                    <div class="timeline-connector"></div>
+                    <div class="timeline-step">
+                        <div class="step-icon">🔧</div>
+                        <div class="step-phase" data-da="Udvikling" data-en="Development">Udvikling</div>
+                        <div class="step-period" data-da="Uge 3-5" data-en="Week 3-5">Uge 3-5</div>
+                        <div class="step-content" data-da="Sidestruktur, produkter, betaling, fragt, email-opsætning" data-en="Site structure, products, payment, shipping, email setup">Sidestruktur, produkter, betaling, fragt, email-opsætning</div>
+                    </div>
+                    <div class="timeline-connector"></div>
+                    <div class="timeline-step">
+                        <div class="step-icon">✏️</div>
+                        <div class="step-phase" data-da="Indhold" data-en="Content">Indhold</div>
+                        <div class="step-period" data-da="Uge 4-6" data-en="Week 4-6">Uge 4-6</div>
+                        <div class="step-content" data-da="SEO-artikler, produktbeskrivelser, størrelsesguide, &quot;Om os&quot;" data-en="SEO articles, product descriptions, size guide, &quot;About us&quot;">SEO-artikler, produktbeskrivelser, størrelsesguide, "Om os"</div>
+                    </div>
+                    <div class="timeline-connector"></div>
+                    <div class="timeline-step">
+                        <div class="step-icon">🔍</div>
+                        <div class="step-phase">Test</div>
+                        <div class="step-period" data-da="Uge 6" data-en="Week 6">Uge 6</div>
+                        <div class="step-content" data-da="Test af ordreflow, betaling, mobilvisning, hastighed" data-en="Testing order flow, payment, mobile view, speed">Test af ordreflow, betaling, mobilvisning, hastighed</div>
+                    </div>
+                    <div class="timeline-connector"></div>
+                    <div class="timeline-step">
+                        <div class="step-icon">🚀</div>
+                        <div class="step-phase" data-da="Lancering" data-en="Launch">Lancering</div>
+                        <div class="step-period" data-da="Uge 7" data-en="Week 7">Uge 7</div>
+                        <div class="step-content" data-da="Go-live, DNS-skift, overvågning, finjustering" data-en="Go-live, DNS switch, monitoring, fine-tuning">Go-live, DNS-skift, overvågning, finjustering</div>
+                    </div>
+                </div>
+
+                <div class="timeline-note">
+                    <span class="note-icon">📅</span>
+                    <p data-da="Tidsplanen afhænger af at produktgennemgangen og spørgsmålene er besvaret. Jo hurtigere du gennemgår dem, jo hurtigere kan vi komme i gang med design." data-en="The timeline depends on the product review and questions being answered. The faster you go through them, the faster we can start with design.">Tidsplanen afhænger af at produktgennemgangen og spørgsmålene er besvaret. Jo hurtigere du gennemgår dem, jo hurtigere kan vi komme i gang med design.</p>
+                </div>
+                </div>
+            </div>
+
+            <!-- SECTION 8: Pricing -->
+            <div class="card proposal-section pricing-section-v2 collapsible-card">
+                <div class="card-header collapsible-header" onclick="toggleCollapsible(this)">
+                    <h2 data-da="Investering" data-en="Investment">Investering</h2>
+                    <span class="collapse-icon">▶</span>
+                </div>
+                <div class="collapsible-content" style="display: none;">
+
+                <div class="main-pricing-card">
+                    <div class="pricing-label" data-da="Ny hjemmeside (komplet rebuild)" data-en="New website (complete rebuild)">Ny hjemmeside (komplet rebuild)</div>
+                    <div class="pricing-amount-large">19.999 DKK</div>
+                    <div class="pricing-split">
+                        <div class="split-item">
+                            <span class="split-pct">40%</span>
+                            <span class="split-label" data-da="ved projektstart:" data-en="at project start:">ved projektstart:</span>
+                            <span class="split-amount">7.999 DKK</span>
+                        </div>
+                        <div class="split-item">
+                            <span class="split-pct">60%</span>
+                            <span class="split-label" data-da="ved aflevering:" data-en="at delivery:">ved aflevering:</span>
+                            <span class="split-amount">12.000 DKK</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Our Approach -->
+                <div class="approach-card">
+                    <h4 data-da="Vores tilgang:" data-en="Our approach:">Vores tilgang:</h4>
+                    <ul class="approach-list">
+                        <li data-da="Vi bygger videre på eksisterende systemer hvor muligt — Reepay betaling, produktdata, kundehistorik" data-en="We build on existing systems where possible — Reepay payment, product data, customer history">Vi bygger videre på eksisterende systemer hvor muligt — Reepay betaling, produktdata, kundehistorik</li>
+                        <li data-da="Hvis vi ikke kan opnå elite-standard med nuværende systemer, skifter vi til bedre løsninger" data-en="If we can't achieve elite standard with current systems, we switch to better solutions">Hvis vi ikke kan opnå elite-standard med nuværende systemer, skifter vi til bedre løsninger</li>
+                        <li data-da="Alt bygges lokalt først — ingen går live før du har godkendt og testet siden" data-en="Everything is built locally first — nothing goes live until you've approved and tested the site">Alt bygges lokalt først — ingen går live før du har godkendt og testet siden</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-includes-v2">
+                    <h4 data-da="Hvad er inkluderet:" data-en="What's included:">Hvad er inkluderet:</h4>
+                    <ul class="includes-grid">
+                        <li data-da="Ny WooCommerce-installation med optimeret betalingsflow (Reepay videreføres)" data-en="New WooCommerce installation with optimized checkout flow (Reepay continues)">Ny WooCommerce-installation med optimeret betalingsflow (Reepay videreføres)</li>
+                        <li data-da="Responsivt design (desktop + mobil) i Peaky Blinders-æstetik" data-en="Responsive design (desktop + mobile) in Peaky Blinders aesthetic">Responsivt design (desktop + mobil) i Peaky Blinders-æstetik</li>
+                        <li data-da="Alle hatte-produkter migreret med nye beskrivelser" data-en="All hat products migrated with new descriptions">Alle hatte-produkter migreret med nye beskrivelser</li>
+                        <li data-da="Interaktiv størrelsesguide" data-en="Interactive size guide">Interaktiv størrelsesguide</li>
+                        <li data-da="Lejlighedsbaseret navigation og smarte filtre" data-en="Occasion-based navigation and smart filters">Lejlighedsbaseret navigation og smarte filtre</li>
+                        <li data-da="&quot;Vores Historie&quot; sektion med TV Syd-video" data-en="&quot;Our Story&quot; section with TV Syd video">"Vores Historie" sektion med TV Syd-video</li>
+                        <li data-da="15-20 SEO-optimerede danske artikler og guides" data-en="15-20 SEO-optimized Danish articles and guides">15-20 SEO-optimerede danske artikler og guides</li>
+                        <li data-da="Automatisk email-serie (efterkøb)" data-en="Automatic email series (post-purchase)">Automatisk email-serie (efterkøb)</li>
+                        <li data-da="Branded email-opsætning (info@hattemanden.dk)" data-en="Branded email setup (info@hattemanden.dk)">Branded email-opsætning (info@hattemanden.dk)</li>
+                        <li data-da="Blog og nyhedsbrev-infrastruktur" data-en="Blog and newsletter infrastructure">Blog og nyhedsbrev-infrastruktur</li>
+                        <li data-da="Kontaktformular med notifikationer" data-en="Contact form with notifications">Kontaktformular med notifikationer</li>
+                        <li data-da="Emballagedesign og pakkevejledning" data-en="Packaging design and packing guide">Emballagedesign og pakkevejledning</li>
+                        <li data-da="Google Analytics / Plausible opsætning" data-en="Google Analytics / Plausible setup">Google Analytics / Plausible opsætning</li>
+                        <li data-da="Sikkerhedsheaders og SSL" data-en="Security headers and SSL">Sikkerhedsheaders og SSL</li>
+                        <li data-da="Dette dashboard med løbende overblik" data-en="This dashboard with ongoing overview">Dette dashboard med løbende overblik</li>
+                        <li data-da="Teknisk SEO-optimering og søgeordsanalyse" data-en="Technical SEO optimization and keyword analysis">Teknisk SEO-optimering og søgeordsanalyse</li>
+                        <li data-da="AI-citering og strukturerede data (schema.org)" data-en="AI citation optimization and structured data (schema.org)">AI-citering og strukturerede data (schema.org)</li>
+                    </ul>
+                </div>
+
+                <!-- SEO & AI Citation Scope -->
+                <div class="seo-scope-card">
+                    <div class="seo-scope-header">
+                        <span class="seo-icon">🔍</span>
+                        <h4 data-da="SEO & AI-synlighed" data-en="SEO & AI Visibility">SEO & AI-synlighed</h4>
+                    </div>
+                    <p class="seo-intro" data-da="Vi sørger for at Hattemanden bliver fundet — både af Google og moderne AI-assistenter som ChatGPT og Claude." data-en="We ensure Hattemanden gets found — both by Google and modern AI assistants like ChatGPT and Claude.">Vi sørger for at Hattemanden bliver fundet — både af Google og moderne AI-assistenter som ChatGPT og Claude.</p>
+                    <ul class="seo-scope-list">
+                        <li>
+                            <strong data-da="Søgeordsanalyse" data-en="Keyword Research">Søgeordsanalyse</strong>
+                            <span data-da="Identificering af de søgeord danskere bruger når de leder efter hatte (herrehatte, fedora, kasket, bowler hat, etc.)" data-en="Identifying the keywords Danes use when looking for hats (men's hats, fedora, flat cap, bowler hat, etc.)">Identificering af de søgeord danskere bruger når de leder efter hatte (herrehatte, fedora, kasket, bowler hat, etc.)</span>
+                        </li>
+                        <li>
+                            <strong data-da="Teknisk SEO" data-en="Technical SEO">Teknisk SEO</strong>
+                            <span data-da="Meta-beskrivelser, title tags, sitemap, robots.txt, canonical URLs, og Core Web Vitals optimering" data-en="Meta descriptions, title tags, sitemap, robots.txt, canonical URLs, and Core Web Vitals optimization">Meta-beskrivelser, title tags, sitemap, robots.txt, canonical URLs, og Core Web Vitals optimering</span>
+                        </li>
+                        <li>
+                            <strong data-da="Lokal SEO" data-en="Local SEO">Lokal SEO</strong>
+                            <span data-da="Google Business-profil optimering, LocalBusiness schema, NAP-konsistens (Navn, Adresse, Telefon)" data-en="Google Business profile optimization, LocalBusiness schema, NAP consistency (Name, Address, Phone)">Google Business-profil optimering, LocalBusiness schema, NAP-konsistens (Navn, Adresse, Telefon)</span>
+                        </li>
+                        <li>
+                            <strong data-da="AI-synlighed" data-en="AI Visibility">AI-synlighed</strong>
+                            <span data-da="Strukturerede data (schema.org) så AI-assistenter kan citere Hattemanden som kilde. FAQ-schema, Product-schema, og Organization-schema" data-en="Structured data (schema.org) so AI assistants can cite Hattemanden as a source. FAQ schema, Product schema, and Organization schema">Strukturerede data (schema.org) så AI-assistenter kan citere Hattemanden som kilde. FAQ-schema, Product-schema, og Organization-schema</span>
+                        </li>
+                        <li>
+                            <strong data-da="Validering" data-en="Validation">Validering</strong>
+                            <span data-da="Alle SEO-optimeringer valideres med Lighthouse, Google Search Console, og schema-validatorer før lancering" data-en="All SEO optimizations validated with Lighthouse, Google Search Console, and schema validators before launch">Alle SEO-optimeringer valideres med Lighthouse, Google Search Console, og schema-validatorer før lancering</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="monthly-pricing-card">
+                    <div class="monthly-header">
+                        <span class="monthly-label" data-da="Månedlig drift og vedligeholdelse" data-en="Monthly operation and maintenance">Månedlig drift og vedligeholdelse</span>
+                        <span class="monthly-amount" data-da="1.999 DKK / måned" data-en="1,999 DKK / month">1.999 DKK / måned</span>
+                    </div>
+                    <ul class="monthly-includes">
+                        <li data-da="2-4 blogindlæg pr. måned (SEO-optimeret, dansk)" data-en="2-4 blog posts per month (SEO-optimized, Danish)">2-4 blogindlæg pr. måned (SEO-optimeret, dansk)</li>
+                        <li data-da="Nyhedsbrev-drift og indhold" data-en="Newsletter operation and content">Nyhedsbrev-drift og indhold</li>
+                        <li data-da="Plugin- og sikkerhedsopdateringer" data-en="Plugin and security updates">Plugin- og sikkerhedsopdateringer</li>
+                        <li data-da="Hosting-overvågning og backup" data-en="Hosting monitoring and backup">Hosting-overvågning og backup</li>
+                        <li data-da="Mindre ændringer under 3 timers arbejde" data-en="Minor changes under 3 hours of work">Mindre ændringer under 3 timers arbejde</li>
+                        <li data-da="Månedlig omsætningsrapport via dashboard" data-en="Monthly revenue report via dashboard">Månedlig omsætningsrapport via dashboard</li>
+                        <li data-da="Rådgivning og support" data-en="Advice and support">Rådgivning og support</li>
+                    </ul>
+                </div>
+
+                <div class="roi-perspective">
+                    <span class="roi-icon">📈</span>
+                    <p><strong data-da="Til perspektiv:" data-en="For perspective:">Til perspektiv:</strong> <span data-da="Hattemanden omsatte for 94.412 DKK online i 2019 — uden nogen optimering. Med den nye side, SEO-indhold, og automatisering er målet at nå dertil igen og videre. En enkelt Chapeau Clarque-ordre (4.650 DKK) dækker mere end 2 måneders drift." data-en="Hattemanden had 94,412 DKK in online revenue in 2019 — with zero optimization. With the new site, SEO content, and automation, the goal is to get back there and beyond. A single Chapeau Clarque order (4,650 DKK) covers more than 2 months of operation.">Hattemanden omsatte for 94.412 DKK online i 2019 — uden nogen optimering. Med den nye side, SEO-indhold, og automatisering er målet at nå dertil igen og videre. En enkelt Chapeau Clarque-ordre (4.650 DKK) dækker mere end 2 måneders drift.</span></p>
+                </div>
+                </div>
+            </div>
+
+            <!-- SECTION 9: Next Steps -->
+            <div class="card proposal-section next-steps-v2 collapsible-card">
+                <div class="card-header collapsible-header" onclick="toggleCollapsible(this)">
+                    <h2 data-da="Næste skridt — hvad skal du gøre?" data-en="Next steps — what do you need to do?">Næste skridt — hvad skal du gøre?</h2>
+                    <span class="collapse-icon">▶</span>
+                </div>
+                <div class="collapsible-content" style="display: none;">
+
+                <div class="action-cards">
+                    <div class="action-card" onclick="switchToTab('review')">
+                        <div class="action-number">1</div>
+                        <div class="action-content">
+                            <h4 data-da="Gennemgå dine produkter" data-en="Review your products">Gennemgå dine produkter</h4>
+                            <p data-da="Gå til fanen 'Produktgennemgang' og markér hvilke produkter der skal med på den nye side. Vi har allerede markeret tøj og kjoler til fjernelse." data-en="Go to the 'Product Review' tab and mark which products should be on the new site. We've already marked clothing and dresses for removal.">Gå til fanen 'Produktgennemgang' og markér hvilke produkter der skal med på den nye side. Vi har allerede markeret tøj og kjoler til fjernelse.</p>
+                        </div>
+                        <div class="action-arrow">→</div>
+                    </div>
+
+                    <div class="action-card" onclick="switchToTab('questions')">
+                        <div class="action-number">2</div>
+                        <div class="action-content">
+                            <h4 data-da="Besvar spørgsmålene" data-en="Answer the questions">Besvar spørgsmålene</h4>
+                            <p data-da="Under fanen 'Spørgsmål' er der 15 spørgsmål vi har brug for svar på. Tag dem i dit eget tempo — de fleste kræver kun 1-2 sætninger." data-en="Under the 'Questions' tab there are 15 questions we need answers to. Take them at your own pace — most require only 1-2 sentences.">Under fanen 'Spørgsmål' er der 15 spørgsmål vi har brug for svar på. Tag dem i dit eget tempo — de fleste kræver kun 1-2 sætninger.</p>
+                        </div>
+                        <div class="action-arrow">→</div>
+                    </div>
+
+                    <div class="action-card no-click">
+                        <div class="action-number">3</div>
+                        <div class="action-content">
+                            <h4 data-da="Godkend og betal forudbetaling" data-en="Approve and pay deposit">Godkend og betal forudbetaling</h4>
+                            <p data-da="Når du er klar, sender vi en faktura på 7.999 DKK (40%) og går i gang med design. Du betaler de resterende 12.000 DKK når siden er klar." data-en="When you're ready, we'll send an invoice for 7,999 DKK (40%) and start the design. You pay the remaining 12,000 DKK when the site is ready.">Når du er klar, sender vi en faktura på 7.999 DKK (40%) og går i gang med design. Du betaler de resterende 12.000 DKK når siden er klar.</p>
+                            <div class="payment-methods" style="margin-top: 1rem; padding: 0.75rem; background: rgba(255,255,255,0.05); border-radius: 6px;">
+                                <p style="margin: 0 0 0.5rem 0; font-weight: 500;" data-da="Betal via:" data-en="Pay via:">Betal via:</p>
+                                <ul style="margin: 0; padding-left: 1.25rem; color: var(--text-secondary);">
+                                    <li data-da="Faktura (8 dages betalingsfrist)" data-en="Invoice (8 days payment term)">Faktura (8 dages betalingsfrist)</li>
+                                    <li data-da="MobilePay: +45 61 71 2425" data-en="MobilePay: +45 61 71 2425">MobilePay: +45 61 71 2425</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="closing-card">
+                    <p data-da="Du er velkommen til at ringe eller skrive hvis du har spørgsmål. Vi glæder os til at bygge den nye hattemanden.dk sammen med dig." data-en="Feel free to call or write if you have questions. We look forward to building the new hattemanden.dk with you.">Du er velkommen til at ringe eller skrive hvis du har spørgsmål. Vi glæder os til at bygge den nye hattemanden.dk sammen med dig.</p>
+                    <div class="closing-signature">
+                        <strong>Daniel Dulwich</strong><br>
+                        daniel@build444.com
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- SECTION 10: Audit Summary (Collapsed) -->
+            <div class="card proposal-section collapsible-card">
+                <div class="card-header collapsible-header" onclick="toggleCollapsible(this)">
+                    <h2 data-da="Teknisk Audit — Resumé" data-en="Technical Audit — Summary">Teknisk Audit — Resumé</h2>
+                    <span class="collapse-icon">▶</span>
+                </div>
+                <div class="collapsible-content" style="display: none;">
+                    <!-- Score Cards -->
+                    <div class="audit-scores-row">
+                        <div class="audit-score-card">
+                            <div class="audit-score">62</div>
+                            <div class="audit-score-max">/100</div>
+                            <div class="audit-score-label" data-da="Samlet score" data-en="Overall score">Samlet score</div>
+                        </div>
+                        <div class="audit-score-card">
+                            <div class="audit-score">60</div>
+                            <div class="audit-score-max">/100</div>
+                            <div class="audit-score-label" data-da="Teknisk SEO" data-en="Technical SEO">Teknisk SEO</div>
+                        </div>
+                        <div class="audit-score-card">
+                            <div class="audit-score">50</div>
+                            <div class="audit-score-max">/100</div>
+                            <div class="audit-score-label" data-da="Ydelse" data-en="Performance">Ydelse</div>
+                        </div>
+                        <div class="audit-score-card">
+                            <div class="audit-score">50</div>
+                            <div class="audit-score-max">/100</div>
+                            <div class="audit-score-label" data-da="Sikkerhed" data-en="Security">Sikkerhed</div>
+                        </div>
+                    </div>
+
+                    <!-- Key Findings -->
+                    <div class="audit-findings">
+                        <div class="finding-card finding-positive">
+                            <span class="finding-icon">✓</span>
+                            <p data-da="Ingen custom kode — standardopsætning der nemt kan migreres. Alle 158 produkter, 643 ordrer og 282 billeder kan eksporteres direkte." data-en="No custom code — standard setup that can easily be migrated. All 158 products, 643 orders, and 282 images can be exported directly.">Ingen custom kode — standardopsætning der nemt kan migreres. Alle 158 produkter, 643 ordrer og 282 billeder kan eksporteres direkte.</p>
+                        </div>
+                        <div class="finding-card finding-critical">
+                            <span class="finding-icon">⚠️</span>
+                            <p data-da="Alle sikkerhedsheaders mangler. 75 JavaScript-filer blokerer indlæsning. Serversvarstid er 3,7x langsommere end anbefalingen." data-en="All security headers are missing. 75 JavaScript files block loading. Server response time is 3.7x slower than recommended.">Alle sikkerhedsheaders mangler. 75 JavaScript-filer blokerer indlæsning. Serversvarstid er 3,7x langsommere end anbefalingen.</p>
+                        </div>
+                        <div class="finding-card finding-warning">
+                            <span class="finding-icon">⚠️</span>
+                            <p data-da="Avada-temaets Fusion Builder gemmer indhold i proprietært format. Sidelayouts skal genopbygges fra bunden — men det er allerede planen." data-en="Avada theme's Fusion Builder stores content in proprietary format. Page layouts need to be rebuilt from scratch — but that's already the plan.">Avada-temaets Fusion Builder gemmer indhold i proprietært format. Sidelayouts skal genopbygges fra bunden — men det er allerede planen.</p>
+                        </div>
+                        <div class="finding-card finding-info">
+                            <span class="finding-icon">ℹ️</span>
+                            <p data-da="Ingen Google Analytics, Facebook Pixel, eller email marketing installeret. Den nye side får det hele fra dag ét." data-en="No Google Analytics, Facebook Pixel, or email marketing installed. The new site gets all of it from day one.">Ingen Google Analytics, Facebook Pixel, eller email marketing installeret. Den nye side får det hele fra dag ét.</p>
+                        </div>
+                    </div>
+
+                    <p class="audit-link-note" data-da="Se den fulde tekniske audit under fanen" data-en="See the full technical audit under the tab">Se den fulde tekniske audit under fanen <strong onclick="switchToTab('audit')" style="cursor:pointer; color: var(--primary);">Audit</strong></p>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="proposal-footer">
+                <div class="proposal-footer-content">
+                    <p data-da="Dette tilbud er gyldigt i 30 dage fra modtagelse." data-en="This proposal is valid for 30 days from receipt.">Dette tilbud er gyldigt i 30 dage fra modtagelse.</p>
+                    <p>daniel@build444.com</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Overview Tab -->
+        <section id="overview" class="tab-content">
+            <!-- Overview Hero -->
+            <div class="page-hero">
+                <span class="page-hero-badge" data-da="LIVE DATA" data-en="LIVE DATA">LIVE DATA</span>
+                <h1 class="page-hero-title" data-da="Hattemandens Dashboard" data-en="Hattemanden Dashboard">Hattemandens Dashboard</h1>
+                <p class="page-hero-subtitle" data-da="Realtidsdata fra din WooCommerce-butik. Se ordrer, kunder og produkter direkte fra kilden." data-en="Real-time data from your WooCommerce store. See orders, customers, and products directly from the source.">Realtidsdata fra din WooCommerce-butik. Se ordrer, kunder og produkter direkte fra kilden.</p>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">DKK</div>
+                    <div class="metric-value" id="totalRevenue">-</div>
+                    <div class="metric-label" data-da="Total Omsætning" data-en="Total Revenue">Total Omsætning</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">#</div>
+                    <div class="metric-value" id="totalOrders">-</div>
+                    <div class="metric-label" data-da="Ordrer" data-en="Orders">Ordrer</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">U</div>
+                    <div class="metric-value" id="totalCustomers">-</div>
+                    <div class="metric-label" data-da="Kunder" data-en="Customers">Kunder</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">P</div>
+                    <div class="metric-value" id="totalProducts">-</div>
+                    <div class="metric-label" data-da="Produkter" data-en="Products">Produkter</div>
+                </div>
+            </div>
+
+            <!-- Channel Distribution - NEW -->
+            <div class="card">
+                <h2 data-da="Kanalfordeling (estimeret årlig omsætning)" data-en="Channel Distribution (estimated annual revenue)">Kanalfordeling (estimeret årlig omsætning)</h2>
+                <div id="channelDistributionChart" class="chart-container"></div>
+                <p class="insight-text" id="channelInsight"></p>
+            </div>
+
+            <div class="card">
+                <h2 data-da="Ordre Status Fordeling" data-en="Order Status Distribution">Ordre Status Fordeling</h2>
+                <div id="orderStatusChart" class="chart-container"></div>
+            </div>
+
+            <div class="card">
+                <h2 data-da="Seneste Ordrer" data-en="Recent Orders">Seneste Ordrer</h2>
+                <table class="data-table" id="recentOrdersTable">
+                    <thead>
+                        <tr>
+                            <th data-da="Ordre" data-en="Order">Ordre</th>
+                            <th data-da="Dato" data-en="Date">Dato</th>
+                            <th data-da="Kunde" data-en="Customer">Kunde</th>
+                            <th>Status</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Orders Tab -->
+        <section id="orders" class="tab-content">
+            <div class="filters">
+                <div class="filter-group">
+                    <label data-da="Fra dato:" data-en="From date:">Fra dato:</label>
+                    <input type="date" id="orderDateFrom">
+                </div>
+                <div class="filter-group">
+                    <label data-da="Til dato:" data-en="To date:">Til dato:</label>
+                    <input type="date" id="orderDateTo">
+                </div>
+                <div class="filter-group">
+                    <label>Status:</label>
+                    <select id="orderStatusFilter">
+                        <option value="" data-da="Alle" data-en="All">Alle</option>
+                        <option value="completed" data-da="Gennemført" data-en="Completed">Gennemført</option>
+                        <option value="processing" data-da="Behandles" data-en="Processing">Behandles</option>
+                        <option value="on-hold" data-da="Afventer" data-en="On hold">Afventer</option>
+                        <option value="pending" data-da="Afventer betaling" data-en="Pending payment">Afventer betaling</option>
+                        <option value="cancelled" data-da="Annulleret" data-en="Cancelled">Annulleret</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="loadOrders()" data-da="Filtrer" data-en="Filter">Filtrer</button>
+                <button class="btn btn-secondary" onclick="exportOrders()" data-da="Eksporter CSV" data-en="Export CSV">Eksporter CSV</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <h2 data-da="Ordrer" data-en="Orders">Ordrer</h2>
+                        <span id="ordersCount" class="count-badge">0</span>
+                    </div>
+                    <button class="refresh-btn" onclick="loadOrders()" title="Opdater ordreliste" data-da-title="Opdater ordreliste" data-en-title="Refresh order list">↻</button>
+                </div>
+                <table class="data-table" id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th class="sortable" data-sort="id" data-da="Ordre #" data-en="Order #">Ordre # <span class="sort-icon"></span></th>
+                            <th class="sortable" data-sort="date" data-da="Dato" data-en="Date">Dato <span class="sort-icon"></span></th>
+                            <th class="sortable" data-sort="customer" data-da="Kunde" data-en="Customer">Kunde <span class="sort-icon"></span></th>
+                            <th>Email</th>
+                            <th class="sortable" data-sort="status">Status <span class="sort-icon"></span></th>
+                            <th data-da="Betaling" data-en="Payment">Betaling</th>
+                            <th class="sortable" data-sort="total">Total <span class="sort-icon"></span></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div class="pagination" id="ordersPagination"></div>
+            </div>
+        </section>
+
+        <!-- Customers Tab -->
+        <section id="customers" class="tab-content">
+            <div class="filters">
+                <div class="filter-group" style="flex: 1;">
+                    <label data-da="Søg:" data-en="Search:">Søg:</label>
+                    <input type="text" id="customerSearch" placeholder="Navn eller email..." data-da-placeholder="Navn eller email..." data-en-placeholder="Name or email...">
+                </div>
+                <button class="btn" onclick="loadCustomers()" data-da="Søg" data-en="Search">Søg</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title-group">
+                        <h2 data-da="Kunder" data-en="Customers">Kunder</h2>
+                        <span id="customersCount" class="count-badge">0</span>
+                    </div>
+                    <button class="refresh-btn" onclick="loadCustomers()" title="Opdater kundeliste" data-da-title="Opdater kundeliste" data-en-title="Refresh customer list">↻</button>
+                </div>
+                <p class="card-hint" data-da="Klik på en kunde for at se deres ordrehistorik" data-en="Click on a customer to see their order history">Klik på en kunde for at se deres ordrehistorik</p>
+                <p class="card-explainer" data-da="Denne liste viser kun kunder der har oprettet en konto. De fleste køb sker som gæst uden kontooprettelse — disse kunder vises kun under Ordrer." data-en="This list shows only customers who created an account. Most purchases are made as guests without account creation — these customers only appear in Orders.">Denne liste viser kun kunder der har oprettet en konto. De fleste køb sker som gæst uden kontooprettelse — disse kunder vises kun under Ordrer.</p>
+                <table class="data-table" id="customersTable">
+                    <thead>
+                        <tr>
+                            <th class="sortable" data-sort="name" data-da="Navn" data-en="Name">Navn <span class="sort-icon"></span></th>
+                            <th class="sortable" data-sort="email">Email <span class="sort-icon"></span></th>
+                            <th class="sortable" data-sort="orders" data-da="Antal Ordrer" data-en="Order Count">Antal Ordrer <span class="sort-icon"></span></th>
+                            <th class="sortable" data-sort="total" data-da="Total Købt" data-en="Total Spent">Total Købt <span class="sort-icon"></span></th>
+                            <th class="sortable" data-sort="registered" data-da="Registreret" data-en="Registered">Registreret <span class="sort-icon"></span></th>
+                            <th class="sortable" data-sort="last_purchase" data-da="Sidst Købt" data-en="Last Purchase">Sidst Købt <span class="sort-icon"></span></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div class="pagination" id="customersPagination"></div>
+            </div>
+        </section>
+
+        <!-- Audit Tab -->
+        <section id="audit" class="tab-content">
+            <!-- Quick Reference Metrics -->
+            <div class="card">
+                <h2 data-da="Hurtig Reference" data-en="Quick Reference">Hurtig Reference</h2>
+                <div class="metrics-grid quick-reference" id="quickReferenceGrid"></div>
+            </div>
+
+            <!-- Platform and Scores -->
+            <div class="audit-grid">
+                <div class="card">
+                    <h2>Platform</h2>
+                    <div id="platformInfo" class="info-list"></div>
+                </div>
+
+                <div class="card">
+                    <h2>Scores</h2>
+                    <div class="scores-grid" id="scoresGrid"></div>
+                </div>
+            </div>
+
+            <!-- Sales Statistics -->
+            <div class="card">
+                <h2 data-da="Salgsstatistik" data-en="Sales Statistics">Salgsstatistik</h2>
+                <div class="sales-stats-grid" id="salesStatsGrid"></div>
+                <div class="revenue-chart" id="revenueByYearChart" style="margin-top: 1.5rem;"></div>
+            </div>
+
+            <!-- Top 10 Products -->
+            <div class="card">
+                <h2 data-da="Top 10 Produkter (efter omsætning)" data-en="Top 10 Products (by revenue)">Top 10 Produkter (efter omsætning)</h2>
+                <table class="data-table" id="topProductsTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th data-da="Produkt" data-en="Product">Produkt</th>
+                            <th data-da="Omsætning" data-en="Revenue">Omsætning</th>
+                            <th data-da="% af Total" data-en="% of Total">% af Total</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- What's Wrong - Problems Section -->
+            <div class="card problems-card">
+                <h2 data-da="Hvad er galt med den nuværende hjemmeside?" data-en="What's wrong with the current website?">Hvad er galt med den nuværende hjemmeside?</h2>
+                <p class="problems-intro" data-da="Disse problemer påvirker kundeoplevelsen, søgemaskineplacering og salg. Den nye hjemmeside løser dem alle." data-en="These issues affect customer experience, search engine ranking, and sales. The new website will fix all of them.">Disse problemer påvirker kundeoplevelsen, søgemaskineplacering og salg. Den nye hjemmeside løser dem alle.</p>
+                <div id="problemsList" class="problems-grid"></div>
+            </div>
+
+            <!-- Key Findings -->
+            <div class="audit-grid">
+                <div class="card">
+                    <h2 data-da="Positive Fund" data-en="Positive Findings">Positive Fund</h2>
+                    <div id="positiveFindings" class="findings-list"></div>
+                </div>
+
+                <div class="card">
+                    <h2 data-da="Tekniske Opdagelser" data-en="Technical Findings">Tekniske Opdagelser</h2>
+                    <div id="technicalFindings" class="findings-list"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Plugins (11)</h2>
+                <table class="data-table" id="pluginsTable">
+                    <thead>
+                        <tr>
+                            <th>Plugin</th>
+                            <th>Version</th>
+                            <th data-da="Forfatter" data-en="Author">Forfatter</th>
+                            <th data-da="Klassifikation" data-en="Classification">Klassifikation</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2 data-da="Anbefalinger" data-en="Recommendations">Anbefalinger</h2>
+                <div id="recommendations" class="recommendations-list"></div>
+            </div>
+
+            <div class="card migration-status">
+                <h2 data-da="Migrerings Status" data-en="Migration Status">Migrerings Status</h2>
+                <div class="status-badge success" id="migrationStatus" data-da="Klar - Ingen brugerdefineret kode fundet" data-en="Ready - No custom code found">
+                    Klar - Ingen brugerdefineret kode fundet
+                </div>
+                <div id="migrationDetails" class="migration-details" style="margin-top: 1rem;"></div>
+            </div>
+        </section>
+
+        <!-- TAB 6: Product Review (Produktgennemgang) -->
+        <section id="review" class="tab-content">
+            <!-- Product Review Hero -->
+            <div class="page-hero">
+                <span class="page-hero-badge" data-da="DIN OPGAVE" data-en="YOUR TASK">DIN OPGAVE</span>
+                <h1 class="page-hero-title" data-da="Gennemga Dine Produkter" data-en="Review Your Products">Gennemga Dine Produkter</h1>
+                <p class="page-hero-subtitle" data-da="Vaelg hvilke produkter der skal med til den nye hjemmeside. Vi anbefaler at fokusere pa hatte og kasketter - dit kernesortiment." data-en="Choose which products should be on the new website. We recommend focusing on hats and caps - your core assortment.">Vaelg hvilke produkter der skal med til den nye hjemmeside. Vi anbefaler at fokusere pa hatte og kasketter - dit kernesortiment.</p>
+                <span class="page-hero-accent" data-da="Gennemgang tager ca. 10-15 minutter" data-en="Review takes approx. 10-15 minutes">Gennemgang tager ca. 10-15 minutter</span>
+            </div>
+
+            <!-- Instruction Card -->
+            <div class="card instruction-card">
+                <p data-da="&lt;strong&gt;Kim&lt;/strong&gt; — gennemgå venligst produkterne og markér om de skal være på den nye hjemmeside. Vi fokuserer kun på dame- og herrehatte. Produkter uden salg er fremhævet med rød. Tøj og tilbehør er markeret til fjernelse, men tjek venligst Festtøj-produkterne — nogle har god omsætning." data-en="&lt;strong&gt;Kim&lt;/strong&gt; — please review the products and mark whether they should be on the new website. We focus only on women's and men's hats. Products without sales are highlighted in red. Clothing and accessories are marked for removal, but please check the Party Clothing products — some have good revenue."><strong>Kim</strong> — gennemgå venligst produkterne og markér om de skal være på den nye hjemmeside. Vi fokuserer kun på dame- og herrehatte. Produkter uden salg er fremhævet med rød. Tøj og tilbehør er markeret til fjernelse, men tjek venligst Festtøj-produkterne — nogle har god omsætning.</p>
+            </div>
+
+            <!-- Recommendations Card (Collapsible) -->
+            <div class="card collapsible-card">
+                <div class="card-header collapsible-header" onclick="toggleCollapsible(this)">
+                    <h2 data-da="Anbefalinger" data-en="Recommendations">Anbefalinger</h2>
+                    <span class="collapse-icon">▶</span>
+                </div>
+                <div class="collapsible-content" id="reviewRecommendations" style="display: none;">
+                    <ul class="recommendation-list">
+                        <li class="rec-item rec-positive" data-da="&lt;strong&gt;Chapeau Clarque&lt;/strong&gt; bør flyttes til Herrehatte (topprodukt: 62.440 DKK)" data-en="&lt;strong&gt;Chapeau Clarque&lt;/strong&gt; should be moved to Men's Hats (top product: 62,440 DKK)">
+                            <strong>Chapeau Clarque</strong> bør flyttes til Herrehatte (topprodukt: 62.440 DKK)
+                        </li>
+                        <li class="rec-item rec-warning" data-da="13 kjoler og hawaiskjorter anbefales fjernet (0-143 DKK salg)" data-en="13 dresses and Hawaiian shirts recommended for removal (0-143 DKK sales)">
+                            13 kjoler og hawaiskjorter anbefales fjernet (0-143 DKK salg)
+                        </li>
+                        <li class="rec-item rec-warning" data-da="46 produkter har aldrig solgt — overvej fjernelse" data-en="46 products have never sold — consider removal">
+                            46 produkter har aldrig solgt — overvej fjernelse
+                        </li>
+                        <li class="rec-item rec-info" data-da="7 Festtøj-produkter kræver individuel vurdering (samlet omsætning: 72.746 DKK)" data-en="7 Party Clothing products require individual assessment (total revenue: 72,746 DKK)">
+                            7 Festtøj-produkter kræver individuel vurdering (samlet omsætning: 72.746 DKK)
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Summary Bar (Sticky) -->
+            <div class="summary-bar" id="reviewSummaryBar">
+                <div class="summary-counts">
+                    <span><strong id="reviewTotal">0</strong> <span data-da="produkter gennemgået" data-en="products reviewed">produkter gennemgået</span></span>
+                    <span class="summary-divider">|</span>
+                    <span class="summary-keep"><strong id="reviewKeep">0</strong> <span data-da="beholdes" data-en="keep">beholdes</span></span>
+                    <span class="summary-divider">|</span>
+                    <span class="summary-remove"><strong id="reviewRemove">0</strong> <span data-da="fjernes" data-en="remove">fjernes</span></span>
+                    <span class="summary-divider">|</span>
+                    <span class="summary-undecided"><strong id="reviewUndecided">0</strong> <span data-da="uafklarede" data-en="undecided">uafklarede</span></span>
+                </div>
+                <div class="summary-revenue">
+                    <span><span data-da="Behold:" data-en="Keep:">Behold:</span> <strong id="reviewKeepRevenue">0</strong> DKK</span>
+                    <span class="summary-divider">|</span>
+                    <span><span data-da="Fjern:" data-en="Remove:">Fjern:</span> <strong id="reviewRemoveRevenue">0</strong> DKK</span>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters">
+                <div class="filter-group">
+                    <label data-da="Kategori:" data-en="Category:">Kategori:</label>
+                    <select id="reviewCategoryFilter">
+                        <option value="" data-da="Alle" data-en="All">Alle</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label data-da="Beslutning:" data-en="Decision:">Beslutning:</label>
+                    <select id="reviewDecisionFilter">
+                        <option value="" data-da="Alle" data-en="All">Alle</option>
+                        <option value="keep" data-da="Behold" data-en="Keep">Behold</option>
+                        <option value="remove" data-da="Fjern" data-en="Remove">Fjern</option>
+                        <option value="undecided" data-da="Uafklaret" data-en="Undecided">Uafklaret</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label data-da="Salg:" data-en="Sales:">Salg:</label>
+                    <select id="reviewSalesFilter">
+                        <option value="" data-da="Alle" data-en="All">Alle</option>
+                        <option value="has-sales" data-da="Har salg" data-en="Has sales">Har salg</option>
+                        <option value="no-sales" data-da="Ingen salg" data-en="No sales">Ingen salg</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label data-da="Sorter:" data-en="Sort:">Sorter:</label>
+                    <select id="reviewSortBy">
+                        <option value="revenue-desc" data-da="Omsætning (højest)" data-en="Revenue (highest)">Omsætning (højest)</option>
+                        <option value="units-desc" data-da="Solgte enheder (højest)" data-en="Units sold (highest)">Solgte enheder (højest)</option>
+                        <option value="name-asc" data-da="Navn (A-Z)" data-en="Name (A-Z)">Navn (A-Z)</option>
+                        <option value="price-desc" data-da="Pris (højest)" data-en="Price (highest)">Pris (højest)</option>
+                        <option value="last-sold" data-da="Sidst solgt" data-en="Last sold">Sidst solgt</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="filterReviewProducts()" data-da="Filtrer" data-en="Filter">Filtrer</button>
+                <button class="btn btn-secondary" onclick="exportDecisions()" data-da="Download beslutninger (CSV)" data-en="Download decisions (CSV)">Download beslutninger (CSV)</button>
+            </div>
+
+            <!-- Product Table -->
+            <div class="card">
+                <table class="data-table review-table" id="reviewTable">
+                    <thead>
+                        <tr>
+                            <th data-da="Billede" data-en="Image">Billede</th>
+                            <th class="sortable" data-sort="name" data-da="Produkt" data-en="Product">Produkt <span class="sort-icon"></span></th>
+                            <th data-da="Kategori" data-en="Category">Kategori</th>
+                            <th class="sortable" data-sort="price" data-da="Pris" data-en="Price">Pris <span class="sort-icon"></span></th>
+                            <th class="sortable" data-sort="units" data-da="Solgt" data-en="Sold">Solgt <span class="sort-icon"></span></th>
+                            <th class="sortable" data-sort="revenue" data-da="Omsætning" data-en="Revenue">Omsætning <span class="sort-icon"></span></th>
+                            <th class="sortable" data-sort="last-sold" data-da="Sidst solgt" data-en="Last sold">Sidst solgt <span class="sort-icon"></span></th>
+                            <th>Tags</th>
+                            <th data-da="Beslutning" data-en="Decision">Beslutning</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reviewTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- TAB 7: Questions (Sporgsmaal) -->
+        <section id="questions" class="tab-content">
+            <!-- Questions Hero -->
+            <div class="page-hero">
+                <span class="page-hero-badge" data-da="3 SPØRGSMÅL" data-en="3 QUESTIONS">3 SPØRGSMÅL</span>
+                <h1 class="page-hero-title" data-da="Kun 3 Spørgsmål Tilbage" data-en="Only 3 Questions Remaining">Kun 3 Spørgsmål Tilbage</h1>
+                <p class="page-hero-subtitle" data-da="Vi har fundet svar på de fleste spørgsmål gennem research. Disse 3 kritiske spørgsmål er alt vi mangler for at færdiggøre forslaget." data-en="We found answers to most questions through research. These 3 critical questions are all we need to finalize the proposal.">Vi har fundet svar på de fleste spørgsmål gennem research. Disse 3 kritiske spørgsmål er alt vi mangler for at færdiggøre forslaget.</p>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="card">
+                <div class="questions-progress">
+                    <div class="progress-text">
+                        <span id="questionsAnswered">0</span> <span data-da="af" data-en="of">af</span> <span id="questionsTotal">3</span> <span data-da="spørgsmål besvaret" data-en="questions answered">spørgsmål besvaret</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="questionsProgressBar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questions Container -->
+            <div id="questionsContainer"></div>
+        </section>
+
+        <!-- TAB 8: Project Status (Projekt) -->
+        <section id="project" class="tab-content">
+            <!-- Phase Stepper -->
+            <div class="card phase-stepper-card">
+                <div class="phase-stepper">
+                    <div class="phase-step completed" data-phase="analyse">
+                        <div class="phase-icon">&#10003;</div>
+                        <div class="phase-label" data-da="Analyse" data-en="Analysis">Analyse</div>
+                    </div>
+                    <div class="phase-connector completed"></div>
+                    <div class="phase-step current" data-phase="design">
+                        <div class="phase-icon">&#9679;</div>
+                        <div class="phase-label">Design</div>
+                    </div>
+                    <div class="phase-connector"></div>
+                    <div class="phase-step" data-phase="udvikling">
+                        <div class="phase-icon">&#9675;</div>
+                        <div class="phase-label" data-da="Udvikling" data-en="Development">Udvikling</div>
+                    </div>
+                    <div class="phase-connector"></div>
+                    <div class="phase-step" data-phase="test">
+                        <div class="phase-icon">&#9675;</div>
+                        <div class="phase-label">Test</div>
+                    </div>
+                    <div class="phase-connector"></div>
+                    <div class="phase-step" data-phase="lancering">
+                        <div class="phase-icon">&#9675;</div>
+                        <div class="phase-label" data-da="Lancering" data-en="Launch">Lancering</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment & Services Grid -->
+            <div class="project-grid">
+                <!-- Payment Status -->
+                <div class="card">
+                    <h2 data-da="Betalingsplan" data-en="Payment Plan">Betalingsplan</h2>
+                    <p class="card-subtitle" data-da="40% ved projektstart / 60% ved aflevering" data-en="40% at project start / 60% at delivery">40% ved projektstart / 60% ved aflevering</p>
+                    <div class="payment-rows">
+                        <div class="payment-row">
+                            <span class="payment-label" data-da="Forudbetaling (40%)" data-en="Deposit (40%)">Forudbetaling (40%)</span>
+                            <span class="payment-amount">7.999 DKK</span>
+                            <span class="payment-status pending" data-da="Afventer" data-en="Pending">Afventer</span>
+                        </div>
+                        <div class="payment-row">
+                            <span class="payment-label" data-da="Slutbetaling (60%)" data-en="Final payment (60%)">Slutbetaling (60%)</span>
+                            <span class="payment-amount">12.000 DKK</span>
+                            <span class="payment-status pending" data-da="Afventer" data-en="Pending">Afventer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monthly Services -->
+                <div class="card">
+                    <h2 data-da="Månedlige Services" data-en="Monthly Services">Månedlige Services</h2>
+                    <p class="card-subtitle" data-da="Efter lancering: 1.999 DKK/md." data-en="After launch: 1,999 DKK/month">Efter lancering: 1.999 DKK/md.</p>
+                    <ul class="services-list">
+                        <li data-da="SEO blogindlæg (2-4/måned)" data-en="SEO blog posts (2-4/month)">SEO blogindlæg (2-4/måned)</li>
+                        <li data-da="Nyhedsbrev opsætning og drift" data-en="Newsletter setup and operation">Nyhedsbrev opsætning og drift</li>
+                        <li data-da="Plugin- og sikkerhedsopdateringer" data-en="Plugin and security updates">Plugin- og sikkerhedsopdateringer</li>
+                        <li data-da="Hosting overvågning" data-en="Hosting monitoring">Hosting overvågning</li>
+                        <li data-da="Mindre sideændringer" data-en="Minor page changes">Mindre sideændringer</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Key Milestones -->
+            <div class="card">
+                <h2 data-da="Milepæle" data-en="Milestones">Milepæle</h2>
+                <div class="milestones-list" id="milestonesList">
+                    <label class="milestone-item">
+                        <input type="checkbox" data-milestone="productReviewApproved">
+                        <span data-da="Produktgennemgang godkendt af Kim" data-en="Product review approved by Kim">Produktgennemgang godkendt af Kim</span>
+                    </label>
+                    <label class="milestone-item">
+                        <input type="checkbox" data-milestone="designMockupApproved">
+                        <span data-da="Designmockup godkendt" data-en="Design mockup approved">Designmockup godkendt</span>
+                    </label>
+                    <label class="milestone-item">
+                        <input type="checkbox" data-milestone="brandedEmailSetup">
+                        <span data-da="Branded email opsat (info@hattemanden.dk)" data-en="Branded email setup (info@hattemanden.dk)">Branded email opsat (info@hattemanden.dk)</span>
+                    </label>
+                    <label class="milestone-item">
+                        <input type="checkbox" data-milestone="contentWritten">
+                        <span data-da="Indhold skrevet (produktbeskrivelser, Om os, guides)" data-en="Content written (product descriptions, About us, guides)">Indhold skrevet (produktbeskrivelser, Om os, guides)</span>
+                    </label>
+                    <label class="milestone-item">
+                        <input type="checkbox" data-milestone="siteBuiltAndTested">
+                        <span data-da="Site bygget og testet" data-en="Site built and tested">Site bygget og testet</span>
+                    </label>
+                    <label class="milestone-item">
+                        <input type="checkbox" data-milestone="paymentShippingConfigured">
+                        <span data-da="Betaling og fragt konfigureret" data-en="Payment and shipping configured">Betaling og fragt konfigureret</span>
+                    </label>
+                    <label class="milestone-item">
+                        <input type="checkbox" data-milestone="launched">
+                        <span data-da="Lancering" data-en="Launch">Lancering</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Progress Log -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 data-da="Fremdriftslog" data-en="Progress Log">Fremdriftslog</h2>
+                    <button class="btn btn-small btn-secondary" id="toggleAddEntry" onclick="toggleAddEntryForm()">
+                        + <span data-da="Tilføj (Admin)" data-en="Add (Admin)">Tilføj (Admin)</span>
+                    </button>
+                </div>
+
+                <!-- Add Entry Form (Hidden by default) -->
+                <div class="add-entry-form" id="addEntryForm" style="display: none;">
+                    <div class="form-row">
+                        <div class="filter-group">
+                            <label data-da="Dato:" data-en="Date:">Dato:</label>
+                            <input type="date" id="entryDate">
+                        </div>
+                        <div class="filter-group">
+                            <label data-da="Kategori:" data-en="Category:">Kategori:</label>
+                            <select id="entryCategory">
+                                <option value="analyse" data-da="Analyse" data-en="Analysis">Analyse</option>
+                                <option value="design">Design</option>
+                                <option value="udvikling" data-da="Udvikling" data-en="Development">Udvikling</option>
+                                <option value="indhold" data-da="Indhold" data-en="Content">Indhold</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="filter-group" style="width: 100%;">
+                        <label data-da="Beskrivelse:" data-en="Description:">Beskrivelse:</label>
+                        <textarea id="entryText" rows="2" placeholder="Hvad blev gjort..." data-da-placeholder="Hvad blev gjort..." data-en-placeholder="What was done..."></textarea>
+                    </div>
+                    <button class="btn" onclick="addProgressEntry()" data-da="Gem" data-en="Save">Gem</button>
+                </div>
+
+                <!-- Log Entries -->
+                <div class="progress-log" id="progressLog"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Order Detail Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('orderModal')">&times;</span>
+            <div id="orderModalContent"></div>
+        </div>
+    </div>
+
+    <!-- Customer Detail Modal -->
+    <div id="customerModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('customerModal')">&times;</span>
+            <div id="customerModalContent"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

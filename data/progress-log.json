@@ -1,0 +1,17 @@
+{
+  "entries": [
+    { "date": "2026-02-03", "category": "analyse", "text": "Teknisk audit afsluttet (v1.0). Alle data gennemgået og præsenteret." },
+    { "date": "2026-02-03", "category": "admin", "text": "Møde med Kim. Designretning aftalt: klassisk, vintage, Peaky Blinders-æstetik. Kun hatte." },
+    { "date": "2026-02-03", "category": "analyse", "text": "Produktoversigt udtrukket. 158 produkter, 111 med salg, 46 uden." },
+    { "date": "2026-02-03", "category": "analyse", "text": "Dashboard oprettet med direkte forbindelse til WooCommerce." }
+  ],
+  "milestones": {
+    "productReviewApproved": false,
+    "designMockupApproved": false,
+    "brandedEmailSetup": false,
+    "contentWritten": false,
+    "siteBuiltAndTested": false,
+    "paymentShippingConfigured": false,
+    "launched": false
+  }
+}
