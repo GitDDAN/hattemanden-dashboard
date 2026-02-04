@@ -1329,6 +1329,26 @@
 
         <!-- Audit Tab -->
         <section id="audit" class="tab-content">
+            <!-- Current Website Screenshots -->
+            <div class="card">
+                <h2 data-da="Nuværende Hjemmeside (Før Redesign)" data-en="Current Website (Before Redesign)">Nuværende Hjemmeside (Før Redesign)</h2>
+                <p class="section-intro" data-da="Screenshots taget februar 2026 til dokumentation af udgangspunktet." data-en="Screenshots taken February 2026 to document the starting point.">Screenshots taget februar 2026 til dokumentation af udgangspunktet.</p>
+                <div class="screenshots-grid">
+                    <div class="screenshot-item">
+                        <h3 data-da="Desktop Version" data-en="Desktop Version">Desktop Version</h3>
+                        <div class="screenshot-container">
+                            <img src="/api/audit-screenshot/desktop" alt="Hattemanden.dk Desktop Homepage" class="screenshot-img" onerror="this.parentElement.innerHTML='<p class=\'screenshot-error\'>Screenshot ikke tilgængelig</p>'">
+                        </div>
+                    </div>
+                    <div class="screenshot-item">
+                        <h3 data-da="Mobil Version" data-en="Mobile Version">Mobil Version</h3>
+                        <div class="screenshot-container screenshot-mobile">
+                            <img src="/api/audit-screenshot/mobile" alt="Hattemanden.dk Mobile Homepage" class="screenshot-img" onerror="this.parentElement.innerHTML='<p class=\'screenshot-error\'>Screenshot ikke tilgængelig</p>'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Quick Reference Metrics -->
             <div class="card">
                 <h2 data-da="Hurtig Reference" data-en="Quick Reference">Hurtig Reference</h2>
@@ -1537,28 +1557,30 @@
             </div>
         </section>
 
-        <!-- TAB 7: Questions (Sporgsmaal) -->
+        <!-- TAB 7: Questions (Sporgsmaal) - Research Document -->
         <section id="questions" class="tab-content">
-            <!-- Questions Hero -->
+            <!-- Document Hero -->
             <div class="page-hero">
-                <span class="page-hero-badge" data-da="3 SPØRGSMÅL" data-en="3 QUESTIONS">3 SPØRGSMÅL</span>
-                <h1 class="page-hero-title" data-da="Kun 3 Spørgsmål Tilbage" data-en="Only 3 Questions Remaining">Kun 3 Spørgsmål Tilbage</h1>
-                <p class="page-hero-subtitle" data-da="Vi har fundet svar på de fleste spørgsmål gennem research. Disse 3 kritiske spørgsmål er alt vi mangler for at færdiggøre forslaget." data-en="We found answers to most questions through research. These 3 critical questions are all we need to finalize the proposal.">Vi har fundet svar på de fleste spørgsmål gennem research. Disse 3 kritiske spørgsmål er alt vi mangler for at færdiggøre forslaget.</p>
+                <span class="page-hero-badge" data-da="RESEARCH DOKUMENT" data-en="RESEARCH DOCUMENT">RESEARCH DOKUMENT</span>
+                <h1 class="page-hero-title" data-da="Spørgsmål & Svar" data-en="Questions & Answers">Spørgsmål & Svar</h1>
+                <p class="page-hero-subtitle" data-da="Dokumentation af vores research-arbejde. Vi har fundet svar på de fleste spørgsmål — kun 3 mangler dit input." data-en="Documentation of our research work. We found answers to most questions — only 3 need your input.">Dokumentation af vores research-arbejde. Vi har fundet svar på de fleste spørgsmål — kun 3 mangler dit input.</p>
             </div>
 
-            <!-- Progress Bar -->
-            <div class="card">
-                <div class="questions-progress">
-                    <div class="progress-text">
-                        <span id="questionsAnswered">0</span> <span data-da="af" data-en="of">af</span> <span id="questionsTotal">3</span> <span data-da="spørgsmål besvaret" data-en="questions answered">spørgsmål besvaret</span>
+            <!-- Summary Card -->
+            <div class="card research-summary-card">
+                <div class="research-summary">
+                    <div class="summary-stat">
+                        <span class="summary-number awaiting">3</span>
+                        <span class="summary-label" data-da="Afventer svar" data-en="Awaiting answers">Afventer svar</span>
                     </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-fill" id="questionsProgressBar" style="width: 0%"></div>
+                    <div class="summary-stat">
+                        <span class="summary-number answered">12</span>
+                        <span class="summary-label" data-da="Besvaret via research" data-en="Answered via research">Besvaret via research</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Questions Container -->
+            <!-- Questions Document Container -->
             <div id="questionsContainer"></div>
         </section>
 

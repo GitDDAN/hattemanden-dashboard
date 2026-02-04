@@ -97,6 +97,45 @@ app.post('/api/auth/login', (req, res) => {
 });
 
 // ============================================
+// AUDIT SCREENSHOT ENDPOINTS
+// ============================================
+
+// Serve audit screenshots (desktop/mobile of current website)
+app.get('/api/audit-screenshot/:type', (req, res) => {
+    const { type } = req.params;
+
+    // Map type to filename
+    const fileMap = {
+        'desktop': 'hattemanden-desktop-homepage.png',
+        'mobile': 'hattemanden-mobile-homepage.png'
+    };
+
+    const filename = fileMap[type];
+    if (!filename) {
+        return res.status(400).json({ error: 'Invalid screenshot type. Use "desktop" or "mobile".' });
+    }
+
+    // Try multiple possible locations
+    const possiblePaths = [
+        // Local development: relative to dashboard folder
+        path.join(__dirname, '..', 'audit', 'screenshots', filename),
+        // Dashboard public folder (for deployment)
+        path.join(__dirname, 'public', 'audit-screenshots', filename),
+        // Fallback: screenshots in public folder
+        path.join(__dirname, 'public', 'screenshots', filename)
+    ];
+
+    for (const filePath of possiblePaths) {
+        if (fs.existsSync(filePath)) {
+            return res.sendFile(filePath);
+        }
+    }
+
+    // If no file found, return 404
+    res.status(404).json({ error: 'Screenshot not found' });
+});
+
+// ============================================
 // PRODUCT INVENTORY ENDPOINTS
 // ============================================
 

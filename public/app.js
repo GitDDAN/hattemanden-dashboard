@@ -823,119 +823,11 @@ function exportDecisions() {
 }
 
 // ============================================
-// TAB 7: QUESTIONS
+// TAB 7: QUESTIONS - Research Document (Read-Only)
 // ============================================
 
 async function loadQuestions() {
     const container = document.getElementById('questionsContainer');
-
-    // Load saved answers
-    let savedAnswers = {};
-    try {
-        const res = await fetch(`${API_BASE}/api/answers`);
-        const data = await res.json();
-        savedAnswers = data.answers || {};
-    } catch (error) {
-        // Fall back to localStorage
-        const stored = localStorage.getItem('hattemanden_answers');
-        if (stored) savedAnswers = JSON.parse(stored);
-    }
-
-    // Group questions by priority
-    const priorityGroups = {
-        critical: QUESTIONS.filter(q => q.priority === 'critical'),
-        important: QUESTIONS.filter(q => q.priority === 'important'),
-        nice: QUESTIONS.filter(q => q.priority === 'nice')
-    };
-
-    // Priority section config
-    const priorityConfig = {
-        critical: {
-            icon: '🔴',
-            labelDa: 'Kritisk',
-            labelEn: 'Critical',
-            descDa: 'Nødvendigt for at færdiggøre forslaget',
-            descEn: 'Required to finalize the proposal'
-        },
-        important: {
-            icon: '🟡',
-            labelDa: 'Vigtigt',
-            labelEn: 'Important',
-            descDa: 'Forbedrer forslaget væsentligt',
-            descEn: 'Significantly improves the proposal'
-        },
-        nice: {
-            icon: '🟢',
-            labelDa: 'Godt at vide',
-            labelEn: 'Nice to Have',
-            descDa: 'Forbedrer kvaliteten',
-            descEn: 'Improves quality'
-        }
-    };
-
-    // Render question card helper
-    const renderQuestionCard = (q, savedAnswers) => {
-        const answer = savedAnswers[q.id]?.answer || '';
-        const hasAnswer = answer.trim().length > 0;
-        const savedStatus = hasAnswer
-            ? `<span class="status-saved" data-da="&#10003; Gemt" data-en="&#10003; Saved">&#10003; ${currentLanguage === 'en' ? 'Saved' : 'Gemt'}</span>`
-            : '';
-        const config = priorityConfig[q.priority];
-        const priorityLabel = currentLanguage === 'en' ? config.labelEn : config.labelDa;
-
-        return `
-            <div class="card question-card ${hasAnswer ? 'answered' : ''}" data-id="${q.id}" data-priority="${q.priority}">
-                <div class="question-number">${q.id}</div>
-                <div class="question-content">
-                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                        <p class="question-text" style="margin: 0; flex: 1;" data-da="${q.question}" data-en="${q.question_en}">${currentLanguage === 'en' ? q.question_en : q.question}</p>
-                        <span class="question-priority ${q.priority}" data-da="${config.labelDa}" data-en="${config.labelEn}">${priorityLabel}</span>
-                    </div>
-                    <div class="question-why" onclick="toggleQuestionWhy(this)">
-                        <span class="why-toggle" data-da="Hvorfor er dette vigtigt? &#9660;" data-en="Why is this important? &#9660;">${currentLanguage === 'en' ? 'Why is this important?' : 'Hvorfor er dette vigtigt?'} &#9660;</span>
-                        <p class="why-content" style="display: none;" data-da="${q.why}" data-en="${q.why_en}">${currentLanguage === 'en' ? q.why_en : q.why}</p>
-                    </div>
-                    <textarea
-                        class="question-textarea"
-                        id="answer-${q.id}"
-                        placeholder="${currentLanguage === 'en' ? 'Write your answer here...' : 'Skriv dit svar her...'}"
-                        data-da-placeholder="Skriv dit svar her..."
-                        data-en-placeholder="Write your answer here..."
-                        rows="3"
-                    >${answer}</textarea>
-                    <div class="question-actions">
-                        <button class="btn btn-small" onclick="saveAnswer(${q.id})" data-da="Gem svar" data-en="Save answer">${currentLanguage === 'en' ? 'Save answer' : 'Gem svar'}</button>
-                        <span class="save-status" id="status-${q.id}">
-                            ${savedStatus}
-                        </span>
-                    </div>
-                </div>
-            </div>
-        `;
-    };
-
-    // Render section header helper
-    const renderSectionHeader = (priority, count, answeredCount) => {
-        const config = priorityConfig[priority];
-        const label = currentLanguage === 'en' ? config.labelEn : config.labelDa;
-        const desc = currentLanguage === 'en' ? config.descEn : config.descDa;
-        const countText = currentLanguage === 'en'
-            ? `${answeredCount}/${count} answered`
-            : `${answeredCount}/${count} besvaret`;
-
-        return `
-            <div class="priority-section-header" data-priority="${priority}">
-                <span class="priority-icon">${config.icon}</span>
-                <h3 data-da="${config.labelDa}" data-en="${config.labelEn}">${label}</h3>
-                <span style="color: var(--text-muted); font-size: var(--text-sm);" data-da="${config.descDa}" data-en="${config.descEn}">${desc}</span>
-                <span class="priority-count" data-da="${answeredCount}/${count} besvaret" data-en="${answeredCount}/${count} answered">${countText}</span>
-            </div>
-        `;
-    };
-
-    // ============================================
-    // SECTION 1: Already Answered Questions (Research Findings)
-    // ============================================
 
     // Group answered questions by category
     const answeredCategories = {};
@@ -950,179 +842,101 @@ async function loadQuestions() {
         answeredCategories[q.category].questions.push(q);
     });
 
-    // Render answered question card (read-only with source link)
-    const renderAnsweredCard = (q) => {
-        const question = currentLanguage === 'en' ? q.question_en : q.question;
-        const answer = currentLanguage === 'en' ? q.answer_en : q.answer;
-        const sourceLink = q.source.startsWith('http')
-            ? `<a href="${q.source}" target="_blank" rel="noopener">${q.source_label}</a>`
-            : `<span>${q.source_label}</span>`;
+    // ============================================
+    // SECTION 1: Questions Awaiting Answers (at top)
+    // ============================================
+    let awaitingHtml = `
+        <div class="card research-document-section awaiting-section">
+            <div class="document-section-header">
+                <span class="section-badge awaiting">${QUESTIONS.length}</span>
+                <h2 data-da="Spørgsmål der Afventer Svar" data-en="Questions Awaiting Answers">${currentLanguage === 'en' ? 'Questions Awaiting Answers' : 'Spørgsmål der Afventer Svar'}</h2>
+            </div>
+            <p class="section-intro" data-da="Disse 3 spørgsmål har vi brug for dit input til. Send os dine svar via email eller Messenger." data-en="We need your input on these 3 questions. Send us your answers via email or Messenger.">${currentLanguage === 'en' ? 'We need your input on these 3 questions. Send us your answers via email or Messenger.' : 'Disse 3 spørgsmål har vi brug for dit input til. Send os dine svar via email eller Messenger.'}</p>
+            <div class="questions-list awaiting-list">
+    `;
 
-        return `
-            <div class="answered-question-card" data-id="${q.id}">
-                <div class="answered-question-row">
-                    <span class="answered-check">✓</span>
-                    <div class="answered-content">
-                        <p class="answered-question">${question}</p>
-                        <p class="answered-answer">${answer}</p>
-                        <p class="answered-source">${currentLanguage === 'en' ? 'Source' : 'Kilde'}: ${sourceLink}</p>
+    QUESTIONS.forEach((q, index) => {
+        const question = currentLanguage === 'en' ? q.question_en : q.question;
+        const context = currentLanguage === 'en' ? q.why_en : q.why;
+
+        awaitingHtml += `
+            <div class="document-question-item awaiting">
+                <div class="question-number-badge">${index + 1}</div>
+                <div class="question-details">
+                    <h3 class="question-title">${question}</h3>
+                    <div class="question-context">
+                        <span class="context-label" data-da="Baggrund:" data-en="Context:">${currentLanguage === 'en' ? 'Context:' : 'Baggrund:'}</span>
+                        <p>${context}</p>
+                    </div>
+                    <div class="answer-placeholder">
+                        <span class="placeholder-icon">✎</span>
+                        <span data-da="Afventer dit svar..." data-en="Awaiting your answer...">${currentLanguage === 'en' ? 'Awaiting your answer...' : 'Afventer dit svar...'}</span>
                     </div>
                 </div>
             </div>
         `;
-    };
+    });
 
-    // Build answered section HTML
-    let answeredHtml = `
-        <div class="card answered-questions-section collapsible-card">
-            <div class="card-header collapsible-header" onclick="toggleQuestionsCollapsible(this)">
-                <div class="answered-header-content">
-                    <span class="answered-badge">✓ ${ANSWERED_QUESTIONS.length}</span>
-                    <h2 data-da="Allerede Besvaret (Vores Research)" data-en="Already Answered (Our Research)">${currentLanguage === 'en' ? 'Already Answered (Our Research)' : 'Allerede Besvaret (Vores Research)'}</h2>
-                </div>
-                <span class="collapse-icon">▶</span>
+    awaitingHtml += `
             </div>
-            <div class="collapsible-content" style="display: none;">
-                <p class="answered-intro" data-da="Disse spørgsmål har vi allerede fundet svar på gennem vores research. Gennemgå venligst og ret os hvis noget er forkert." data-en="We found answers to these questions through our research. Please review and correct us if anything is wrong.">${currentLanguage === 'en' ? 'We found answers to these questions through our research. Please review and correct us if anything is wrong.' : 'Disse spørgsmål har vi allerede fundet svar på gennem vores research. Gennemgå venligst og ret os hvis noget er forkert.'}</p>
+        </div>
+    `;
+
+    // ============================================
+    // SECTION 2: Questions Answered Through Research
+    // ============================================
+    let answeredHtml = `
+        <div class="card research-document-section answered-section">
+            <div class="document-section-header">
+                <span class="section-badge answered">✓ ${ANSWERED_QUESTIONS.length}</span>
+                <h2 data-da="Besvaret Gennem Research" data-en="Answered Through Research">${currentLanguage === 'en' ? 'Answered Through Research' : 'Besvaret Gennem Research'}</h2>
+            </div>
+            <p class="section-intro" data-da="Vi har fundet svar på disse spørgsmål gennem vores research. Gennemgå venligst og sig til hvis noget er forkert." data-en="We found answers to these questions through our research. Please review and let us know if anything is incorrect.">${currentLanguage === 'en' ? 'We found answers to these questions through our research. Please review and let us know if anything is incorrect.' : 'Vi har fundet svar på disse spørgsmål gennem vores research. Gennemgå venligst og sig til hvis noget er forkert.'}</p>
     `;
 
     // Add each category
     for (const [, data] of Object.entries(answeredCategories)) {
         const categoryLabel = currentLanguage === 'en' ? data.label_en : data.label_da;
+
         answeredHtml += `
-            <div class="answered-category">
-                <h3 class="answered-category-title">${categoryLabel}</h3>
-                ${data.questions.map(q => renderAnsweredCard(q)).join('')}
+            <div class="research-category">
+                <h3 class="category-title">${categoryLabel}</h3>
+                <div class="questions-list answered-list">
+        `;
+
+        data.questions.forEach(q => {
+            const question = currentLanguage === 'en' ? q.question_en : q.question;
+            const answer = currentLanguage === 'en' ? q.answer_en : q.answer;
+            const sourceLink = q.source.startsWith('http')
+                ? `<a href="${q.source}" target="_blank" rel="noopener">${q.source_label}</a>`
+                : `<span class="source-text">${q.source_label}</span>`;
+
+            answeredHtml += `
+                <div class="document-question-item answered">
+                    <div class="answered-check-icon">✓</div>
+                    <div class="question-details">
+                        <h4 class="question-title">${question}</h4>
+                        <div class="research-answer">
+                            <p class="answer-text">${answer}</p>
+                            <p class="answer-source"><span data-da="Kilde:" data-en="Source:">${currentLanguage === 'en' ? 'Source:' : 'Kilde:'}</span> ${sourceLink}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        answeredHtml += `
+                </div>
             </div>
         `;
     }
 
     answeredHtml += `
-            </div>
         </div>
     `;
 
-    // ============================================
-    // SECTION 2: Remaining Questions (Need Kim's Input)
-    // ============================================
-
-    // Build remaining questions HTML
-    let remainingHtml = `
-        <div class="card remaining-questions-section collapsible-card">
-            <div class="card-header collapsible-header" onclick="toggleQuestionsCollapsible(this)">
-                <div class="remaining-header-content">
-                    <span class="remaining-badge">${QUESTIONS.length}</span>
-                    <h2 data-da="Spørgsmål der Mangler Svar" data-en="Questions Needing Answers">${currentLanguage === 'en' ? 'Questions Needing Answers' : 'Spørgsmål der Mangler Svar'}</h2>
-                </div>
-                <span class="collapse-icon">▼</span>
-            </div>
-            <div class="collapsible-content">
-    `;
-
-    for (const [priority, questions] of Object.entries(priorityGroups)) {
-        if (questions.length === 0) continue;
-
-        const answeredCount = questions.filter(q => {
-            const answer = savedAnswers[q.id]?.answer || '';
-            return answer.trim().length > 0;
-        }).length;
-
-        remainingHtml += renderSectionHeader(priority, questions.length, answeredCount);
-        remainingHtml += questions.map(q => renderQuestionCard(q, savedAnswers)).join('');
-    }
-
-    remainingHtml += `
-            </div>
-        </div>
-    `;
-
-    // Combine both sections
-    container.innerHTML = answeredHtml + remainingHtml;
-
-    // Update progress bar
-    updateQuestionsProgress(savedAnswers);
-}
-
-// Toggle collapsible sections in Questions tab
-function toggleQuestionsCollapsible(header) {
-    const content = header.nextElementSibling;
-    const icon = header.querySelector('.collapse-icon');
-
-    if (content.style.display === 'none') {
-        content.style.display = 'block';
-        icon.innerHTML = '▼';
-        header.classList.add('expanded');
-    } else {
-        content.style.display = 'none';
-        icon.innerHTML = '▶';
-        header.classList.remove('expanded');
-    }
-}
-
-function toggleQuestionWhy(element) {
-    const content = element.querySelector('.why-content');
-    const toggle = element.querySelector('.why-toggle');
-    const isOpen = content.style.display !== 'none';
-    const labelDa = isOpen ? 'Hvorfor er dette vigtigt? &#9660;' : 'Hvorfor er dette vigtigt? &#9650;';
-    const labelEn = isOpen ? 'Why is this important? &#9660;' : 'Why is this important? &#9650;';
-
-    content.style.display = isOpen ? 'none' : 'block';
-    toggle.innerHTML = currentLanguage === 'en' ? labelEn : labelDa;
-    toggle.setAttribute('data-da', labelDa);
-    toggle.setAttribute('data-en', labelEn);
-}
-
-async function saveAnswer(questionId) {
-    const textarea = document.getElementById(`answer-${questionId}`);
-    const answer = textarea.value.trim();
-    const statusEl = document.getElementById(`status-${questionId}`);
-    const card = document.querySelector(`.question-card[data-id="${questionId}"]`);
-
-    const savingText = currentLanguage === 'en' ? 'Saving...' : 'Gemmer...';
-    statusEl.innerHTML = `<span class="status-saving" data-da="Gemmer..." data-en="Saving...">${savingText}</span>`;
-
-    try {
-        // Save to server
-        await fetch(`${API_BASE}/api/questions/${questionId}/answer`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ answer })
-        });
-
-        const savedText = currentLanguage === 'en' ? '&#10003; Saved' : '&#10003; Gemt';
-        statusEl.innerHTML = `<span class="status-saved" data-da="&#10003; Gemt" data-en="&#10003; Saved">${savedText}</span>`;
-
-        // Update card styling
-        if (answer.length > 0) {
-            card.classList.add('answered');
-        } else {
-            card.classList.remove('answered');
-        }
-
-        // Update progress
-        const answers = await fetch(`${API_BASE}/api/answers`).then(r => r.json());
-        updateQuestionsProgress(answers.answers || {});
-
-    } catch (error) {
-        console.error('Error saving answer:', error);
-        const errorText = currentLanguage === 'en' ? 'Error saving' : 'Fejl ved gem';
-        statusEl.innerHTML = `<span class="status-error" data-da="Fejl ved gem" data-en="Error saving">${errorText}</span>`;
-
-        // Save to localStorage as backup
-        const stored = JSON.parse(localStorage.getItem('hattemanden_answers') || '{}');
-        stored[questionId] = { answer };
-        localStorage.setItem('hattemanden_answers', JSON.stringify(stored));
-    }
-}
-
-function updateQuestionsProgress(answers) {
-    const total = QUESTIONS.length;
-    const answered = Object.values(answers).filter(a => a.answer && a.answer.trim().length > 0).length;
-    const pct = (answered / total * 100).toFixed(0);
-
-    document.getElementById('questionsAnswered').textContent = answered;
-    document.getElementById('questionsTotal').textContent = total;
-    document.getElementById('questionsProgressBar').style.width = `${pct}%`;
+    // Combine sections: Awaiting first, then Answered
+    container.innerHTML = awaitingHtml + answeredHtml;
 }
 
 // ============================================
