@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const basicAuth = require('express-basic-auth');
 const fs = require('fs');
 const WooCommerceRestApi = require('@woocommerce/woocommerce-rest-api').default;
 const path = require('path');
@@ -16,6 +17,22 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Health check endpoint (before auth so Render can monitor)
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Password protection (if DASHBOARD_USER and DASHBOARD_PASSWORD are set)
+if (process.env.DASHBOARD_USER && process.env.DASHBOARD_PASSWORD) {
+  app.use(basicAuth({
+    users: { [process.env.DASHBOARD_USER]: process.env.DASHBOARD_PASSWORD },
+    challenge: true,
+    realm: 'Hattemanden Dashboard'
+  }));
+  console.log('🔒 HTTP Basic Auth enabled');
+}
+
 app.use(express.static(path.join(__dirname, 'public')));
 // Serve screenshot files from public/screenshots folder (for deployment)
 // Also serve from .playwright-mcp for local development backward compatibility
@@ -66,35 +83,6 @@ function getWooCommerce() {
   }
   return wooCommerce;
 }
-
-// ============================================
-// AUTHENTICATION ENDPOINTS
-// ============================================
-
-// Check auth status
-app.get('/api/auth/check', (req, res) => {
-  const password = process.env.DASHBOARD_PASSWORD;
-  res.json({
-    required: !!password,
-    authenticated: !password // If no password set, consider authenticated
-  });
-});
-
-// Login
-app.post('/api/auth/login', (req, res) => {
-  const { password } = req.body;
-  const correctPassword = process.env.DASHBOARD_PASSWORD;
-
-  if (!correctPassword) {
-    return res.json({ success: true });
-  }
-
-  if (password === correctPassword) {
-    res.json({ success: true });
-  } else {
-    res.status(401).json({ success: false, error: 'Forkert adgangskode' });
-  }
-});
 
 // ============================================
 // AUDIT SCREENSHOT ENDPOINTS
@@ -272,11 +260,6 @@ app.post('/api/progress/milestone', (req, res) => {
 // ============================================
 // WOOCOMMERCE ENDPOINTS
 // ============================================
-
-// Simple health check for Railway (no external dependencies)
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
 
 // WooCommerce connection test
 app.get('/api/status', async (req, res) => {
@@ -839,7 +822,9 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log('   WC_CONSUMER_SECRET=cs_xxxxx\n');
   }
 
-  if (process.env.DASHBOARD_PASSWORD) {
-    console.log('🔒 Password protection enabled\n');
+  if (process.env.DASHBOARD_USER && process.env.DASHBOARD_PASSWORD) {
+    console.log(`🔒 Password protection enabled (user: ${process.env.DASHBOARD_USER})\n`);
+  } else {
+    console.log('⚠️  WARNING: No password protection! Set DASHBOARD_USER and DASHBOARD_PASSWORD\n');
   }
 });
