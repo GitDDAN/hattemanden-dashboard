@@ -222,7 +222,12 @@ app.post('/api/progress/milestone', (req, res) => {
 // WOOCOMMERCE ENDPOINTS
 // ============================================
 
-// Health check / connection test
+// Simple health check for Railway (no external dependencies)
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// WooCommerce connection test
 app.get('/api/status', async (req, res) => {
   try {
     const response = await wooCommerce.get('');
