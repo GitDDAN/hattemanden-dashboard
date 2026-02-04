@@ -47,13 +47,20 @@ function writeJsonFile(filePath, data) {
   }
 }
 
-// WooCommerce API client
-const wooCommerce = new WooCommerceRestApi({
-  url: process.env.WC_URL,
-  consumerKey: process.env.WC_CONSUMER_KEY,
-  consumerSecret: process.env.WC_CONSUMER_SECRET,
-  version: 'wc/v3'
-});
+// WooCommerce API client (initialized lazily to prevent startup crashes)
+let wooCommerce = null;
+
+function getWooCommerce() {
+  if (!wooCommerce && process.env.WC_URL && process.env.WC_CONSUMER_KEY && process.env.WC_CONSUMER_SECRET) {
+    wooCommerce = new WooCommerceRestApi({
+      url: process.env.WC_URL,
+      consumerKey: process.env.WC_CONSUMER_KEY,
+      consumerSecret: process.env.WC_CONSUMER_SECRET,
+      version: 'wc/v3'
+    });
+  }
+  return wooCommerce;
+}
 
 // ============================================
 // AUTHENTICATION ENDPOINTS
@@ -229,8 +236,15 @@ app.get('/api/health', (req, res) => {
 
 // WooCommerce connection test
 app.get('/api/status', async (req, res) => {
+  const wc = getWooCommerce();
+  if (!wc) {
+    return res.status(503).json({
+      connected: false,
+      error: 'WooCommerce not configured'
+    });
+  }
   try {
-    const response = await wooCommerce.get('');
+    await wc.get('');
     res.json({
       connected: true,
       store: process.env.WC_URL,
@@ -246,6 +260,8 @@ app.get('/api/status', async (req, res) => {
 
 // Orders
 app.get('/api/orders', async (req, res) => {
+  const wc = getWooCommerce();
+  if (!wc) return res.status(503).json({ error: 'WooCommerce not configured' });
   try {
     const params = {
       per_page: req.query.per_page || 50,
@@ -259,7 +275,7 @@ app.get('/api/orders', async (req, res) => {
     if (req.query.before) params.before = req.query.before;
     if (req.query.status) params.status = req.query.status;
 
-    const response = await wooCommerce.get('orders', params);
+    const response = await wc.get('orders', params);
     res.json({
       orders: response.data,
       total: response.headers['x-wp-total'],
@@ -272,8 +288,10 @@ app.get('/api/orders', async (req, res) => {
 
 // Single order
 app.get('/api/orders/:id', async (req, res) => {
+  const wc = getWooCommerce();
+  if (!wc) return res.status(503).json({ error: 'WooCommerce not configured' });
   try {
-    const response = await wooCommerce.get(`orders/${req.params.id}`);
+    const response = await wc.get(`orders/${req.params.id}`);
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -282,6 +300,8 @@ app.get('/api/orders/:id', async (req, res) => {
 
 // Customers
 app.get('/api/customers', async (req, res) => {
+  const wc = getWooCommerce();
+  if (!wc) return res.status(503).json({ error: 'WooCommerce not configured' });
   try {
     const params = {
       per_page: req.query.per_page || 50,
@@ -292,7 +312,7 @@ app.get('/api/customers', async (req, res) => {
 
     if (req.query.search) params.search = req.query.search;
 
-    const response = await wooCommerce.get('customers', params);
+    const response = await wc.get('customers', params);
     res.json({
       customers: response.data,
       total: response.headers['x-wp-total'],
@@ -305,8 +325,10 @@ app.get('/api/customers', async (req, res) => {
 
 // Single customer
 app.get('/api/customers/:id', async (req, res) => {
+  const wc = getWooCommerce();
+  if (!wc) return res.status(503).json({ error: 'WooCommerce not configured' });
   try {
-    const response = await wooCommerce.get(`customers/${req.params.id}`);
+    const response = await wc.get(`customers/${req.params.id}`);
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -315,9 +337,11 @@ app.get('/api/customers/:id', async (req, res) => {
 
 // Customer orders - searches by both customer ID and email for complete results
 app.get('/api/customers/:id/orders', async (req, res) => {
+  const wc = getWooCommerce();
+  if (!wc) return res.status(503).json({ error: 'WooCommerce not configured' });
   try {
     // Fetch orders by customer ID
-    const byIdResponse = await wooCommerce.get('orders', {
+    const byIdResponse = await wc.get('orders', {
       customer: req.params.id,
       per_page: 100
     });
@@ -328,7 +352,7 @@ app.get('/api/customers/:id/orders', async (req, res) => {
     // If email is provided, also search by billing email to catch guest orders
     if (req.query.email) {
       try {
-        const byEmailResponse = await wooCommerce.get('orders', {
+        const byEmailResponse = await wc.get('orders', {
           search: req.query.email,
           per_page: 100
         });
@@ -361,6 +385,8 @@ app.get('/api/customers/:id/orders', async (req, res) => {
 
 // Products
 app.get('/api/products', async (req, res) => {
+  const wc = getWooCommerce();
+  if (!wc) return res.status(503).json({ error: 'WooCommerce not configured' });
   try {
     const params = {
       per_page: req.query.per_page || 50,
@@ -373,7 +399,7 @@ app.get('/api/products', async (req, res) => {
     if (req.query.search) params.search = req.query.search;
     if (req.query.status) params.status = req.query.status;
 
-    const response = await wooCommerce.get('products', params);
+    const response = await wc.get('products', params);
     res.json({
       products: response.data,
       total: response.headers['x-wp-total'],
@@ -386,8 +412,10 @@ app.get('/api/products', async (req, res) => {
 
 // Single product by ID
 app.get('/api/products/:id', async (req, res) => {
+  const wc = getWooCommerce();
+  if (!wc) return res.status(503).json({ error: 'WooCommerce not configured' });
   try {
-    const response = await wooCommerce.get(`products/${req.params.id}`);
+    const response = await wc.get(`products/${req.params.id}`);
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -396,8 +424,10 @@ app.get('/api/products/:id', async (req, res) => {
 
 // Product categories
 app.get('/api/products/categories', async (req, res) => {
+  const wc = getWooCommerce();
+  if (!wc) return res.status(503).json({ error: 'WooCommerce not configured' });
   try {
-    const response = await wooCommerce.get('products/categories', {
+    const response = await wc.get('products/categories', {
       per_page: 100
     });
     res.json(response.data);
@@ -408,12 +438,14 @@ app.get('/api/products/categories', async (req, res) => {
 
 // Reports - Sales totals
 app.get('/api/reports/sales', async (req, res) => {
+  const wc = getWooCommerce();
+  if (!wc) return res.status(503).json({ error: 'WooCommerce not configured' });
   try {
     const params = {};
     if (req.query.date_min) params.date_min = req.query.date_min;
     if (req.query.date_max) params.date_max = req.query.date_max;
 
-    const response = await wooCommerce.get('reports/sales', params);
+    const response = await wc.get('reports/sales', params);
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -422,12 +454,14 @@ app.get('/api/reports/sales', async (req, res) => {
 
 // Reports - Top sellers
 app.get('/api/reports/top_sellers', async (req, res) => {
+  const wc = getWooCommerce();
+  if (!wc) return res.status(503).json({ error: 'WooCommerce not configured' });
   try {
     const params = { period: req.query.period || 'year' };
     if (req.query.date_min) params.date_min = req.query.date_min;
     if (req.query.date_max) params.date_max = req.query.date_max;
 
-    const response = await wooCommerce.get('reports/top_sellers', params);
+    const response = await wc.get('reports/top_sellers', params);
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -436,8 +470,10 @@ app.get('/api/reports/top_sellers', async (req, res) => {
 
 // Reports - Orders totals by status
 app.get('/api/reports/orders/totals', async (req, res) => {
+  const wc = getWooCommerce();
+  if (!wc) return res.status(503).json({ error: 'WooCommerce not configured' });
   try {
-    const response = await wooCommerce.get('reports/orders/totals');
+    const response = await wc.get('reports/orders/totals');
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -446,8 +482,10 @@ app.get('/api/reports/orders/totals', async (req, res) => {
 
 // Reports - Customers totals
 app.get('/api/reports/customers/totals', async (req, res) => {
+  const wc = getWooCommerce();
+  if (!wc) return res.status(503).json({ error: 'WooCommerce not configured' });
   try {
-    const response = await wooCommerce.get('reports/customers/totals');
+    const response = await wc.get('reports/customers/totals');
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -456,8 +494,10 @@ app.get('/api/reports/customers/totals', async (req, res) => {
 
 // Reports - Products totals
 app.get('/api/reports/products/totals', async (req, res) => {
+  const wc = getWooCommerce();
+  if (!wc) return res.status(503).json({ error: 'WooCommerce not configured' });
   try {
-    const response = await wooCommerce.get('reports/products/totals');
+    const response = await wc.get('reports/products/totals');
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ error: error.message });
