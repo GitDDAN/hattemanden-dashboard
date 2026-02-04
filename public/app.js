@@ -1117,7 +1117,9 @@ function updateReviewSummary() {
 }
 
 function exportDecisions() {
-    const headers = ['ID', 'Produkt', 'Kategori', 'Pris', 'Solgt', 'Omsaetning', 'Beslutning'];
+    const headers = currentLanguage === 'en'
+        ? ['ID', 'Product', 'Category', 'Price', 'Sold', 'Revenue', 'Decision']
+        : ['ID', 'Produkt', 'Kategori', 'Pris', 'Solgt', 'Omsætning', 'Beslutning'];
     const rows = reviewProducts.map(p => [
         p.id,
         `"${p.name}"`,
@@ -1129,7 +1131,8 @@ function exportDecisions() {
     ]);
 
     const csv = [headers.join(';'), ...rows.map(r => r.join(';'))].join('\n');
-    downloadCSV(csv, 'produktbeslutninger.csv');
+    const filename = currentLanguage === 'en' ? 'product-decisions.csv' : 'produktbeslutninger.csv';
+    downloadCSV(csv, filename);
 }
 
 // ============================================
@@ -1878,39 +1881,39 @@ async function loadAuditData() {
             qrEl.innerHTML = `
                 <div class="metric-card small">
                     <div class="metric-value">${qr.products.count}</div>
-                    <div class="metric-label">Produkter</div>
+                    <div class="metric-label" data-da="Produkter" data-en="Products">${currentLanguage === 'en' ? 'Products' : 'Produkter'}</div>
                     <div class="metric-detail">${qr.products.breakdown}</div>
                 </div>
                 <div class="metric-card small">
                     <div class="metric-value">${qr.productVariations}</div>
-                    <div class="metric-label">Varianter</div>
+                    <div class="metric-label" data-da="Varianter" data-en="Variants">${currentLanguage === 'en' ? 'Variants' : 'Varianter'}</div>
                     <div class="metric-detail">Total SKUs: ${qr.totalSKUs}</div>
                 </div>
                 <div class="metric-card small">
                     <div class="metric-value">${qr.orders.count}</div>
-                    <div class="metric-label">Ordrer</div>
+                    <div class="metric-label" data-da="Ordrer" data-en="Orders">${currentLanguage === 'en' ? 'Orders' : 'Ordrer'}</div>
                     <div class="metric-detail">${qr.orders.span}</div>
                 </div>
                 <div class="metric-card small">
                     <div class="metric-value">${qr.users.total}</div>
-                    <div class="metric-label">Brugere</div>
+                    <div class="metric-label" data-da="Brugere" data-en="Users">${currentLanguage === 'en' ? 'Users' : 'Brugere'}</div>
                     <div class="metric-detail">${qr.users.breakdown}</div>
                 </div>
                 <div class="metric-card small">
                     <div class="metric-value">${qr.databaseTables}</div>
-                    <div class="metric-label">DB Tabeller</div>
+                    <div class="metric-label" data-da="DB Tabeller" data-en="DB Tables">${currentLanguage === 'en' ? 'DB Tables' : 'DB Tabeller'}</div>
                 </div>
                 <div class="metric-card small">
                     <div class="metric-value">${qr.mediaFiles}</div>
-                    <div class="metric-label">Mediefiler</div>
+                    <div class="metric-label" data-da="Mediefiler" data-en="Media Files">${currentLanguage === 'en' ? 'Media Files' : 'Mediefiler'}</div>
                 </div>
                 <div class="metric-card small">
                     <div class="metric-value">${qr.urlRedirects}</div>
-                    <div class="metric-label">Redirects</div>
+                    <div class="metric-label" data-da="Redirects" data-en="Redirects">Redirects</div>
                 </div>
                 <div class="metric-card small">
                     <div class="metric-value">${qr.productCategories}</div>
-                    <div class="metric-label">Kategorier</div>
+                    <div class="metric-label" data-da="Kategorier" data-en="Categories">${currentLanguage === 'en' ? 'Categories' : 'Kategorier'}</div>
                 </div>
             `;
         }
@@ -1953,27 +1956,27 @@ async function loadAuditData() {
             statsEl.innerHTML = `
                 <div class="stat-item">
                     <div class="stat-value">${formatCurrency(ss.totalRevenue)}</div>
-                    <div class="stat-label">Total Omsaetning</div>
+                    <div class="stat-label" data-da="Total Omsætning" data-en="Total Revenue">${currentLanguage === 'en' ? 'Total Revenue' : 'Total Omsætning'}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value">${ss.totalCompletedOrders}</div>
-                    <div class="stat-label">Afsluttede Ordrer</div>
+                    <div class="stat-label" data-da="Afsluttede Ordrer" data-en="Completed Orders">${currentLanguage === 'en' ? 'Completed Orders' : 'Afsluttede Ordrer'}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value">${formatCurrency(ss.averageOrderValue)}</div>
-                    <div class="stat-label">Gns. Ordrevaerdi</div>
+                    <div class="stat-label" data-da="Gns. Ordreværdi" data-en="Avg. Order Value">${currentLanguage === 'en' ? 'Avg. Order Value' : 'Gns. Ordreværdi'}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value">${ss.uniqueCustomers}</div>
-                    <div class="stat-label">Unikke Kunder</div>
+                    <div class="stat-label" data-da="Unikke Kunder" data-en="Unique Customers">${currentLanguage === 'en' ? 'Unique Customers' : 'Unikke Kunder'}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value">${ss.repeatCustomerRate}%</div>
-                    <div class="stat-label">Tilbagevendende</div>
+                    <div class="stat-label" data-da="Tilbagevendende" data-en="Repeat Rate">${currentLanguage === 'en' ? 'Repeat Rate' : 'Tilbagevendende'}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value">${formatCurrency(ss.averageCLV)}</div>
-                    <div class="stat-label">Gns. Kundevaerdi</div>
+                    <div class="stat-label" data-da="Gns. Kundeværdi" data-en="Avg. Customer Value">${currentLanguage === 'en' ? 'Avg. Customer Value' : 'Gns. Kundeværdi'}</div>
                 </div>
             `;
 
@@ -1982,7 +1985,7 @@ async function loadAuditData() {
             if (ss.revenueByYear && ss.revenueByYear.length > 0) {
                 const maxRevenue = Math.max(...ss.revenueByYear.map(y => y.revenue));
                 chartEl.innerHTML = `
-                    <h3 style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-secondary);">Omsaetning per Ar</h3>
+                    <h3 style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-secondary);" data-da="Omsætning per År" data-en="Revenue per Year">${currentLanguage === 'en' ? 'Revenue per Year' : 'Omsætning per År'}</h3>
                     ${ss.revenueByYear.map(y => {
                         const pct = (y.revenue / maxRevenue * 100).toFixed(1);
                         return `
@@ -2092,19 +2095,19 @@ async function loadAuditData() {
             const md = data.migrationDetails;
             mdEl.innerHTML = `
                 <div class="migration-section">
-                    <h4>Data til Migrering</h4>
+                    <h4 data-da="Data til Migrering" data-en="Data to Migrate">${currentLanguage === 'en' ? 'Data to Migrate' : 'Data til Migrering'}</h4>
                     <ul>
                         ${md.dataToMigrate.map(d => `<li>${d}</li>`).join('')}
                     </ul>
                 </div>
                 <div class="migration-section">
-                    <h4>Kritiske Integrationer</h4>
+                    <h4 data-da="Kritiske Integrationer" data-en="Critical Integrations">${currentLanguage === 'en' ? 'Critical Integrations' : 'Kritiske Integrationer'}</h4>
                     <ul>
                         ${md.criticalIntegrations.map(i => `<li>${i}</li>`).join('')}
                     </ul>
                 </div>
                 <div class="migration-section">
-                    <h4>Anbefalede Trin for Migrering</h4>
+                    <h4 data-da="Anbefalede Trin for Migrering" data-en="Recommended Migration Steps">${currentLanguage === 'en' ? 'Recommended Migration Steps' : 'Anbefalede Trin for Migrering'}</h4>
                     <ol>
                         ${md.preMigrationSteps.map(s => `<li>${s}</li>`).join('')}
                     </ol>
@@ -2405,6 +2408,18 @@ function refreshDynamicContent() {
     // Refresh customers table if customers are loaded
     if (customersData.length > 0) {
         renderCustomersTable();
+    }
+
+    // Refresh Research/Questions tab (always re-render as it uses currentLanguage)
+    const questionsContainer = document.getElementById('questionsContainer');
+    if (questionsContainer && questionsContainer.innerHTML) {
+        loadQuestions();
+    }
+
+    // Refresh Audit tab (re-render dynamic content with translations)
+    const quickReferenceGrid = document.getElementById('quickReferenceGrid');
+    if (quickReferenceGrid && quickReferenceGrid.innerHTML) {
+        loadAuditData();
     }
 
     // Re-render pagination buttons for orders and customers

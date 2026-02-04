@@ -16,10 +16,10 @@
         <div class="auth-modal-content">
             <div class="auth-logo">H</div>
             <h2>hattemanden.dk</h2>
-            <p>Indtast adgangskode for at fortsætte</p>
+            <p><span data-da="Indtast adgangskode for at fortsætte" data-en="Enter password to continue">Indtast adgangskode for at fortsætte</span></p>
             <form id="authForm">
-                <input type="password" id="authPassword" placeholder="Adgangskode" required>
-                <button type="submit" class="btn">Log ind</button>
+                <input type="password" id="authPassword" placeholder="Adgangskode" data-da-placeholder="Adgangskode" data-en-placeholder="Password" required>
+                <button type="submit" class="btn"><span data-da="Log ind" data-en="Log in">Log ind</span></button>
                 <p id="authError" class="auth-error" style="display: none;"></p>
             </form>
         </div>
@@ -31,7 +31,7 @@
                 <span class="logo-icon">H</span>
                 <div class="logo-text">
                     <h1>hattemanden.dk</h1>
-                    <span class="tagline">Live Dashboard</span>
+                    <span class="tagline" data-da="Live Kontrolpanel" data-en="Live Dashboard">Live Kontrolpanel</span>
                 </div>
             </div>
             <div class="header-actions">
@@ -59,7 +59,7 @@
             <button class="tab" data-tab="review"><span data-da="Produktgennemgang" data-en="Product Review">Produktgennemgang</span></button>
             <button class="tab" data-tab="orders"><span data-da="Ordrer" data-en="Orders">Ordrer</span></button>
             <button class="tab" data-tab="customers"><span data-da="Kunder" data-en="Customers">Kunder</span></button>
-            <button class="tab" data-tab="audit">Audit</button>
+            <button class="tab" data-tab="audit"><span data-da="Revision" data-en="Audit">Revision</span></button>
             <button class="tab" data-tab="project"><span data-da="Projekt" data-en="Project">Projekt</span></button>
         </div>
     </nav>
@@ -1227,8 +1227,8 @@
                             <th data-da="Ordre" data-en="Order">Ordre</th>
                             <th data-da="Dato" data-en="Date">Dato</th>
                             <th data-da="Kunde" data-en="Customer">Kunde</th>
-                            <th>Status</th>
-                            <th>Total</th>
+                            <th data-da="Status" data-en="Status">Status</th>
+                            <th data-da="Total" data-en="Total">Total</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -1248,7 +1248,7 @@
                     <input type="date" id="orderDateTo">
                 </div>
                 <div class="filter-group">
-                    <label>Status:</label>
+                    <label data-da="Status:" data-en="Status:">Status:</label>
                     <select id="orderStatusFilter">
                         <option value="" data-da="Alle" data-en="All">Alle</option>
                         <option value="completed" data-da="Gennemført" data-en="Completed">Gennemført</option>
@@ -1276,10 +1276,10 @@
                             <th class="sortable" data-sort="id" data-da="Ordre #" data-en="Order #">Ordre # <span class="sort-icon"></span></th>
                             <th class="sortable" data-sort="date" data-da="Dato" data-en="Date">Dato <span class="sort-icon"></span></th>
                             <th class="sortable" data-sort="customer" data-da="Kunde" data-en="Customer">Kunde <span class="sort-icon"></span></th>
-                            <th>Email</th>
-                            <th class="sortable" data-sort="status">Status <span class="sort-icon"></span></th>
+                            <th data-da="Email" data-en="Email">Email</th>
+                            <th class="sortable" data-sort="status" data-da="Status" data-en="Status">Status <span class="sort-icon"></span></th>
                             <th data-da="Betaling" data-en="Payment">Betaling</th>
-                            <th class="sortable" data-sort="total">Total <span class="sort-icon"></span></th>
+                            <th class="sortable" data-sort="total" data-da="Total" data-en="Total">Total <span class="sort-icon"></span></th>
                             <th></th>
                         </tr>
                     </thead>
@@ -1358,12 +1358,12 @@
             <!-- Platform and Scores -->
             <div class="audit-grid">
                 <div class="card">
-                    <h2>Platform</h2>
+                    <h2 data-da="Platform" data-en="Platform">Platform</h2>
                     <div id="platformInfo" class="info-list"></div>
                 </div>
 
                 <div class="card">
-                    <h2>Scores</h2>
+                    <h2 data-da="Scores" data-en="Scores">Scores</h2>
                     <div class="scores-grid" id="scoresGrid"></div>
                 </div>
             </div>
@@ -1412,12 +1412,12 @@
             </div>
 
             <div class="card">
-                <h2>Plugins (11)</h2>
+                <h2 data-da="Plugins (11)" data-en="Plugins (11)">Plugins (11)</h2>
                 <table class="data-table" id="pluginsTable">
                     <thead>
                         <tr>
-                            <th>Plugin</th>
-                            <th>Version</th>
+                            <th data-da="Plugin" data-en="Plugin">Plugin</th>
+                            <th data-da="Version" data-en="Version">Version</th>
                             <th data-da="Forfatter" data-en="Author">Forfatter</th>
                             <th data-da="Klassifikation" data-en="Classification">Klassifikation</th>
                         </tr>
@@ -1548,7 +1548,7 @@
                             <th class="sortable" data-sort="units" data-da="Solgt" data-en="Sold">Solgt <span class="sort-icon"></span></th>
                             <th class="sortable" data-sort="revenue" data-da="Omsætning" data-en="Revenue">Omsætning <span class="sort-icon"></span></th>
                             <th class="sortable" data-sort="last-sold" data-da="Sidst solgt" data-en="Last sold">Sidst solgt <span class="sort-icon"></span></th>
-                            <th>Tags</th>
+                            <th data-da="Tags" data-en="Tags">Tags</th>
                             <th data-da="Beslutning" data-en="Decision">Beslutning</th>
                         </tr>
                     </thead>
