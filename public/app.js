@@ -22,197 +22,483 @@ let customersData = [];
 let ordersSortColumn = null;
 let ordersSortDirection = 'desc';
 
-// Pre-defined questions for Tab 7 - Prioritized questions for Kim
-// UPDATED: Reduced to 3 critical questions only (many answered through research)
-// See .planning/QUESTIONS-FOR-KIM.md for full context
-const QUESTIONS = [
-    // ============================================
-    // 🔴 CRITICAL - The ONLY 3 questions we still need answers to
-    // ============================================
-    {
-        id: 1,
-        priority: "critical",
-        question: "Hvad er den fysiske butiks årlige omsætning, og hvad er dine marginer?",
-        question_en: "What is the physical store's annual revenue, and what are your margins?",
-        why: "Vi har kun online data (361K DKK over 9 år). Vi har brug for: fysisk butiks ca. årlig omsætning, margin på Chapeau Clarque (du nævnte 'tynde marginer'), og generel margin på hatte (Høj/Medium/Lav). Dette hjælper os med at vide hvilke produkter der skal fremhæves.",
-        why_en: "We only have online data (361K DKK over 9 years). We need: physical store approximate annual revenue, margin on Chapeau Clarque (you mentioned 'thin margins'), and general margin on hats (High/Medium/Low). This helps us know which products to feature."
-    },
-    {
-        id: 2,
-        priority: "critical",
-        question: "Bekræft venligst hvilke produkter der skal fjernes (og om 8 grænse-produkter skal beholdes)?",
-        question_en: "Please confirm which products to remove (and whether 8 borderline products should be kept)?",
-        why: "Vi anbefaler at fjerne: Kjoler (6 produkter, 0 DKK salg), Hawai skjorter (7 produkter, 143 DKK salg), Smoking og Kjole og Hvidt. MEN skal disse beholdes som 'Tilbehør'? Butterfly (704 DKK), Handsker (1.050 DKK), Kjoleskjorte Boswell (5.032 DKK), Kjolevest Boswell (3.520 DKK).",
-        why_en: "We recommend removing: Dresses (6 products, 0 DKK sales), Hawaiian shirts (7 products, 143 DKK sales), Tuxedo and Formal wear. BUT should these be kept as 'Accessories'? Bow Tie (704 DKK), Gloves (1,050 DKK), Dress Shirt Boswell (5,032 DKK), Dress Vest Boswell (3,520 DKK)."
-    },
-    {
-        id: 3,
-        priority: "critical",
-        question: "Har du flere fotos eller historier om Svend Erik som vi ikke allerede har fundet?",
-        question_en: "Do you have additional photos or stories about Svend Erik that we haven't found?",
-        why: "Vi har fundet: TV Syd 'Kaffe med Kurt' video ✅, Website fotos af Pepino ✅, Hans forretningshistorie ✅. Det ville være godt at have: flere personlige fotos (yngre år, rejser, tidlig butik), fotos af butikkens interiør, eventuelle avisudklip vi ikke kender til.",
-        why_en: "We found: TV Syd 'Kaffe med Kurt' video ✅, Website photos of Pepino ✅, His business story ✅. Nice to have: additional personal photos (younger years, travels, early shop), photos of the store interior, any press clippings we don't know about."
-    }
-];
+// Pre-defined questions removed - now showing research findings only
+// Original questions saved to: .planning/phases/17-update-dashboard-questions/QUESTIONS-FOR-EMAIL.md
+const QUESTIONS = []; // Empty - all research is in ANSWERED_QUESTIONS
 
-// Pre-answered questions (research findings) - displayed as read-only for Kim's review
-// These were originally questions but we found answers through our research
+// Comprehensive research findings - displayed as read-only
+// Organized by category to showcase the depth of our audit work
 const ANSWERED_QUESTIONS = [
     // ============================================
-    // BRAND ASSETS - FOUND
+    // PLATFORM & INFRASTRUCTURE
     // ============================================
     {
-        id: 'a1',
-        category: 'brand',
-        category_da: 'Brand Assets',
-        category_en: 'Brand Assets',
-        question: "Har I TV Syd 'Kaffe med Kurt' videoen?",
-        question_en: "Do you have the TV Syd 'Kaffe med Kurt' video?",
-        answer: "JA - Fundet på TV Syd's hjemmeside",
-        answer_en: "YES - Found on TV Syd website",
-        source: "https://www.tvsyd.dk/kaffe-med-kurt/kaffe-med-kurt-hattemanden",
-        source_label: "TV Syd website"
+        id: 'p1',
+        category: 'platform',
+        category_da: 'Platform & Infrastruktur',
+        category_en: 'Platform & Infrastructure',
+        question: "Hvilken platform kører siden på?",
+        question_en: "What platform does the site run on?",
+        answer: "WordPress 6.x + WooCommerce med Avada 7.14.2 tema fra ThemeForest",
+        answer_en: "WordPress 6.x + WooCommerce with Avada 7.14.2 theme from ThemeForest",
+        source: "AUDIT-INDEX.md",
+        source_label: "Platform audit"
     },
     {
-        id: 'a2',
-        category: 'brand',
-        category_da: 'Brand Assets',
-        category_en: 'Brand Assets',
-        question: "Har I fotos af Svend Erik 'Pepino'?",
-        question_en: "Do you have photos of Svend Erik 'Pepino'?",
-        answer: "JA - Flere billeder fundet i uploads (hattemanden-pepino.jpg, pepino-brun.jpg, etc.)",
-        answer_en: "YES - Multiple photos found in site uploads (hattemanden-pepino.jpg, pepino-brun.jpg, etc.)",
-        source: "hattemanden.dk/om-hattemanden/",
-        source_label: "Website uploads"
+        id: 'p2',
+        category: 'platform',
+        category_da: 'Platform & Infrastruktur',
+        category_en: 'Platform & Infrastructure',
+        question: "Hvor hostes siden?",
+        question_en: "Where is the site hosted?",
+        answer: "one.com Beginner plan (basis hosting)",
+        answer_en: "one.com Beginner plan (basic hosting)",
+        source: "INFRASTRUCTURE.md",
+        source_label: "Infrastructure audit"
     },
     {
-        id: 'a3',
-        category: 'brand',
-        category_da: 'Brand Assets',
-        category_en: 'Brand Assets',
-        question: "Hvad er Pepinos historie/baggrund?",
-        question_en: "What is Pepino's story/background?",
-        answer: "Startede 2000, import fra Sydamerika/USA, udvidet til Italien/England 2003, damehatte 2010",
-        answer_en: "Started 2000, South America/USA imports, expanded to Italy/England 2003, women's hats 2010",
-        source: "hattemanden.dk/om-hattemanden/",
-        source_label: "'Om Hattemanden' page"
+        id: 'p3',
+        category: 'platform',
+        category_da: 'Platform & Infrastruktur',
+        category_en: 'Platform & Infrastructure',
+        question: "Er der custom kode på siden?",
+        question_en: "Is there custom code on the site?",
+        answer: "NEJ - Alle 11 plugins er standard versioner uden modifikationer. Ingen child theme, ingen custom CSS/JS",
+        answer_en: "NO - All 11 plugins are standard versions with no modifications. No child theme, no custom CSS/JS",
+        source: "PLUGIN-INVENTORY.md",
+        source_label: "Plugin audit"
+    },
+    {
+        id: 'p4',
+        category: 'platform',
+        category_da: 'Platform & Infrastruktur',
+        category_en: 'Platform & Infrastructure',
+        question: "Hvad er databasestrukturen?",
+        question_en: "What is the database structure?",
+        answer: "88 tabeller total, alle tilhører kendte plugins. HPOS aktivt for ordrer (moderne format)",
+        answer_en: "88 tables total, all belong to known plugins. HPOS active for orders (modern format)",
+        source: "TABLE-INVENTORY.md",
+        source_label: "Database audit"
+    },
+    {
+        id: 'p5',
+        category: 'platform',
+        category_da: 'Platform & Infrastruktur',
+        category_en: 'Platform & Infrastructure',
+        question: "Er SSL konfigureret korrekt?",
+        question_en: "Is SSL configured correctly?",
+        answer: "JA - HTTPS aktivt, HTTP redirecter til HTTPS, www redirects fungerer",
+        answer_en: "YES - HTTPS active, HTTP redirects to HTTPS, www redirects working",
+        source: "SEO-AUDIT.md",
+        source_label: "SEO audit"
     },
     // ============================================
-    // PRODUCTS - CONFIRMED
+    // PRODUCTS & CATALOG
     // ============================================
     {
-        id: 'a4',
+        id: 'c1',
         category: 'products',
-        category_da: 'Produkter',
-        category_en: 'Products',
-        question: "Hvilke produkter skal fjernes?",
-        question_en: "Which products should be removed?",
-        answer: "20 ikke-hat produkter identificeret (kjoler, Hawaii skjorter, festtøj)",
-        answer_en: "20 non-hat items identified (dresses, Hawaiian shirts, formal wear)",
+        category_da: 'Produkter & Katalog',
+        category_en: 'Products & Catalog',
+        question: "Hvor mange produkter er der?",
+        question_en: "How many products are there?",
+        answer: "158 produkter total (19 simple, 138 variable) med 210 variationer = 368 SKUs",
+        answer_en: "158 products total (19 simple, 138 variable) with 210 variations = 368 SKUs",
+        source: "DATA-VOLUMES.md",
+        source_label: "Data audit"
+    },
+    {
+        id: 'c2',
+        category: 'products',
+        category_da: 'Produkter & Katalog',
+        category_en: 'Products & Catalog',
+        question: "Hvordan er produktkategorierne struktureret?",
+        question_en: "How are product categories structured?",
+        answer: "9 produktkategorier under 'Hatte' hierarki med 10 globale attributter (farve, størrelse, højde, etc.)",
+        answer_en: "9 product categories under 'Hatte' hierarchy with 10 global attributes (color, size, height, etc.)",
+        source: "PRODUCT-STRUCTURE.md",
+        source_label: "Product structure audit"
+    },
+    {
+        id: 'c3',
+        category: 'products',
+        category_da: 'Produkter & Katalog',
+        category_en: 'Products & Catalog',
+        question: "Hvad er de bedst sælgende produkter?",
+        question_en: "What are the best-selling products?",
+        answer: "Top 10 produkter står for 51.3% af omsætningen. Chapeau Clarque er #1 med 62.440 DKK",
+        answer_en: "Top 10 products account for 51.3% of revenue. Chapeau Clarque is #1 at 62,440 DKK",
+        source: "SALES-STATS.md",
+        source_label: "Sales analysis"
+    },
+    {
+        id: 'c4',
+        category: 'products',
+        category_da: 'Produkter & Katalog',
+        category_en: 'Products & Catalog',
+        question: "Hvilke produkter performer dårligt?",
+        question_en: "Which products perform poorly?",
+        answer: "Kjoler (6 produkter, 0 DKK salg), Hawaii skjorter (7 produkter, 143 DKK salg), Festtøj (minimal aktivitet)",
+        answer_en: "Dresses (6 products, 0 DKK sales), Hawaiian shirts (7 products, 143 DKK sales), Formal wear (minimal activity)",
         source: "Dashboard produktanalyse",
-        source_label: "Dashboard analysis"
+        source_label: "Product analysis"
     },
     {
-        id: 'a5',
+        id: 'c5',
         category: 'products',
-        category_da: 'Produkter',
-        category_en: 'Products',
-        question: "Skal Chapeau Clarque beholdes?",
-        question_en: "Keep Chapeau Clarque?",
-        answer: "JA - Top sælger med 62.440 DKK i salg!",
-        answer_en: "YES - Top seller at 62,440 DKK!",
-        source: "Salgsdata",
-        source_label: "Sales data"
-    },
-    {
-        id: 'a6',
-        category: 'products',
-        category_da: 'Produkter',
-        category_en: 'Products',
-        question: "Deltager I i festivaler?",
-        question_en: "Festival participation?",
-        answer: "JA - Festival Hatte omsætning ~50K DKK",
-        answer_en: "YES - Festival Hatte revenue ~50K DKK",
-        source: "Produktsalgsdata",
-        source_label: "Product sales data"
+        category_da: 'Produkter & Katalog',
+        category_en: 'Products & Catalog',
+        question: "Hvor mange produktbilleder er der?",
+        question_en: "How many product images are there?",
+        answer: "282 mediefiler over 8 år (2016-2024), totalt 715 MB wp-content downloadet",
+        answer_en: "282 media files spanning 8 years (2016-2024), total 715 MB wp-content downloaded",
+        source: "VERIFICATION-CHECKLIST.md",
+        source_label: "File audit"
     },
     // ============================================
-    // TECHNICAL - DOCUMENTED
+    // SALES & REVENUE
     // ============================================
     {
-        id: 'a7',
+        id: 's1',
+        category: 'sales',
+        category_da: 'Salg & Omsætning',
+        category_en: 'Sales & Revenue',
+        question: "Hvad er den totale omsætning?",
+        question_en: "What is the total revenue?",
+        answer: "166.031 DKK over 9 år (2017-2026) fra 333 gennemførte ordrer",
+        answer_en: "166,031 DKK over 9 years (2017-2026) from 333 completed orders",
+        source: "SALES-STATS.md",
+        source_label: "Sales analysis"
+    },
+    {
+        id: 's2',
+        category: 'sales',
+        category_da: 'Salg & Omsætning',
+        category_en: 'Sales & Revenue',
+        question: "Hvad er den gennemsnitlige ordreværdi?",
+        question_en: "What is the average order value?",
+        answer: "499 DKK gennemsnitlig ordreværdi (AOV)",
+        answer_en: "499 DKK average order value (AOV)",
+        source: "SALES-STATS.md",
+        source_label: "Sales analysis"
+    },
+    {
+        id: 's3',
+        category: 'sales',
+        category_da: 'Salg & Omsætning',
+        category_en: 'Sales & Revenue',
+        question: "Hvornår er den travleste periode?",
+        question_en: "When is the busiest period?",
+        answer: "December er travlest (13.8% af ordrer), fredag er den travleste dag (16.2%)",
+        answer_en: "December is busiest (13.8% of orders), Friday is the busiest day (16.2%)",
+        source: "SALES-STATS.md",
+        source_label: "Sales analysis"
+    },
+    {
+        id: 's4',
+        category: 'sales',
+        category_da: 'Salg & Omsætning',
+        category_en: 'Sales & Revenue',
+        question: "Hvad var det bedste salgsår?",
+        question_en: "What was the best sales year?",
+        answer: "2020 var peak med 65.949 DKK omsætning fra 135 ordrer",
+        answer_en: "2020 was peak with 65,949 DKK revenue from 135 orders",
+        source: "SALES-STATS.md",
+        source_label: "Sales analysis"
+    },
+    {
+        id: 's5',
+        category: 'sales',
+        category_da: 'Salg & Omsætning',
+        category_en: 'Sales & Revenue',
+        question: "Hvad er forsendelsesindtægterne?",
+        question_en: "What are the shipping revenues?",
+        answer: "11.260 DKK total forsendelsesindtægt. 83.5% bruger 'Under 4 kg' (45 DKK), 12.3% henter selv",
+        answer_en: "11,260 DKK total shipping revenue. 83.5% use 'Under 4 kg' (45 DKK), 12.3% pick up locally",
+        source: "SALES-STATS.md",
+        source_label: "Sales analysis"
+    },
+    // ============================================
+    // CUSTOMERS
+    // ============================================
+    {
+        id: 'cu1',
+        category: 'customers',
+        category_da: 'Kunder',
+        category_en: 'Customers',
+        question: "Hvor mange kunder har butikken?",
+        question_en: "How many customers does the store have?",
+        answer: "62 registrerede kundekonti + 4 administratorer + 1 shop manager = 67 brugere total",
+        answer_en: "62 registered customer accounts + 4 administrators + 1 shop manager = 67 users total",
+        source: "CUSTOMER-STRUCTURE.md",
+        source_label: "Customer audit"
+    },
+    {
+        id: 'cu2',
+        category: 'customers',
+        category_da: 'Kunder',
+        category_en: 'Customers',
+        question: "Hvad er kundeloyaliteten?",
+        question_en: "What is customer loyalty?",
+        answer: "6.8% gentagne kunder (20 af 295 unikke kunder). 93.2% køber kun én gang",
+        answer_en: "6.8% repeat customers (20 of 295 unique customers). 93.2% buy only once",
+        source: "SALES-STATS.md",
+        source_label: "Sales analysis"
+    },
+    {
+        id: 'cu3',
+        category: 'customers',
+        category_da: 'Kunder',
+        category_en: 'Customers',
+        question: "Hvad er kundens livstidsværdi?",
+        question_en: "What is customer lifetime value?",
+        answer: "Gennemsnitlig CLV: 563 DKK. Højeste CLV: 4.695 DKK",
+        answer_en: "Average CLV: 563 DKK. Highest CLV: 4,695 DKK",
+        source: "SALES-STATS.md",
+        source_label: "Sales analysis"
+    },
+    // ============================================
+    // TECHNICAL & INTEGRATIONS
+    // ============================================
+    {
+        id: 't1',
         category: 'technical',
-        category_da: 'Teknisk',
-        category_en: 'Technical',
-        question: "Hvad er forsendelsespriserne?",
-        question_en: "What are the shipping rates?",
-        answer: "45 / 70 / 200 DKK (3 niveauer baseret på størrelse/vægt)",
-        answer_en: "45 / 70 / 200 DKK (3 tiers based on size/weight)",
-        source: "WooCommerce indstillinger",
-        source_label: "WooCommerce settings"
+        category_da: 'Teknisk & Integrationer',
+        category_en: 'Technical & Integrations',
+        question: "Hvilken betalingsgateway bruges?",
+        question_en: "Which payment gateway is used?",
+        answer: "Reepay/Frisbii Pay i LIVE mode. Understøtter: Visa, Mastercard, Apple Pay, Google Pay",
+        answer_en: "Reepay/Frisbii Pay in LIVE mode. Supports: Visa, Mastercard, Apple Pay, Google Pay",
+        source: "INTEGRATIONS.md",
+        source_label: "Integrations audit"
     },
     {
-        id: 'a8',
+        id: 't2',
         category: 'technical',
-        category_da: 'Teknisk',
-        category_en: 'Technical',
-        question: "Hvilke betalingsmetoder bruges?",
-        question_en: "What payment methods are used?",
-        answer: "Reepay: Visa, Mastercard, Apple Pay, Google Pay",
-        answer_en: "Reepay: Visa, Mastercard, Apple Pay, Google Pay",
-        source: "Integration audit",
-        source_label: "Integration audit"
+        category_da: 'Teknisk & Integrationer',
+        category_en: 'Technical & Integrations',
+        question: "Hvad er forsendelseskonfigurationen?",
+        question_en: "What is the shipping configuration?",
+        answer: "Vægtbaseret: Under 4 kg = 45 DKK, 4-5 kg = 70 DKK, 6-19 kg = 200 DKK, Over 19 kg = kontakt for pris",
+        answer_en: "Weight-based: Under 4 kg = 45 DKK, 4-5 kg = 70 DKK, 6-19 kg = 200 DKK, Over 19 kg = contact for quote",
+        source: "CLIENT-REPORT.md",
+        source_label: "Client report"
     },
     {
-        id: 'a9',
+        id: 't3',
         category: 'technical',
-        category_da: 'Teknisk',
-        category_en: 'Technical',
-        question: "Er MobilePay aktiveret?",
-        question_en: "Is MobilePay enabled?",
-        answer: "NEJ - ikke i øjeblikket (konkurrenter har det)",
-        answer_en: "NO - not currently (competitors have it)",
-        source: "Integration audit",
-        source_label: "Integration audit"
+        category_da: 'Teknisk & Integrationer',
+        category_en: 'Technical & Integrations',
+        question: "Er der analytics installeret?",
+        question_en: "Is analytics installed?",
+        answer: "NEJ - Privacybevidst opsætning. Ingen Google Analytics, ingen Facebook Pixel",
+        answer_en: "NO - Privacy-conscious setup. No Google Analytics, no Facebook Pixel",
+        source: "INTEGRATIONS.md",
+        source_label: "Integrations audit"
+    },
+    {
+        id: 't4',
+        category: 'technical',
+        category_da: 'Teknisk & Integrationer',
+        category_en: 'Technical & Integrations',
+        question: "Hvordan håndteres cookies?",
+        question_en: "How are cookies handled?",
+        answer: "CookieScript bruges til GDPR compliance",
+        answer_en: "CookieScript used for GDPR compliance",
+        source: "INTEGRATIONS.md",
+        source_label: "Integrations audit"
+    },
+    {
+        id: 't5',
+        category: 'technical',
+        category_da: 'Teknisk & Integrationer',
+        category_en: 'Technical & Integrations',
+        question: "Hvor mange URL redirects er konfigureret?",
+        question_en: "How many URL redirects are configured?",
+        answer: "10 aktive redirects via Redirection plugin - skal bevares ved migration",
+        answer_en: "10 active redirects via Redirection plugin - must be preserved during migration",
+        source: "AUDIT-INDEX.md",
+        source_label: "Technical audit"
     },
     // ============================================
-    // DESIGN - CONFIRMED
+    // SEO & PERFORMANCE
     // ============================================
     {
-        id: 'a10',
-        category: 'design',
-        category_da: 'Design',
-        category_en: 'Design',
-        question: "Hvad er den ønskede designretning?",
-        question_en: "What is the desired design direction?",
-        answer: "Klassisk, vintage, Peaky Blinders æstetik",
-        answer_en: "Classic, vintage, Peaky Blinders aesthetic",
-        source: "Kundemøde",
-        source_label: "Client meeting"
+        id: 'seo1',
+        category: 'seo',
+        category_da: 'SEO & Performance',
+        category_en: 'SEO & Performance',
+        question: "Hvad er SEO-scoren?",
+        question_en: "What is the SEO score?",
+        answer: "Lighthouse SEO: 100/100 - Alle tekniske SEO checks består",
+        answer_en: "Lighthouse SEO: 100/100 - All technical SEO checks passing",
+        source: "SEO-AUDIT.md",
+        source_label: "SEO audit"
     },
     {
-        id: 'a11',
-        category: 'design',
-        category_da: 'Design',
-        category_en: 'Design',
-        question: "Fokus kun på hatte?",
-        question_en: "Focus on hats only?",
-        answer: "JA - fjern tøj, behold kun hatte og tilbehør",
-        answer_en: "YES - remove clothing, keep only hats and accessories",
-        source: "Kundemøde",
-        source_label: "Client meeting"
+        id: 'seo2',
+        category: 'seo',
+        category_da: 'SEO & Performance',
+        category_en: 'SEO & Performance',
+        question: "Hvad er performance-scoren?",
+        question_en: "What is the performance score?",
+        answer: "Lighthouse Performance: 72/100 - God, men LCP (5.4s) skal forbedres til <2.5s",
+        answer_en: "Lighthouse Performance: 72/100 - Good, but LCP (5.4s) needs improvement to <2.5s",
+        source: "SEO-AUDIT.md",
+        source_label: "SEO audit"
     },
     {
-        id: 'a12',
+        id: 'seo3',
+        category: 'seo',
+        category_da: 'SEO & Performance',
+        category_en: 'SEO & Performance',
+        question: "Er der broken links?",
+        question_en: "Are there broken links?",
+        answer: "0 broken interne links fundet (460+ links tjekket)",
+        answer_en: "0 broken internal links found (460+ links checked)",
+        source: "SEO-AUDIT.md",
+        source_label: "SEO audit"
+    },
+    {
+        id: 'seo4',
+        category: 'seo',
+        category_da: 'SEO & Performance',
+        category_en: 'SEO & Performance',
+        question: "Er der struktureret data?",
+        question_en: "Is there structured data?",
+        answer: "JA - Product schema + Breadcrumb schema implementeret via WooCommerce",
+        answer_en: "YES - Product schema + Breadcrumb schema implemented via WooCommerce",
+        source: "SEO-AUDIT.md",
+        source_label: "SEO audit"
+    },
+    // ============================================
+    // DESIGN & ACCESSIBILITY
+    // ============================================
+    {
+        id: 'd1',
         category: 'design',
-        category_da: 'Design',
-        category_en: 'Design',
-        question: "Facebook side?",
-        question_en: "Facebook page?",
-        answer: "facebook.com/hattemanden",
-        answer_en: "facebook.com/hattemanden",
+        category_da: 'Design & Tilgængelighed',
+        category_en: 'Design & Accessibility',
+        question: "Hvad er tilgængelighedsscoren?",
+        question_en: "What is the accessibility score?",
+        answer: "Lighthouse Accessibility: 91/100 - 2 WCAG failures (farvekontrast, link synlighed)",
+        answer_en: "Lighthouse Accessibility: 91/100 - 2 WCAG failures (color contrast, link visibility)",
+        source: "DESIGN-AUDIT.md",
+        source_label: "Design audit"
+    },
+    {
+        id: 'd2',
+        category: 'design',
+        category_da: 'Design & Tilgængelighed',
+        category_en: 'Design & Accessibility',
+        question: "Hvilke skrifttyper bruges?",
+        question_en: "What fonts are used?",
+        answer: "Open Sans (body, headings) + PT Sans (menu). 10 font-varianter loaded",
+        answer_en: "Open Sans (body, headings) + PT Sans (menu). 10 font variants loaded",
+        source: "DESIGN-AUDIT.md",
+        source_label: "Design audit"
+    },
+    {
+        id: 'd3',
+        category: 'design',
+        category_da: 'Design & Tilgængelighed',
+        category_en: 'Design & Accessibility',
+        question: "Hvad er det nuværende farveskema?",
+        question_en: "What is the current color scheme?",
+        answer: "Primær accent: Orange (#ff9800), Neutrale baggrunde: Lysegrå, Tekst: Sort/mørkegrå",
+        answer_en: "Primary accent: Orange (#ff9800), Neutral backgrounds: Light gray, Text: Black/dark gray",
+        source: "DESIGN-AUDIT.md",
+        source_label: "Design audit"
+    },
+    {
+        id: 'd4',
+        category: 'design',
+        category_da: 'Design & Tilgængelighed',
+        category_en: 'Design & Accessibility',
+        question: "Er siden mobil-responsiv?",
+        question_en: "Is the site mobile-responsive?",
+        answer: "JA - Korrekt viewport meta tag, touch targets passerer, Avada mobile menu fungerer",
+        answer_en: "YES - Correct viewport meta tag, touch targets pass, Avada mobile menu works",
+        source: "DESIGN-AUDIT.md",
+        source_label: "Design audit"
+    },
+    // ============================================
+    // BRAND ASSETS
+    // ============================================
+    {
+        id: 'b1',
+        category: 'brand',
+        category_da: 'Brand Assets',
+        category_en: 'Brand Assets',
+        question: "Er der video-indhold tilgængeligt?",
+        question_en: "Is video content available?",
+        answer: "JA - TV Syd 'Kaffe med Kurt' interview med Pepino fundet på TV Syds hjemmeside",
+        answer_en: "YES - TV Syd 'Kaffe med Kurt' interview with Pepino found on TV Syd website",
+        source: "https://www.tvsyd.dk/kaffe-med-kurt/kaffe-med-kurt-hattemanden",
+        source_label: "TV Syd"
+    },
+    {
+        id: 'b2',
+        category: 'brand',
+        category_da: 'Brand Assets',
+        category_en: 'Brand Assets',
+        question: "Hvad er brand-historien?",
+        question_en: "What is the brand story?",
+        answer: "Startede 2000 med import fra Sydamerika/USA, udvidet til Italien/England 2003, damehatte tilføjet 2010",
+        answer_en: "Started 2000 with imports from South America/USA, expanded to Italy/England 2003, women's hats added 2010",
+        source: "hattemanden.dk/om-hattemanden/",
+        source_label: "About page"
+    },
+    {
+        id: 'b3',
+        category: 'brand',
+        category_da: 'Brand Assets',
+        category_en: 'Brand Assets',
+        question: "Er der sociale medier?",
+        question_en: "Are there social media accounts?",
+        answer: "Facebook: facebook.com/hattemanden (verificeret)",
+        answer_en: "Facebook: facebook.com/hattemanden (verified)",
         source: "Verificeret",
         source_label: "Verified"
+    },
+    // ============================================
+    // MIGRATION READINESS
+    // ============================================
+    {
+        id: 'm1',
+        category: 'migration',
+        category_da: 'Migrerings-parathed',
+        category_en: 'Migration Readiness',
+        question: "Er siden klar til migration?",
+        question_en: "Is the site ready for migration?",
+        answer: "JA - Ingen blokerende tekniske problemer. Al data kan eksporteres med standard værktøjer",
+        answer_en: "YES - No blocking technical issues. All data can be exported using standard tools",
+        source: "CLIENT-REPORT.md",
+        source_label: "Client report"
+    },
+    {
+        id: 'm2',
+        category: 'migration',
+        category_da: 'Migrerings-parathed',
+        category_en: 'Migration Readiness',
+        question: "Hvad er den største migrerings-udfordring?",
+        question_en: "What is the biggest migration challenge?",
+        answer: "230 Fusion Builder produkt-slidere skal erstattes - siderne er gemt som proprietære shortcodes",
+        answer_en: "230 Fusion Builder product sliders need replacement - pages stored as proprietary shortcodes",
+        source: "THEME-AUDIT.md",
+        source_label: "Theme audit"
+    },
+    {
+        id: 'm3',
+        category: 'migration',
+        category_da: 'Migrerings-parathed',
+        category_en: 'Migration Readiness',
+        question: "Hvad skal forbedres ved rebuild?",
+        question_en: "What should be improved in rebuild?",
+        answer: "Email auth (SPF/DKIM/DMARC), Security headers (HSTS, CSP), CDN, MobilePay integration",
+        answer_en: "Email auth (SPF/DKIM/DMARC), Security headers (HSTS, CSP), CDN, MobilePay integration",
+        source: "CLIENT-REPORT.md",
+        source_label: "Recommendations"
     }
 ];
 
@@ -842,54 +1128,12 @@ async function loadQuestions() {
         answeredCategories[q.category].questions.push(q);
     });
 
-    // ============================================
-    // SECTION 1: Questions Awaiting Answers (at top)
-    // ============================================
-    let awaitingHtml = `
-        <div class="card research-document-section awaiting-section">
-            <div class="document-section-header">
-                <span class="section-badge awaiting">${QUESTIONS.length}</span>
-                <h2 data-da="Spørgsmål der Afventer Svar" data-en="Questions Awaiting Answers">${currentLanguage === 'en' ? 'Questions Awaiting Answers' : 'Spørgsmål der Afventer Svar'}</h2>
-            </div>
-            <p class="section-intro" data-da="Disse 3 spørgsmål har vi brug for dit input til. Send os dine svar via email eller Messenger." data-en="We need your input on these 3 questions. Send us your answers via email or Messenger.">${currentLanguage === 'en' ? 'We need your input on these 3 questions. Send us your answers via email or Messenger.' : 'Disse 3 spørgsmål har vi brug for dit input til. Send os dine svar via email eller Messenger.'}</p>
-            <div class="questions-list awaiting-list">
-    `;
-
-    QUESTIONS.forEach((q, index) => {
-        const question = currentLanguage === 'en' ? q.question_en : q.question;
-        const context = currentLanguage === 'en' ? q.why_en : q.why;
-
-        awaitingHtml += `
-            <div class="document-question-item awaiting">
-                <div class="question-number-badge">${index + 1}</div>
-                <div class="question-details">
-                    <h3 class="question-title">${question}</h3>
-                    <div class="question-context">
-                        <span class="context-label" data-da="Baggrund:" data-en="Context:">${currentLanguage === 'en' ? 'Context:' : 'Baggrund:'}</span>
-                        <p>${context}</p>
-                    </div>
-                    <div class="answer-placeholder">
-                        <span class="placeholder-icon">✎</span>
-                        <span data-da="Afventer dit svar..." data-en="Awaiting your answer...">${currentLanguage === 'en' ? 'Awaiting your answer...' : 'Afventer dit svar...'}</span>
-                    </div>
-                </div>
-            </div>
-        `;
-    });
-
-    awaitingHtml += `
-            </div>
-        </div>
-    `;
-
-    // ============================================
-    // SECTION 2: Questions Answered Through Research
-    // ============================================
-    let answeredHtml = `
+    // Research Findings - all questions answered through research
+    let html = `
         <div class="card research-document-section answered-section">
             <div class="document-section-header">
                 <span class="section-badge answered">✓ ${ANSWERED_QUESTIONS.length}</span>
-                <h2 data-da="Besvaret Gennem Research" data-en="Answered Through Research">${currentLanguage === 'en' ? 'Answered Through Research' : 'Besvaret Gennem Research'}</h2>
+                <h2 data-da="Research Resultater" data-en="Research Findings">${currentLanguage === 'en' ? 'Research Findings' : 'Research Resultater'}</h2>
             </div>
             <p class="section-intro" data-da="Vi har fundet svar på disse spørgsmål gennem vores research. Gennemgå venligst og sig til hvis noget er forkert." data-en="We found answers to these questions through our research. Please review and let us know if anything is incorrect.">${currentLanguage === 'en' ? 'We found answers to these questions through our research. Please review and let us know if anything is incorrect.' : 'Vi har fundet svar på disse spørgsmål gennem vores research. Gennemgå venligst og sig til hvis noget er forkert.'}</p>
     `;
@@ -898,7 +1142,7 @@ async function loadQuestions() {
     for (const [, data] of Object.entries(answeredCategories)) {
         const categoryLabel = currentLanguage === 'en' ? data.label_en : data.label_da;
 
-        answeredHtml += `
+        html += `
             <div class="research-category">
                 <h3 class="category-title">${categoryLabel}</h3>
                 <div class="questions-list answered-list">
@@ -911,7 +1155,7 @@ async function loadQuestions() {
                 ? `<a href="${q.source}" target="_blank" rel="noopener">${q.source_label}</a>`
                 : `<span class="source-text">${q.source_label}</span>`;
 
-            answeredHtml += `
+            html += `
                 <div class="document-question-item answered">
                     <div class="answered-check-icon">✓</div>
                     <div class="question-details">
@@ -925,18 +1169,17 @@ async function loadQuestions() {
             `;
         });
 
-        answeredHtml += `
+        html += `
                 </div>
             </div>
         `;
     }
 
-    answeredHtml += `
+    html += `
         </div>
     `;
 
-    // Combine sections: Awaiting first, then Answered
-    container.innerHTML = awaitingHtml + answeredHtml;
+    container.innerHTML = html;
 }
 
 // ============================================
