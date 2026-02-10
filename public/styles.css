@@ -2481,6 +2481,14 @@ main {
     border-radius: var(--radius-full);
 }
 
+.hero-badge-inline.accepted {
+    background: var(--success-muted);
+    color: var(--success);
+    border: 1px solid var(--success);
+    font-size: 0.6875rem;
+    padding: var(--space-1) var(--space-4);
+}
+
 .hero-title-main {
     font-family: var(--font-heading);
     font-size: 1.75rem;
@@ -3983,6 +3991,87 @@ a.eeat-source-card:hover .source-name {
 .split-amount {
     font-weight: 700;
     color: var(--text-primary);
+}
+
+/* Accepted Pricing / Discount Display */
+.accepted-pricing {
+    border-color: var(--success);
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);
+}
+
+.pricing-original {
+    margin-bottom: var(--space-2);
+}
+
+.pricing-amount-strikethrough {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+.pricing-discount-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+}
+
+.discount-badge {
+    background: var(--success-muted);
+    color: var(--success);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    text-transform: uppercase;
+}
+
+.discount-amount {
+    color: var(--success);
+    font-size: 0.9375rem;
+    font-weight: 600;
+}
+
+.pricing-amount-large.accepted-price {
+    color: var(--success);
+}
+
+/* Accepted step in Next Steps */
+.action-card.action-completed {
+    border-color: var(--success);
+    background: var(--success-muted);
+}
+
+.action-number.completed-check {
+    background: var(--success);
+    color: white;
+    font-size: 1.25rem;
+}
+
+/* Paid badge on split item */
+.split-status-badge {
+    background: var(--success);
+    color: white;
+    font-size: 0.5625rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+}
+
+.split-pct.paid {
+    background: var(--success);
+}
+
+/* Accepted footer */
+.accepted-footer .proposal-footer-content p:first-child {
+    color: var(--success);
+    font-weight: 600;
 }
 
 .pricing-includes-v2 {

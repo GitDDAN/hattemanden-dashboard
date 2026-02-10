@@ -89,7 +89,7 @@
             <!-- Hero Header - Compact & Elegant -->
             <div class="proposal-hero compact">
                 <div class="hero-content">
-                    <span class="hero-badge-inline" data-da="FORSLAG" data-en="PROPOSAL">FORSLAG</span>
+                    <span class="hero-badge-inline accepted" data-da="GODKENDT" data-en="ACCEPTED">GODKENDT</span>
                     <h1 class="hero-title-main">Hattemanden</h1>
                     <p class="hero-subtitle" data-da="Ny professionel webshop · Februar 2026" data-en="New Professional Webshop · February 2026">Ny professionel webshop · Februar 2026</p>
                 </div>
@@ -954,19 +954,27 @@
                 </div>
                 <div class="collapsible-content" style="display: none;">
 
-                <div class="main-pricing-card">
+                <div class="main-pricing-card accepted-pricing">
                     <div class="pricing-label" data-da="Ny hjemmeside (komplet rebuild)" data-en="New website (complete rebuild)">Ny hjemmeside (komplet rebuild)</div>
-                    <div class="pricing-amount-large">19.999 DKK</div>
+                    <div class="pricing-original">
+                        <span class="pricing-amount-strikethrough">19.999 DKK</span>
+                    </div>
+                    <div class="pricing-discount-row">
+                        <span class="discount-badge" data-da="Vennerabat" data-en="Friend discount">Vennerabat</span>
+                        <span class="discount-amount" data-da="−11.200 DKK (14.000 inkl. moms)" data-en="−11,200 DKK (14,000 incl. VAT)">−11.200 DKK (14.000 inkl. moms)</span>
+                    </div>
+                    <div class="pricing-amount-large accepted-price">8.799 DKK</div>
                     <div class="pricing-split">
-                        <div class="split-item">
-                            <span class="split-pct">40%</span>
+                        <div class="split-item split-paid">
+                            <span class="split-pct paid">40%</span>
                             <span class="split-label" data-da="ved projektstart:" data-en="at project start:">ved projektstart:</span>
-                            <span class="split-amount">7.999 DKK</span>
+                            <span class="split-amount">3.520 DKK</span>
+                            <span class="split-status-badge" data-da="BETALT" data-en="PAID">BETALT</span>
                         </div>
                         <div class="split-item">
                             <span class="split-pct">60%</span>
                             <span class="split-label" data-da="ved aflevering:" data-en="at delivery:">ved aflevering:</span>
-                            <span class="split-amount">12.000 DKK</span>
+                            <span class="split-amount">5.279 DKK</span>
                         </div>
                     </div>
                 </div>
@@ -1085,11 +1093,11 @@
                         <div class="action-arrow">→</div>
                     </div>
 
-                    <div class="action-card no-click">
-                        <div class="action-number">3</div>
+                    <div class="action-card no-click action-completed">
+                        <div class="action-number completed-check">&#10003;</div>
                         <div class="action-content">
-                            <h4 data-da="Godkend og betal forudbetaling" data-en="Approve and pay deposit">Godkend og betal forudbetaling</h4>
-                            <p data-da="Når du er klar, sender vi en faktura på 7.999 DKK (40%) og går i gang med design. Du betaler de resterende 12.000 DKK når siden er klar." data-en="When you're ready, we'll send an invoice for 7,999 DKK (40%) and start the design. You pay the remaining 12,000 DKK when the site is ready.">Når du er klar, sender vi en faktura på 7.999 DKK (40%) og går i gang med design. Du betaler de resterende 12.000 DKK når siden er klar.</p>
+                            <h4 data-da="Tilbud godkendt" data-en="Proposal accepted">Tilbud godkendt</h4>
+                            <p data-da="Tilbuddet er godkendt. Forudbetaling på 3.520 DKK (40%) er betalt. Resterende 5.279 DKK betales ved aflevering." data-en="The proposal has been accepted. Deposit of 3,520 DKK (40%) has been paid. Remaining 5,279 DKK due at delivery.">Tilbuddet er godkendt. Forudbetaling på 3.520 DKK (40%) er betalt. Resterende 5.279 DKK betales ved aflevering.</p>
                             <div class="payment-methods" style="margin-top: 1rem; padding: 0.75rem; background: rgba(255,255,255,0.05); border-radius: 6px;">
                                 <p style="margin: 0 0 0.5rem 0; font-weight: 500;" data-da="Betal via:" data-en="Pay via:">Betal via:</p>
                                 <ul style="margin: 0; padding-left: 1.25rem; color: var(--text-secondary);">
@@ -1167,9 +1175,9 @@
             </div>
 
             <!-- Footer -->
-            <div class="proposal-footer">
+            <div class="proposal-footer accepted-footer">
                 <div class="proposal-footer-content">
-                    <p data-da="Dette tilbud er gyldigt i 30 dage fra modtagelse." data-en="This proposal is valid for 30 days from receipt.">Dette tilbud er gyldigt i 30 dage fra modtagelse.</p>
+                    <p data-da="Tilbud godkendt · Februar 2026" data-en="Proposal accepted · February 2026">Tilbud godkendt · Februar 2026</p>
                     <p>daniel@build444.com</p>
                 </div>
             </div>
