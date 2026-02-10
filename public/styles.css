@@ -4038,6 +4038,20 @@ a.eeat-source-card:hover .source-name {
 
 .pricing-amount-large.accepted-price {
     color: var(--success);
+    margin-bottom: var(--space-1);
+}
+
+.pricing-amount-incl {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-6);
+}
+
+.pricing-vat-note {
+    margin-top: var(--space-4);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
 }
 
 /* Accepted step in Next Steps */
